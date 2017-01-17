@@ -3,8 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.hivian.ft_hangouts.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_blue"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_blue"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_yellow"
+        android:orderInCategory="100"
+        android:title="@string/action_yellow"
         app:showAsAction="never" />
 </menu>

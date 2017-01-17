@@ -1,10 +1,15 @@
 package com.example.hivian.ft_hangouts;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,9 +47,20 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_blue) {
+            //getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.app_name)  + "</font>"));
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
+            return true;
+        }
+        if (id == R.id.action_yellow) {
+            //getSupportActionBar().setIcon(new ColorDrawable(Color.parseColor("#3F51B5")));
+            //getSupportActionBar().setTitle(Html.fromHtml("<font color='black'>" + getString(R.string.app_name)  + "</font>"));
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorYellow)));
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorYellow)));
             return true;
         }
 
