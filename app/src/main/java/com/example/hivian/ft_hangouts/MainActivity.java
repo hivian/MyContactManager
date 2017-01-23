@@ -1,20 +1,21 @@
 package com.example.hivian.ft_hangouts;
 
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.Intent;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    public final static String EXTRA_MESSAGE = "com.example.hivian.ft_hangouts.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
     }
 
@@ -51,14 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_blue) {
-            //getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.app_name)  + "</font>"));
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
             return true;
         }
         if (id == R.id.action_yellow) {
-            //getSupportActionBar().setIcon(new ColorDrawable(Color.parseColor("#3F51B5")));
-            //getSupportActionBar().setTitle(Html.fromHtml("<font color='black'>" + getString(R.string.app_name)  + "</font>"));
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorYellow)));
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorYellow)));
             return true;
@@ -66,4 +64,12 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void createContact(View view) {
+        Log.d("DEBUG", "CREATE CONTACT");
+        Intent intent = new Intent(this, ContactCreation.class);
+
+        startActivity(intent);
+    }
+
 }
