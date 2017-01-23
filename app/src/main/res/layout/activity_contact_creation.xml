@@ -12,63 +12,111 @@
     tools:context="com.example.hivian.ft_hangouts.ContactCreation">
 
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="165dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:id="@+id/imageView1"
-            android:layout_weight="0.5"
-            android:layout_margin="8dp"
-            android:background="@android:color/darker_gray"
-            android:layout_height="145dp" />
-
+        android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:layout_margin="8dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="165dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/imageView1"
+                    android:layout_weight="0.5"
+                    android:layout_margin="8dp"
+                    android:background="@android:color/darker_gray"
+                    android:layout_height="145dp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_margin="8dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true">
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:layout_weight="0.20"
+                        android:ems="10"
+                        android:id="@+id/name"
+                        android:hint="@string/contact_name"
+                        android:selectAllOnFocus="false"
+                        android:theme="@android:style/Theme.Holo.Light" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.30"
+                        android:ems="10"
+                        />
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20"
+                        android:ems="10"
+                        android:id="@+id/lastName"
+                        android:hint="@string/contact_lastname"
+                        android:selectAllOnFocus="false"
+                        android:theme="@android:style/Theme.Holo.Light"
+                        android:inputType="textPersonName" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.30"
+                        android:ems="10"
+                        />
+                </LinearLayout>
+            </LinearLayout>
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:layout_weight="0.20"
+                android:layout_marginTop="10dp"
                 android:ems="10"
-                android:id="@+id/name"
-                android:hint="@string/contact_name"
-                android:selectAllOnFocus="false"
-                android:theme="@android:style/Theme.Holo.Light" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.30"
-                android:ems="10"
-                />
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.20"
-                android:ems="10"
-                android:id="@+id/lastName"
-                android:hint="@string/contact_lastname"
-                android:selectAllOnFocus="false"
+                android:id="@+id/phone"
+                android:hint="@string/contact_phone"
                 android:theme="@android:style/Theme.Holo.Light"
-                android:inputType="textPersonName" />
-            <TextView
-                android:layout_width="wrap_content"
+                android:inputType="phone" />
+
+            <EditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.30"
+                android:layout_marginTop="25dp"
                 android:ems="10"
-                />
+                android:id="@+id/email"
+                android:hint="@string/contact_email"
+                android:theme="@android:style/Theme.Holo.Light"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:ems="10"
+                android:id="@+id/address"
+                android:hint="@string/contact_address"
+                android:theme="@android:style/Theme.Holo.Light"
+                android:inputType="textPostalAddress" />
+
+            <Button
+                android:text="@string/contact_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_save"
+                android:layout_marginTop="50dp"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@color/colorPrimary" />
+
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

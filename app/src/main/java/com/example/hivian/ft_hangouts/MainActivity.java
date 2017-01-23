@@ -16,6 +16,15 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.hivian.ft_hangouts.MESSAGE";
+    private static Boolean isYellow = false;
+
+    public static Boolean getYellow() {
+        return isYellow;
+    }
+
+    public void setYellow(Boolean bool) {
+        this.isYellow = bool;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_blue) {
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
+            setYellow(false);
             return true;
         }
         if (id == R.id.action_yellow) {
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorYellow)));
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorYellow)));
+            setYellow(true);
             return true;
         }
 
