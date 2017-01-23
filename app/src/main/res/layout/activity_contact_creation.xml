@@ -15,30 +15,60 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="165dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:id="@+id/imageView5"
+            android:id="@+id/imageView1"
             android:layout_weight="0.5"
             android:layout_margin="8dp"
             android:background="@android:color/darker_gray"
             android:layout_height="145dp" />
 
-        <EditText
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:text="Name"
             android:layout_margin="8dp"
-            android:ems="10"
-            android:id="@+id/lastName"
-            android:hint="@string/contact_name"
-            android:selectAllOnFocus="false"
-            android:singleLine="false" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:layout_weight="0.20"
+                android:ems="10"
+                android:id="@+id/name"
+                android:hint="@string/contact_name"
+                android:selectAllOnFocus="false"
+                android:theme="@android:style/Theme.Holo.Light" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.30"
+                android:ems="10"
+                />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.20"
+                android:ems="10"
+                android:id="@+id/lastName"
+                android:hint="@string/contact_lastname"
+                android:selectAllOnFocus="false"
+                android:theme="@android:style/Theme.Holo.Light"
+                android:inputType="textPersonName" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.30"
+                android:ems="10"
+                />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

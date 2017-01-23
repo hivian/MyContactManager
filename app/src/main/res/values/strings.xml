@@ -6,6 +6,7 @@
     <string name="start_message">Hello world!</string>
     <string name="create_contact">Create a contact</string>
     <string name="contact_name">Name</string>
+    <string name="contact_lastname">Last name</string>
     <string name="contact_number">Phone</string>
     <string name="contact_email">Email</string>
     <string name="contact_address">Address</string>
