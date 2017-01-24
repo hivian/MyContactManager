@@ -112,8 +112,6 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
 
-        cursor.close();
-        db.close();
         return cursor.getCount();
     }
 
