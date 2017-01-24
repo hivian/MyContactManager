@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
 
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +35,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        DBHandler db = new DBHandler(this);
+
+        Log.d("DEBUG", "DB SUCCESSSS");
+
+        db.addContact(new Contact(1, "Charles", "TOTO", "0246546", "toto@totolfr", "35 rue toto"));
+        Log.d("DEBUG", "INSERTED IN DB");
+
+        List<Contact> contacts = db.getAllContacts();
+
+        for (Contact cont : contacts) {
+            String log = "Id: " + cont.getId() + " ,Name: " + cont.getName() + " ,LastName: " + cont.getLastName() + " ,Phone: " + cont.getPhone() + " ,Email: " + cont.getEmail() + " ,Address: " + cont.getAddress();
+            Log.d("Contact: : ", log);
+        }
+        Log.d("DEBUG", "READ IN DB");
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

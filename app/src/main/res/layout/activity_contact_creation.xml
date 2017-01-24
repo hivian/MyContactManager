@@ -26,10 +26,9 @@
 
                 <ImageView
                     android:scaleType="centerCrop"
-                    android:adjustViewBounds="false"
-                    android:layout_width="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_width="150dp"
                     android:id="@+id/imageView1"
-                    android:layout_weight="0.4"
                     android:layout_margin="8dp"
                     android:background="@android:color/darker_gray"
                     android:layout_height="145dp"
@@ -45,7 +44,7 @@
                     android:layout_weight="0.5"
                     android:layout_margin="8dp">
                     <EditText
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPersonName"
                         android:layout_weight="0.20"
@@ -55,13 +54,13 @@
                         android:selectAllOnFocus="false"
                         android:theme="@android:style/Theme.Holo.Light" />
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.30"
                         android:ems="10"
                         />
                     <EditText
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.20"
                         android:ems="10"
@@ -71,7 +70,7 @@
                         android:theme="@android:style/Theme.Holo.Light"
                         android:inputType="textPersonName" />
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.30"
                         android:ems="10"
