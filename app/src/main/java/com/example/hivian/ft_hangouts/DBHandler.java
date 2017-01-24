@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by hivian on 1/24/17.
@@ -73,8 +74,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if (cursor != null)
             cursor.moveToFirst();
-        Contact contact = new Contact(Integer.parseInt(cursor.getString(0)), cursor.getString(1),
+        Contact contact = new Contact(cursor.getString(1),
                 cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
+        contact.setId(cursor.getInt(0));
         cursor.close();
         db.close();
         return contact;
@@ -115,6 +117,16 @@ public class DBHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
+    // Checking duplicates in table
+    public boolean isDuplicate(DBHandler db, String name) {
+        List<Contact> contacts = db.getAllContacts();
+        for (Contact cont : contacts) {
+            if (cont.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
     // Updating a contact
     public Integer updateContact(Contact contact) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -135,6 +147,15 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(CONTACTS_TABLE, KEY_ID + " = ?",
                 new String[] { String.valueOf(contact.getId()) });
         db.close();
+    }
+
+    // Deleting all contacts
+    public void deleteAllContacts(DBHandler db) {
+        List<Contact> contacts = db.getAllContacts();
+
+        for (Contact cont : contacts) {
+            db.deleteContact(cont);
+        }
     }
 
 }

@@ -17,8 +17,7 @@ public class Contact {
 
     }
 
-    public Contact(Integer id, String name, String lastName, String phone, String email, String address) {
-        this._id = id;
+    public Contact(String name, String lastName, String phone, String email, String address) {
         this._name = name;
         this._lastName = lastName;
         this._phone = phone;

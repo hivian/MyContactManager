@@ -13,4 +13,6 @@
     <string name="contact_address">Adresse</string>
     <string name="contact_save">Enregistrer</string>
     <string name="alert_no_name">Le nom n\'est pas renseigné</string>
+    <string name="alert_no_phone">Le numéro n\'est pas renseigné</string>
+    <string name="alert_duplicates">Nom déjà enregistré</string>
 </resources>

@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.List;
+
 
 public class ContactCreation extends AppCompatActivity {
 
@@ -82,11 +84,35 @@ public class ContactCreation extends AppCompatActivity {
         if (name.getText().toString().trim().length() == 0) {
             Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
             toast.show();
+        } else if (phone.getText().toString().trim().length() == 0) {
+            Toast toast = Toast.makeText(this, R.string.alert_no_phone, Toast.LENGTH_LONG);
+            toast.show();
+        } else {
+            DBHandler db = new DBHandler(this);
+
+            if (db.isDuplicate(db, name.getText().toString())) {
+                Toast toast = Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG);
+                toast.show();
+                Log.d("DEBUG", "DUP");
+                return ;
+            }
+            Log.d("DEBUG", "OVER");
+            db.addContact(new Contact(name.getText().toString(), lastName.getText().toString(),
+                    phone.getText().toString(), email.getText().toString(), addr.getText().toString()));
+
+            List<Contact> contacts = db.getAllContacts();
+            for (Contact cont : contacts) {
+                String log = "Id: " + cont.getId() + " ,Name: " + cont.getName() + " ,LastName: " + cont.getLastName() + " ,Phone: " + cont.getPhone() + " ,Email: " + cont.getEmail() + " ,Address: " + cont.getAddress();
+                Log.d("Contact: : ", log);
+            }
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         }
-        Log.v("EditText1", name.getText().toString());
+        /*Log.v("EditText1", name.getText().toString());
         Log.v("EditText2", lastName.getText().toString());
         Log.v("EditText3", phone.getText().toString());
         Log.v("EditText4", email.getText().toString());
-        Log.v("EditText5", addr.getText().toString());
+        Log.v("EditText5", addr.getText().toString());*/
     }
 }
