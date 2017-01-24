@@ -14,7 +14,9 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 public class ContactCreation extends AppCompatActivity {
@@ -67,5 +69,24 @@ public class ContactCreation extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(intent, RESULT_LOAD_IMAGE);
+    }
+
+    public void saveContact(View view) {
+        Log.d("DEBUG", "SAVE FUNCTION");
+        EditText name = (EditText)findViewById(R.id.name);
+        EditText lastName = (EditText)findViewById(R.id.lastName);
+        EditText phone = (EditText)findViewById(R.id.phone);
+        EditText email = (EditText)findViewById(R.id.email);
+        EditText addr = (EditText)findViewById(R.id.address);
+
+        if (name.getText().toString().trim().length() == 0) {
+            Toast toast = Toast.makeText(this, "PAS DE NOM", Toast.LENGTH_LONG);
+            toast.show();
+        }
+        Log.v("EditText1", name.getText().toString());
+        Log.v("EditText2", lastName.getText().toString());
+        Log.v("EditText3", phone.getText().toString());
+        Log.v("EditText4", email.getText().toString());
+        Log.v("EditText5", addr.getText().toString());
     }
 }
