@@ -80,7 +80,7 @@ public class ContactCreation extends AppCompatActivity {
         EditText addr = (EditText)findViewById(R.id.address);
 
         if (name.getText().toString().trim().length() == 0) {
-            Toast toast = Toast.makeText(this, "PAS DE NOM", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
             toast.show();
         }
         Log.v("EditText1", name.getText().toString());

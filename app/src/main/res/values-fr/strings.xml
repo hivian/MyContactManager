@@ -12,4 +12,5 @@
     <string name="contact_email">Email</string>
     <string name="contact_address">Adresse</string>
     <string name="contact_save">Enregistrer</string>
+    <string name="alert_no_name">Le nom n\'est pas renseigné</string>
 </resources>

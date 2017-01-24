@@ -11,4 +11,5 @@
     <string name="contact_email">Email</string>
     <string name="contact_address">Address</string>
     <string name="contact_save">SAVE</string>
+    <string name="alert_no_name">Field name empty</string>
 </resources>
