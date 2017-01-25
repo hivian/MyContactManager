@@ -28,7 +28,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:onClick="createContact"
-        app:srcCompat="@android:drawable/ic_input_add"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
         app:backgroundTint="?attr/colorPrimary" />
 
     <include layout="@layout/content_main" />

@@ -57,6 +57,8 @@ public class CustomAdapter extends BaseAdapter {
         TextView text2 = (TextView) vi.findViewById(R.id.row_phone);
         text1.setText(data.get(position).get(0));
         text2.setText(data.get(position).get(1));
+
         return vi;
     }
+
 }

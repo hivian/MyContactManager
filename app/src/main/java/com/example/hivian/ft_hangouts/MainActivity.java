@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         DBHandler db = new DBHandler(this);
 
         //this.deleteDatabase("DB");
-        ListView listview;
+        ListView listView;
 
         List<Contact> contacts = db.getAllContacts();
         //db.deleteAllContacts(db);
@@ -54,9 +56,20 @@ public class MainActivity extends AppCompatActivity {
             allData.add(elem);
         }
 
-        listview = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         CustomAdapter adapter = new CustomAdapter (this, allData);
-        listview.setAdapter(adapter);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // When clicked, show a toast with the TextView text
+                Log.d("DEBUG", "CLICKED");
+                /*Cursor cur = (Cursor) parent.getItemAtPosition(position);
+                Toast.makeText(getApplicationContext(),
+                        "id:"+id+"position:"+position+"rowid:"+cur.getInt(cur.getColumnIndex("_id")), Toast.LENGTH_LONG).show();*/
+            }
+        });
+        Log.d("DEBUG", "END");
     }
 
     @Override
