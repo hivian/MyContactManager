@@ -1,6 +1,9 @@
 package com.example.hivian.ft_hangouts;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,11 +20,14 @@ import android.content.Intent;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.hivian.ft_hangouts.DbBitmapUtility.getBytes;
@@ -29,6 +36,8 @@ import static com.example.hivian.ft_hangouts.DbBitmapUtility.getBytes;
 public class ContactCreation extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
+    private static Boolean wasInBackground = false;
+    private static String backgroundTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,7 @@ public class ContactCreation extends AppCompatActivity {
         }
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -68,6 +78,30 @@ public class ContactCreation extends AppCompatActivity {
             ImageView imageView = (ImageView) findViewById(R.id.imageView1);
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (isAppInBackground()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            backgroundTime = sdf.format(new Date());
+            Log.d("DEBUG", backgroundTime);
+            wasInBackground = true;
+        }
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        View parentLayout = findViewById(R.id.activity_contact_creation);
+
+        if (backgroundTime != null && wasInBackground) {
+            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
+                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            wasInBackground = false;
         }
     }
 
@@ -123,5 +157,17 @@ public class ContactCreation extends AppCompatActivity {
         Log.v("EditText3", phone.getText().toString());
         Log.v("EditText4", email.getText().toString());
         Log.v("EditText5", addr.getText().toString());*/
+    }
+
+
+    private boolean isAppInBackground() {
+        final ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        final List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
+
+        if (!tasks.isEmpty()) {
+            final ComponentName topActivity = tasks.get(0).topActivity;
+            return !topActivity.getPackageName().equals(getPackageName());
+        }
+        return false;
     }
 }

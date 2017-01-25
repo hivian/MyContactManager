@@ -3,6 +3,7 @@
     package="com.example.hivian.ft_hangouts">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ContactCreation" />
+        <activity android:name=".ContactCreation"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ContactInfo"></activity>
     </application>
 

@@ -1,7 +1,12 @@
 package com.example.hivian.ft_hangouts;
 
+import android.app.ActivityManager;
+import android.content.ComponentCallbacks2;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,7 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -25,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.hivian.ft_hangouts.MESSAGE";
     private static Boolean isYellow = false;
+    private static Boolean wasInBackground = false;
+    private static String backgroundTime;
 
     public static Boolean getYellow() {
         return isYellow;
@@ -69,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                         "id:"+id+"position:"+position+"rowid:"+cur.getInt(cur.getColumnIndex("_id")), Toast.LENGTH_LONG).show();*/
             }
         });
-        Log.d("DEBUG", "END");
     }
 
     @Override
@@ -105,19 +113,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("DEBUG", "PAUSED");
+    public void onStop() {
+        super.onStop();
+        if (isAppInBackground()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            backgroundTime = sdf.format(new Date());
+            Log.d("DEBUG", backgroundTime);
+            wasInBackground = true;
+        }
+
     }
 
-    /*@Override
+    @Override
     public void onResume(){
         super.onResume();
         View parentLayout = findViewById(R.id.content_main);
-        Snackbar.make(parentLayout, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-        Log.d("DEBUG", "RESUME");
-    }*/
+
+        if (backgroundTime != null && wasInBackground) {
+            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
+                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            wasInBackground = false;
+        }
+    }
 
     public void createContact(View view) {
         Log.d("DEBUG", "CREATE CONTACT");
@@ -126,4 +143,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private boolean isAppInBackground() {
+        final ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        final List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
+
+        if (!tasks.isEmpty()) {
+            final ComponentName topActivity = tasks.get(0).topActivity;
+            return !topActivity.getPackageName().equals(getPackageName());
+        }
+        return false;
+    }
 }
