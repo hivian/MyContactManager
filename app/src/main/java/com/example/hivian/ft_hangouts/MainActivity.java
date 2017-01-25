@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -44,27 +45,18 @@ public class MainActivity extends AppCompatActivity {
 
         List<Contact> contacts = db.getAllContacts();
         //db.deleteAllContacts(db);
-        String[] arr = new String[db.getContactsCount()];
-        Integer i = 0;
+        ArrayList <List <String>> allData = new ArrayList<>();
+
         for (Contact cont : contacts) {
-            arr[i] = cont.getName();
-            i++;
+            ArrayList<String> elem = new ArrayList<>();
+            elem.add(cont.getName());
+            elem.add(cont.getPhone());
+            allData.add(elem);
         }
 
         listview = (ListView) findViewById(R.id.listview);
-        listview.setAdapter(new CustomAdapter(this, arr));
-        //Log.d("DEBUG", "DELETE DB");
-        //db.deleteAllContacts(db);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
+        CustomAdapter adapter = new CustomAdapter (this, allData);
+        listview.setAdapter(adapter);
     }
 
     @Override
