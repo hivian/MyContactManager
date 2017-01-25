@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             allData.add(elem);
         }
 
-        listview = (ListView) findViewById(R.id.listview);
+        listview = (ListView) findViewById(R.id.listView);
         CustomAdapter adapter = new CustomAdapter (this, allData);
         listview.setAdapter(adapter);
     }
