@@ -1,5 +1,7 @@
 package com.example.hivian.ft_hangouts;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by hivian on 1/24/17.
  */
@@ -7,6 +9,7 @@ package com.example.hivian.ft_hangouts;
 public class Contact {
 
     private Integer _id;
+    private byte[] _image;
     private String _name;
     private String _lastName;
     private String _phone;
@@ -17,7 +20,8 @@ public class Contact {
 
     }
 
-    public Contact(String name, String lastName, String phone, String email, String address) {
+    public Contact(byte[] image, String name, String lastName, String phone, String email, String address) {
+        this._image = image;
         this._name = name;
         this._lastName = lastName;
         this._phone = phone;
@@ -27,6 +31,10 @@ public class Contact {
 
     public void setId(Integer id) {
         this._id = id;
+    }
+
+    public void setImage(byte[] image) {
+        this._image = image;
     }
 
     public void setName(String name) {
@@ -51,6 +59,10 @@ public class Contact {
 
     public Integer getId() {
         return _id;
+    }
+
+    public byte[] getImage() {
+        return _image;
     }
 
     public String getName() {

@@ -39,9 +39,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         DBHandler db = new DBHandler(this);
 
+        //this.deleteDatabase("DB");
         ListView listview;
 
         List<Contact> contacts = db.getAllContacts();
+        //db.deleteAllContacts(db);
         String[] arr = new String[db.getContactsCount()];
         Integer i = 0;
         for (Contact cont : contacts) {
@@ -98,13 +100,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("DEBUG", "PAUSED");
+    }
+
+    /*@Override
     public void onResume(){
         super.onResume();
         View parentLayout = findViewById(R.id.content_main);
         Snackbar.make(parentLayout, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
         Log.d("DEBUG", "RESUME");
-    }
+    }*/
 
     public void createContact(View view) {
         Log.d("DEBUG", "CREATE CONTACT");

@@ -2,9 +2,12 @@ package com.example.hivian.ft_hangouts;
 
 import android.Manifest;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.List;
+
+import static com.example.hivian.ft_hangouts.DbBitmapUtility.getBytes;
 
 
 public class ContactCreation extends AppCompatActivity {
@@ -75,6 +80,10 @@ public class ContactCreation extends AppCompatActivity {
 
     public void saveContact(View view) {
         Log.d("DEBUG", "SAVE FUNCTION");
+        ImageView imageView = (ImageView)findViewById(R.id.imageView1);
+        Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        byte[] imageDb = getBytes(image);
+
         EditText name = (EditText)findViewById(R.id.name);
         EditText lastName = (EditText)findViewById(R.id.lastName);
         EditText phone = (EditText)findViewById(R.id.phone);
@@ -97,7 +106,7 @@ public class ContactCreation extends AppCompatActivity {
                 return ;
             }
             Log.d("DEBUG", "OVER");
-            db.addContact(new Contact(name.getText().toString(), lastName.getText().toString(),
+            db.addContact(new Contact(imageDb, name.getText().toString(), lastName.getText().toString(),
                     phone.getText().toString(), email.getText().toString(), addr.getText().toString()));
 
             List<Contact> contacts = db.getAllContacts();
