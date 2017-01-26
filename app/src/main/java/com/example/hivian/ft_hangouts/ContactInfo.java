@@ -4,16 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static com.example.hivian.ft_hangouts.DbBitmapUtility.getImage;
 
 public class ContactInfo extends AppCompatActivity {
 
@@ -21,6 +18,7 @@ public class ContactInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_info);
+        getSupportActionBar().setTitle("Options");
 
         Contact contact = (Contact) getIntent().getSerializableExtra("contact");
 
@@ -32,12 +30,11 @@ public class ContactInfo extends AppCompatActivity {
             TextView textView4 = (TextView) findViewById(R.id.info_email);
             TextView textView5 = (TextView) findViewById(R.id.info_address);
 
-            //Bitmap imageBm = getImage(contact.getImage());
-           // byte[] imageBytes = Base64.decode(contact.getImage()b, Base64.DEFAULT);
-            //Bitmap pic = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-           // imageView.setImageBitmap(pic);
-            //if (imageBm != null)
-             //   imageView.setImageBitmap(pic);
+            if (contact.getImage() != null) {
+                Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
+                imageView.setImageBitmap(imageBm);
+                Log.d("BITMAPED", imageBm.toString());
+            }
             textView1.setText(contact.getName());
             textView2.setText(contact.getLastName());
             textView3.setText(contact.getPhone());

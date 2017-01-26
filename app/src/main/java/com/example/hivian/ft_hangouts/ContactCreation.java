@@ -38,6 +38,7 @@ public class ContactCreation extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private static Boolean wasInBackground = false;
     private static String backgroundTime;
+    private static Boolean isImageLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +76,19 @@ public class ContactCreation extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            ImageView imageView = (ImageView) findViewById(R.id.imageView1);
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
+            Log.d("BITMAPED", BitmapFactory.decodeFile(picturePath).toString());
+
+            Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+            byte[] imageDb;
+            imageDb = getBytes(image);
+            Bitmap imageBm = DbBitmapUtility.getImage(imageDb);
+            Log.d("BITMAPED", imageBm.toString());
+            imageView.setImageBitmap(imageBm);
+
+            isImageLoaded = true;
         }
     }
 
@@ -114,9 +125,9 @@ public class ContactCreation extends AppCompatActivity {
 
     public void saveContact(View view) {
         Log.d("DEBUG", "SAVE FUNCTION");
-        ImageView imageView = (ImageView)findViewById(R.id.imageView1);
+        ImageView imageView = (ImageView)findViewById(R.id.imageView);
         Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        byte[] imageDb = getBytes(image);
+        byte[] imageDb;
 
         EditText name = (EditText)findViewById(R.id.name);
         EditText lastName = (EditText)findViewById(R.id.lastName);
@@ -124,6 +135,14 @@ public class ContactCreation extends AppCompatActivity {
         EditText email = (EditText)findViewById(R.id.email);
         EditText address = (EditText)findViewById(R.id.address);
 
+        if (isImageLoaded) {
+            imageDb = getBytes(image);
+            Bitmap imageBm = DbBitmapUtility.getImage(imageDb);
+            imageView.setImageBitmap(imageBm);
+            isImageLoaded = false;
+        }
+        else
+            imageDb = null;
         if (name.getText().toString().trim().length() == 0) {
             Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
             toast.show();
