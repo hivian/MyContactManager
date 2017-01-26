@@ -15,4 +15,7 @@
     <string name="alert_no_phone">Field phone empty</string>
     <string name="alert_duplicates">Name already registered</string>
     <string name="alert_background">Last suspension:</string>
+    <string name="alert_delete_message">The contact will be deleted</string>
+    <string name="alert_delete_ok">OK</string>
+    <string name="alert_delete_cancel">CANCEL</string>
 </resources>

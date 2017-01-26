@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static Boolean isYellow = false;
     private static Boolean wasInBackground = false;
     private static String backgroundTime;
+    private static CustomAdapter adapter;
 
     public static Boolean getYellow() {
         return isYellow;
@@ -45,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void setYellow(Boolean bool) {
         this.isYellow = bool;
+    }
+
+    public static CustomAdapter getAdapter() {
+        return adapter;
     }
 
     @Override
@@ -70,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         listView = (ListView) findViewById(R.id.listView);
-        CustomAdapter adapter = new CustomAdapter (this, allData);
+        adapter = new CustomAdapter (this, allData);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

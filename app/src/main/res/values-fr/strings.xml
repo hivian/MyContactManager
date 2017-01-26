@@ -16,4 +16,7 @@
     <string name="alert_no_phone">Le numéro n\'est pas renseigné</string>
     <string name="alert_duplicates">Nom déjà enregistré</string>
     <string name="alert_background">Dernière suspension :</string>
+    <string name="alert_delete_message">Le contact sera supprimé</string>
+    <string name="alert_delete_ok">OK</string>
+    <string name="alert_delete_cancel">ANNULER</string>
 </resources>

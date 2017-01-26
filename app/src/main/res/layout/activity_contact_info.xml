@@ -4,10 +4,6 @@
     android:id="@+id/activity_contact_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.hivian.ft_hangouts.ContactInfo">
 
     <ScrollView
@@ -18,9 +14,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:orientation="horizontal"
+                android:background="@color/colorPrimary">
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:padding="10dp"
+                    android:tint="@android:color/white"
+                    android:src="@drawable/ic_message_black_75dp"
+                    />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:padding="10dp"
+                    android:tint="@android:color/white"
+                    android:src="@drawable/ic_call_black_75dp"
+                    />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:padding="10dp"
+                    android:tint="@android:color/white"
+                    />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:padding="10dp"
+                    android:tint="@android:color/white"
+                    android:src="@drawable/ic_delete_black_75dp"
+                    android:onClick="deleteContact"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="165dp" >
+                android:layout_height="165dp"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
 
                 <ImageView
                     android:scaleType="centerCrop"
@@ -39,6 +80,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
                     android:layout_margin="8dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.30"
+                        android:ems="10" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -70,12 +116,6 @@
                         android:maxLines="1"
                         android:scrollHorizontally="true"
                         android:theme="@android:style/Theme.Holo.Light" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.30"
-                        android:ems="10"
-                        />
                 </LinearLayout>
             </LinearLayout>
         <LinearLayout
