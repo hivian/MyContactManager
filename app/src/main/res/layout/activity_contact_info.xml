@@ -78,42 +78,73 @@
                         />
                 </LinearLayout>
             </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/info_icon1"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_call_black_75dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:ems="10"
                 android:id="@+id/info_phone"
                 android:textColor="@color/colorDark"
                 android:textSize="20sp"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
+                android:layout_marginLeft="10dp"
                 android:theme="@android:style/Theme.Holo.Light" />
-
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/info_icon2"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_mail_black_75dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
                 android:ems="10"
                 android:id="@+id/info_email"
                 android:textColor="@color/colorDark"
                 android:textSize="20sp"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
                 android:theme="@android:style/Theme.Holo.Light" />
-
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/info_icon3"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/ic_place_black_75dp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
                 android:ems="10"
                 android:id="@+id/info_address"
                 android:textColor="@color/colorDark"
                 android:textSize="20sp"
                 android:maxLines="1"
                 android:scrollHorizontally="true"
+                android:layout_marginLeft="10dp"
                 android:theme="@android:style/Theme.Holo.Light" />
-
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
