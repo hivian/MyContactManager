@@ -5,9 +5,11 @@ import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -20,8 +22,10 @@ import android.content.Intent;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DBHandler db = new DBHandler(this);
+        final DBHandler db = new DBHandler(this);
 
         //this.deleteDatabase("DB");
         ListView listView;
@@ -73,9 +77,14 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // When clicked, show a toast with the TextView text
                 Log.d("DEBUG", "CLICKED");
-                /*Cursor cur = (Cursor) parent.getItemAtPosition(position);
-                Toast.makeText(getApplicationContext(),
-                        "id:"+id+"position:"+position+"rowid:"+cur.getInt(cur.getColumnIndex("_id")), Toast.LENGTH_LONG).show();*/
+                TextView textName = (TextView) view.findViewById(R.id.row_name);
+
+                String name = textName.getText().toString();
+                Contact contact = db.getContactByName(name);
+                Log.d("NAME", contact.getName());
+                Intent intent = new Intent(MainActivity.this, ContactInfo.class);
+                intent.putExtra("contact", contact);
+                startActivity(intent);
             }
         });
     }

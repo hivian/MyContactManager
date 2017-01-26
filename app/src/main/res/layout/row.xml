@@ -2,38 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_person_black_75dp" />
+
         <LinearLayout
-            android:orientation="horizontal" android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/ic_person_black_75dp" />
-
-            <LinearLayout
-                android:orientation="vertical"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp">
+            <TextView
+                android:id="@+id/row_name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp">
-                <TextView
-                    android:id="@+id/row_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorDark"
-                    android:textSize="20sp"
-                    android:layout_weight="0.5" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDark"
+                android:textSize="20sp"
+                android:layout_weight="0.5" />
 
-                <TextView
-                    android:id="@+id/row_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:layout_weight="0.5" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+            <TextView
+                android:id="@+id/row_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_weight="0.5" />
+         </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

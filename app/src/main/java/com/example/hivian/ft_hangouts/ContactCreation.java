@@ -122,7 +122,7 @@ public class ContactCreation extends AppCompatActivity {
         EditText lastName = (EditText)findViewById(R.id.lastName);
         EditText phone = (EditText)findViewById(R.id.phone);
         EditText email = (EditText)findViewById(R.id.email);
-        EditText addr = (EditText)findViewById(R.id.address);
+        EditText address = (EditText)findViewById(R.id.address);
 
         if (name.getText().toString().trim().length() == 0) {
             Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
@@ -141,7 +141,7 @@ public class ContactCreation extends AppCompatActivity {
             }
             Log.d("DEBUG", "OVER");
             db.addContact(new Contact(imageDb, name.getText().toString(), lastName.getText().toString(),
-                    phone.getText().toString(), email.getText().toString(), addr.getText().toString()));
+                    phone.getText().toString(), email.getText().toString(), address.getText().toString()));
 
             List<Contact> contacts = db.getAllContacts();
             for (Contact cont : contacts) {

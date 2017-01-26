@@ -1,12 +1,12 @@
 package com.example.hivian.ft_hangouts;
 
-import android.graphics.Bitmap;
+import java.io.Serializable;
 
 /**
  * Created by hivian on 1/24/17.
  */
 
-public class Contact {
+public class Contact implements Serializable {
 
     private Integer _id;
     private byte[] _image;

@@ -10,4 +10,111 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.hivian.ft_hangouts.ContactInfo">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="165dp" >
+
+                <ImageView
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:layout_width="150dp"
+                    android:id="@+id/info_image"
+                    android:layout_margin="8dp"
+                    android:tint="@android:color/darker_gray"
+                    android:layout_height="145dp"
+                    android:src="@drawable/ic_person_black_75dp"
+                    android:cropToPadding="false" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:layout_margin="8dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20"
+                        android:ems="10"
+                        android:id="@+id/info_name"
+                        android:textColor="@color/colorDark"
+                        android:textSize="20sp"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit ="marquee_forever"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:theme="@android:style/Theme.Holo.Light" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.30"
+                        android:ems="10" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20"
+                        android:ems="10"
+                        android:id="@+id/info_lastName"
+                        android:textColor="@color/colorDark"
+                        android:textSize="20sp"
+                        android:maxLines="1"
+                        android:scrollHorizontally="true"
+                        android:theme="@android:style/Theme.Holo.Light" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.30"
+                        android:ems="10"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+                android:id="@+id/info_phone"
+                android:textColor="@color/colorDark"
+                android:textSize="20sp"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:theme="@android:style/Theme.Holo.Light" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:ems="10"
+                android:id="@+id/info_email"
+                android:textColor="@color/colorDark"
+                android:textSize="20sp"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:theme="@android:style/Theme.Holo.Light" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:ems="10"
+                android:id="@+id/info_address"
+                android:textColor="@color/colorDark"
+                android:textSize="20sp"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:theme="@android:style/Theme.Holo.Light" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>
