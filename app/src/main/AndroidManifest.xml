@@ -21,9 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ContactCreation"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".ContactInfo"></activity>
+        <activity
+            android:name=".ContactCreation"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ContactInfo" />
+        <activity android:name=".ContactEdition"></activity>
     </application>
 
 </manifest>

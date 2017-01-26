@@ -43,6 +43,7 @@
                     android:padding="15dp"
                     android:tint="@android:color/white"
                     android:src="@drawable/ic_mode_edit_black_75dp"
+                    android:onClick="editContact"
                     />
 
                 <ImageView

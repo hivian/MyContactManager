@@ -45,6 +45,22 @@ public class ContactInfo extends AppCompatActivity {
         }
     }
 
+    public void editContact(View view) {
+        TextView name = (TextView) findViewById(R.id.info_name);
+        TextView lastName = (TextView) findViewById(R.id.info_lastName);
+        TextView phone = (TextView) findViewById(R.id.info_phone);
+        TextView email = (TextView) findViewById(R.id.info_email);
+        TextView address = (TextView) findViewById(R.id.info_address);
+
+        Intent intent = new Intent(this, ContactEdition.class);
+        intent.putExtra("name", name.getText().toString());
+        intent.putExtra("lastName", lastName.getText().toString());
+        intent.putExtra("phone", phone.getText().toString());
+        intent.putExtra("email", email.getText().toString());
+        intent.putExtra("address", address.getText().toString());
+        startActivity(intent);
+    }
+
     public void deleteContact(View view) {
         final DBHandler db = new DBHandler(this);
 
