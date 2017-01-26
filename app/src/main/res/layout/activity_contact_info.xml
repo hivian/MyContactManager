@@ -17,12 +17,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="85dp"
                 android:orientation="horizontal"
-                android:background="@color/colorPrimary">
+                android:background="@color/colorPrimaryDark">
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
-                    android:padding="10dp"
+                    android:padding="15dp"
                     android:tint="@android:color/white"
                     android:src="@drawable/ic_message_black_75dp"
                     />
@@ -31,7 +31,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
-                    android:padding="10dp"
+                    android:padding="15dp"
                     android:tint="@android:color/white"
                     android:src="@drawable/ic_call_black_75dp"
                     />
@@ -40,15 +40,16 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
-                    android:padding="10dp"
+                    android:padding="15dp"
                     android:tint="@android:color/white"
+                    android:src="@drawable/ic_mode_edit_black_75dp"
                     />
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.25"
-                    android:padding="10dp"
+                    android:padding="15dp"
                     android:tint="@android:color/white"
                     android:src="@drawable/ic_delete_black_75dp"
                     android:onClick="deleteContact"
