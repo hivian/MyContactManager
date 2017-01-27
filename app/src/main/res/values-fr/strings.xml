@@ -3,7 +3,7 @@
     <string name="app_name">Ft_hangouts</string>
     <string name="action_settings">Options</string>
     <string name="action_blue">Bleu</string>
-    <string name="action_yellow">Jaune</string>
+    <string name="action_purple">Purple</string>
     <string name="start_message">Salut le monde!</string>
     <string name="create_contact">Créer contact</string>
     <string name="edit_contact">Modifier contact</string>

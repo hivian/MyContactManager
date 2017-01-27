@@ -29,17 +29,17 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.hivian.ft_hangouts.MESSAGE";
-    private static Boolean isYellow = false;
+    private static Boolean isPurple = false;
     private static Boolean wasInBackground = false;
     private static String backgroundTime;
     private static CustomAdapter adapter;
 
-    public static Boolean getYellow() {
-        return isYellow;
+    public static Boolean getPurple() {
+        return isPurple;
     }
 
-    public void setYellow(Boolean bool) {
-        this.isYellow = bool;
+    public void setPurple(Boolean bool) {
+        this.isPurple = bool;
     }
 
     public static CustomAdapter getAdapter() {
@@ -98,23 +98,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_blue) {
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-            setYellow(false);
+            setPurple(false);
             return true;
         }
-        if (id == R.id.action_yellow) {
-            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorYellow)));
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorYellow)));
-            setYellow(true);
+        if (id == R.id.action_purple) {
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_purple)));
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
+            setPurple(true);
             return true;
         }
 

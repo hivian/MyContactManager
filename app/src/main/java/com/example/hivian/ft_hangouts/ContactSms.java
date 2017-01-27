@@ -6,6 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -35,10 +37,16 @@ public class ContactSms extends AppCompatActivity {
         extras = getIntent().getExtras();
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + extras.getString("name")  + "</font>"));
 
+        if (MainActivity.getPurple()) {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
+        } else {
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
+        }
+
         final EditText smsBody = (EditText) findViewById(R.id.sms_body);
+        final ImageButton smsSender = (ImageButton) findViewById(R.id.sms_sender);
 
         smsBody.addTextChangedListener(new TextWatcher() {
-            ImageButton smsSender = (ImageButton) findViewById(R.id.sms_sender);
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -46,11 +54,13 @@ public class ContactSms extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.d("DEBUG", "TAPPED");
-                if (smsBody.getText().toString().trim().length() > 0)
-                    smsSender.setColorFilter(R.color.colorDark);
-                if (smsBody.getText().toString().trim().length() == 0)
-                    smsSender.setColorFilter(android.R.color.darker_gray);
+                if (s.toString().trim().length() > 0) {
+                    smsSender.setColorFilter(
+                            getResources().getColor(R.color.colorDark), PorterDuff.Mode.SRC_ATOP);
+                } else {
+                    smsSender.getDrawable().setColorFilter(
+                            getResources().getColor(android.R.color.darker_gray), PorterDuff.Mode.SRC_ATOP);
+                }
             }
 
             @Override
