@@ -83,19 +83,19 @@ public class ContactSms extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(context, "SMS sent successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.alert_sms_sent_ok, Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(context, "Generic failure cause", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.alert_sms_generic_failure, Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(context, "Service is currently unavailable", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.alert_sms_no_service, Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(context, "No pdu provided", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.alert_sms_no_pdu, Toast.LENGTH_SHORT).show();
                         break;
                     case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(context, "Radio was explicitly turned off", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.alert_sms_radio_off, Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -106,11 +106,11 @@ public class ContactSms extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "SMS delivered", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), R.string.alert_sms_delivered_ok, Toast.LENGTH_SHORT).show();
                         smsBody.setText("");
                         break;
                     case Activity.RESULT_CANCELED:
-                        Toast.makeText(getBaseContext(), "SMS not delivered", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), R.string.alert_sms_cancelled, Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -120,4 +120,5 @@ public class ContactSms extends AppCompatActivity {
         smsManager.sendTextMessage(phone, null, smsBody.getText().toString(),
                 sentPendingIntent, deliveredPendingIntent);
     }
+
 }
