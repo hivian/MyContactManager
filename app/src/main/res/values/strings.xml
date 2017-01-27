@@ -19,4 +19,11 @@
     <string name="alert_delete_message">The contact will be deleted</string>
     <string name="alert_delete_ok">OK</string>
     <string name="alert_delete_cancel">CANCEL</string>
+    <string name="alert_sms_sent_ok">SMS sent</string>
+    <string name="alert_sms_delivered_ok">SMS delivered successfully</string>
+    <string name="alert_sms_cancelled">SMS not delivered</string>
+    <string name="alert_sms_generic_failure">Generic failure cause</string>
+    <string name="alert_sms_no_service">Service unavailable</string>
+    <string name="alert_sms_no_pdu">Text too long</string>
+    <string name="alert_sms_radio_off">Airplane mode activated</string>
 </resources>

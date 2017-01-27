@@ -28,7 +28,7 @@ public class ContactEdition extends AppCompatActivity {
         setContentView(R.layout.activity_contact_edition);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.edit_contact)  + "</font>"));
 
-       extras = getIntent().getExtras();
+        extras = getIntent().getExtras();
 
         if (extras != null) {
             TextView name = (TextView) findViewById(R.id.edit_name);

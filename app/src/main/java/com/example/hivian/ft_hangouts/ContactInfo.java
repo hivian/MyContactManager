@@ -28,27 +28,33 @@ public class ContactInfo extends AppCompatActivity {
 
         if (contact != null) {
             ImageView imageView = (ImageView) findViewById(R.id.info_image);
-            TextView textView1 = (TextView) findViewById(R.id.info_name);
-            TextView textView2 = (TextView) findViewById(R.id.info_lastName);
-            TextView textView3 = (TextView) findViewById(R.id.info_phone);
-            TextView textView4 = (TextView) findViewById(R.id.info_email);
-            TextView textView5 = (TextView) findViewById(R.id.info_address);
+            TextView name = (TextView) findViewById(R.id.info_name);
+            TextView lastName = (TextView) findViewById(R.id.info_lastName);
+            TextView phone = (TextView) findViewById(R.id.info_phone);
+            TextView email = (TextView) findViewById(R.id.info_email);
+            TextView address = (TextView) findViewById(R.id.info_address);
 
             if (contact.getImage() != null) {
                 Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
                 imageView.setImageBitmap(imageBm);
                 Log.d("BITMAPED", imageBm.toString());
             }
-            textView1.setText(contact.getName());
-            textView2.setText(contact.getLastName());
-            textView3.setText(contact.getPhone());
-            textView4.setText(contact.getEmail());
-            textView5.setText(contact.getAddress());
+            name.setText(contact.getName());
+            lastName.setText(contact.getLastName());
+            phone.setText(contact.getPhone());
+            email.setText(contact.getEmail());
+            address.setText(contact.getAddress());
         }
     }
 
     public void toSmsManager(View view) {
+        TextView name = (TextView) findViewById(R.id.info_name);
+        TextView phone = (TextView) findViewById(R.id.info_phone);
+
         Intent intent = new Intent(this, ContactSms.class);
+
+        intent.putExtra("name", name.getText().toString());
+        intent.putExtra("phone", phone.getText().toString());
         startActivity(intent);
     }
 

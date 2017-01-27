@@ -11,26 +11,30 @@
     tools:context="com.example.hivian.ft_hangouts.ContactSms">
 
     <RelativeLayout
-        android:id="@+id/smsBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         >
         <EditText
+            android:id="@+id/sms_body"
+            android:imeOptions="actionSend"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="45dp"
             android:inputType="textMultiLine"
             android:layout_alignParentBottom="true"
             android:theme="@android:style/Theme.Holo.Light" />
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+        <ImageButton
+            android:id="@+id/sms_sender"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:scaleType="fitXY"
             android:tint="@android:color/darker_gray"
             android:src="@drawable/ic_send_black_75dp"
-        />
+            android:background="@drawable/ic_send_black_75dp"
+            android:onClick="sendSms" />
     </RelativeLayout>
 
 </RelativeLayout>
