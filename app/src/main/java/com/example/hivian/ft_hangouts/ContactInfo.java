@@ -1,9 +1,13 @@
 package com.example.hivian.ft_hangouts;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,9 +44,25 @@ public class ContactInfo extends AppCompatActivity {
             textView3.setText(contact.getPhone());
             textView4.setText(contact.getEmail());
             textView5.setText(contact.getAddress());
-
-            //textView1.setSelected(true);
         }
+    }
+
+    public void toSmsManager(View view) {
+        Intent intent = new Intent(this, ContactSms.class);
+        startActivity(intent);
+    }
+
+    public void callContact(View view) {
+        TextView phone = (TextView) findViewById(R.id.info_phone);
+
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+
+        callIntent.setData(Uri.parse("tel:" + phone.getText().toString()));
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(callIntent);
     }
 
     public void editContact(View view) {

@@ -171,11 +171,6 @@ public class ContactCreation extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-        /*Log.v("EditText1", name.getText().toString());
-        Log.v("EditText2", lastName.getText().toString());
-        Log.v("EditText3", phone.getText().toString());
-        Log.v("EditText4", email.getText().toString());
-        Log.v("EditText5", addr.getText().toString());*/
     }
 
 

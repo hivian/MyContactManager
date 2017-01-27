@@ -4,7 +4,8 @@
     <string name="action_blue">Blue</string>
     <string name="action_yellow">Yellow</string>
     <string name="start_message">Hello world!</string>
-    <string name="create_contact">Create a contact</string>
+    <string name="create_contact">Create contact</string>
+    <string name="edit_contact">Edit contact</string>
     <string name="contact_name">Name</string>
     <string name="contact_lastName">Last name</string>
     <string name="contact_phone">Phone</string>

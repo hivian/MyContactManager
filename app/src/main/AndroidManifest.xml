@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -25,7 +26,10 @@
             android:name=".ContactCreation"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ContactInfo" />
-        <activity android:name=".ContactEdition"></activity>
+        <activity
+            android:name=".ContactEdition"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ContactSms"></activity>
     </application>
 
 </manifest>
