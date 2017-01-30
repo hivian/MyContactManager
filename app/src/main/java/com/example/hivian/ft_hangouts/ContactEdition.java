@@ -42,12 +42,17 @@ public class ContactEdition extends AppCompatActivity {
         extras = getIntent().getExtras();
 
         if (extras != null) {
+            ImageView imageView = (ImageView) findViewById(R.id.edit_image);
             TextView name = (TextView) findViewById(R.id.edit_name);
             TextView lastName = (TextView) findViewById(R.id.edit_lastName);
             TextView phone = (TextView) findViewById(R.id.edit_phone);
             TextView email = (TextView) findViewById(R.id.edit_email);
             TextView address = (TextView) findViewById(R.id.edit_address);
 
+            if (contact.getImage() != null) {
+                Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
+                imageView.setImageBitmap(imageBm);
+            }
             name.setText(extras.getString("name"));
             lastName.setText(extras.getString("lastName"));
             phone.setText(extras.getString("phone"));

@@ -10,11 +10,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.hivian.ft_hangouts.ContactSms">
 
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/sms_body"
             android:imeOptions="actionSend"

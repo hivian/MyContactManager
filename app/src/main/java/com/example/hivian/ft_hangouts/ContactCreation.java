@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +28,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +45,7 @@ public class ContactCreation extends AppCompatActivity {
     private static Boolean wasInBackground = false;
     private static String backgroundTime;
     private static Boolean isImageLoaded = false;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,7 @@ public class ContactCreation extends AppCompatActivity {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
             button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
+        imageView = (ImageView) findViewById(R.id.imageView);
     }
 
     @Override
@@ -71,21 +79,17 @@ public class ContactCreation extends AppCompatActivity {
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
+            final String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            ImageView imageView = (ImageView) findViewById(R.id.imageView);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
-            Log.d("BITMAPED", BitmapFactory.decodeFile(picturePath).toString());
-
-            Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-            byte[] imageDb;
-            imageDb = getBytes(image);
-            Bitmap imageBm = DbBitmapUtility.getImage(imageDb);
-            Log.d("BITMAPED", imageBm.toString());
-            imageView.setImageBitmap(imageBm);
-
+            imageView.post(new Runnable() {
+                @Override
+                public void run()
+                {
+                    imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    Toast.makeText(ContactCreation.this, R.string.alert_image_load, Toast.LENGTH_SHORT).show();
+                }
+            });
             isImageLoaded = true;
         }
     }
@@ -96,7 +100,6 @@ public class ContactCreation extends AppCompatActivity {
         if (isAppInBackground()) {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             backgroundTime = sdf.format(new Date());
-            Log.d("DEBUG", backgroundTime);
             wasInBackground = true;
         }
 
@@ -115,14 +118,12 @@ public class ContactCreation extends AppCompatActivity {
     }
 
     public void browseFolder(View view) {
-        Log.d("DEBUG", "BROWSE");
         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(intent, RESULT_LOAD_IMAGE);
     }
 
     public void saveContact(View view) {
-        Log.d("DEBUG", "SAVE FUNCTION");
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
         byte[] imageDb;
@@ -140,7 +141,7 @@ public class ContactCreation extends AppCompatActivity {
             isImageLoaded = false;
         }
         else
-            imageDb = null;
+           imageDb = null;
         if (name.getText().toString().trim().length() == 0) {
             Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
             toast.show();
@@ -153,10 +154,8 @@ public class ContactCreation extends AppCompatActivity {
             if (db.isDuplicate(db, name.getText().toString())) {
                 Toast toast = Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG);
                 toast.show();
-                Log.d("DEBUG", "DUP");
                 return ;
             }
-            Log.d("DEBUG", "OVER");
             db.addContact(new Contact(imageDb, name.getText().toString(), lastName.getText().toString(),
                     phone.getText().toString(), email.getText().toString(), address.getText().toString()));
 

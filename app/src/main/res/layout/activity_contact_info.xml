@@ -74,7 +74,6 @@
                     android:layout_width="150dp"
                     android:id="@+id/info_image"
                     android:layout_margin="8dp"
-                    android:tint="@android:color/darker_gray"
                     android:layout_height="145dp"
                     android:src="@drawable/ic_person_black_75dp"
                     android:cropToPadding="false" />

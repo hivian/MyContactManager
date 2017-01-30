@@ -45,7 +45,6 @@ public class ContactInfo extends AppCompatActivity {
             if (contact.getImage() != null) {
                 Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
                 imageView.setImageBitmap(imageBm);
-                Log.d("BITMAPED", imageBm.toString());
             }
             name.setText(contact.getName());
             lastName.setText(contact.getLastName());
@@ -80,6 +79,7 @@ public class ContactInfo extends AppCompatActivity {
     }
 
     public void editContact(View view) {
+        ImageView imageView = (ImageView) findViewById(R.id.info_image);
         TextView name = (TextView) findViewById(R.id.info_name);
         TextView lastName = (TextView) findViewById(R.id.info_lastName);
         TextView phone = (TextView) findViewById(R.id.info_phone);
@@ -87,6 +87,7 @@ public class ContactInfo extends AppCompatActivity {
         TextView address = (TextView) findViewById(R.id.info_address);
 
         Intent intent = new Intent(this, ContactEdition.class);
+        //intent.putExtra("image", imageView);
         intent.putExtra("name", name.getText().toString());
         intent.putExtra("lastName", lastName.getText().toString());
         intent.putExtra("phone", phone.getText().toString());
