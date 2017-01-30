@@ -13,10 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class ContactInfo extends AppCompatActivity {
@@ -51,7 +49,6 @@ public class ContactInfo extends AppCompatActivity {
 
             if (contact.getImage() != null) {
                 Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
-                //imageBm.createBitmap(imageBm, 0, 0, 50, 50);
                 imageView.setImageBitmap(imageBm);
             }
             name.setText(contact.getName());

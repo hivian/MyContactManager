@@ -1,7 +1,6 @@
 package com.example.hivian.ft_hangouts;
 
 import android.app.ActivityManager;
-import android.content.ComponentCallbacks2;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.res.ColorStateList;

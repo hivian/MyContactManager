@@ -35,6 +35,11 @@ public class ContactCreation extends AppCompatActivity {
     private static String backgroundTime;
     private static Boolean isImageLoaded = false;
     private ImageView imageView;
+    private EditText name;
+    private EditText lastName;
+    private EditText phone;
+    private EditText email;
+    private EditText address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,11 +126,11 @@ public class ContactCreation extends AppCompatActivity {
         Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
         byte[] imageDb;
 
-        EditText name = (EditText)findViewById(R.id.name);
-        EditText lastName = (EditText)findViewById(R.id.lastName);
-        EditText phone = (EditText)findViewById(R.id.phone);
-        EditText email = (EditText)findViewById(R.id.email);
-        EditText address = (EditText)findViewById(R.id.address);
+        name = (EditText)findViewById(R.id.name);
+        lastName = (EditText)findViewById(R.id.lastName);
+        phone = (EditText)findViewById(R.id.phone);
+        email = (EditText)findViewById(R.id.email);
+        address = (EditText)findViewById(R.id.address);
 
         if (isImageLoaded) {
             imageDb = getBytes(image);
