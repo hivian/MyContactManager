@@ -39,9 +39,9 @@ public class ContactEdition extends AppCompatActivity {
             button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
 
-        extras = getIntent().getExtras();
+        Contact contact = (Contact) getIntent().getSerializableExtra("contact");
 
-        if (extras != null) {
+        if (contact != null) {
             ImageView imageView = (ImageView) findViewById(R.id.edit_image);
             TextView name = (TextView) findViewById(R.id.edit_name);
             TextView lastName = (TextView) findViewById(R.id.edit_lastName);
@@ -53,11 +53,11 @@ public class ContactEdition extends AppCompatActivity {
                 Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
                 imageView.setImageBitmap(imageBm);
             }
-            name.setText(extras.getString("name"));
-            lastName.setText(extras.getString("lastName"));
-            phone.setText(extras.getString("phone"));
-            email.setText(extras.getString("email"));
-            address.setText(extras.getString("address"));
+            name.setText(contact.getName());
+            lastName.setText(contact.getLastName());
+            phone.setText(contact.getPhone());
+            email.setText(contact.getEmail());
+            address.setText(contact.getAddress());
         }
     }
 
@@ -93,6 +93,7 @@ public class ContactEdition extends AppCompatActivity {
     public void saveEditionContact(View view) {
         DBHandler db = new DBHandler(this);
 
+        ImageView imageView = (ImageView) findViewById(R.id.edit_image);
         TextView name = (TextView) findViewById(R.id.edit_name);
         TextView lastName = (TextView) findViewById(R.id.edit_lastName);
         TextView phone = (TextView) findViewById(R.id.edit_phone);

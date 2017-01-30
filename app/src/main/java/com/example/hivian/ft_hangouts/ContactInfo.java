@@ -79,20 +79,13 @@ public class ContactInfo extends AppCompatActivity {
     }
 
     public void editContact(View view) {
-        ImageView imageView = (ImageView) findViewById(R.id.info_image);
-        TextView name = (TextView) findViewById(R.id.info_name);
-        TextView lastName = (TextView) findViewById(R.id.info_lastName);
-        TextView phone = (TextView) findViewById(R.id.info_phone);
-        TextView email = (TextView) findViewById(R.id.info_email);
-        TextView address = (TextView) findViewById(R.id.info_address);
+        DBHandler db = new DBHandler(this);
 
+        TextView name = (TextView) findViewById(R.id.info_name);
+
+        Contact contact = db.getContactByName(name.getText().toString());
         Intent intent = new Intent(this, ContactEdition.class);
-        //intent.putExtra("image", imageView);
-        intent.putExtra("name", name.getText().toString());
-        intent.putExtra("lastName", lastName.getText().toString());
-        intent.putExtra("phone", phone.getText().toString());
-        intent.putExtra("email", email.getText().toString());
-        intent.putExtra("address", address.getText().toString());
+        intent.putExtra("contact", contact);
         startActivity(intent);
     }
 
