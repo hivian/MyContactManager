@@ -16,9 +16,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ContactInfo extends AppCompatActivity {
+    private ImageView imageView;
+    private TextView name;
+    private TextView lastName;
+    private TextView phone;
+    private TextView email;
+    private TextView address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +42,16 @@ public class ContactInfo extends AppCompatActivity {
         Contact contact = (Contact) getIntent().getSerializableExtra("contact");
 
         if (contact != null) {
-            ImageView imageView = (ImageView) findViewById(R.id.info_image);
-            TextView name = (TextView) findViewById(R.id.info_name);
-            TextView lastName = (TextView) findViewById(R.id.info_lastName);
-            TextView phone = (TextView) findViewById(R.id.info_phone);
-            TextView email = (TextView) findViewById(R.id.info_email);
-            TextView address = (TextView) findViewById(R.id.info_address);
+            imageView = (ImageView) findViewById(R.id.info_image);
+            name = (TextView) findViewById(R.id.info_name);
+            lastName = (TextView) findViewById(R.id.info_lastName);
+            phone = (TextView) findViewById(R.id.info_phone);
+            email = (TextView) findViewById(R.id.info_email);
+            address = (TextView) findViewById(R.id.info_address);
 
             if (contact.getImage() != null) {
                 Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
+                //imageBm.createBitmap(imageBm, 0, 0, 50, 50);
                 imageView.setImageBitmap(imageBm);
             }
             name.setText(contact.getName());
@@ -55,8 +63,8 @@ public class ContactInfo extends AppCompatActivity {
     }
 
     public void toSmsManager(View view) {
-        TextView name = (TextView) findViewById(R.id.info_name);
-        TextView phone = (TextView) findViewById(R.id.info_phone);
+        name = (TextView) findViewById(R.id.info_name);
+        phone = (TextView) findViewById(R.id.info_phone);
 
         Intent intent = new Intent(this, ContactSms.class);
 
@@ -66,7 +74,7 @@ public class ContactInfo extends AppCompatActivity {
     }
 
     public void callContact(View view) {
-        TextView phone = (TextView) findViewById(R.id.info_phone);
+        phone = (TextView) findViewById(R.id.info_phone);
 
         Intent callIntent = new Intent(Intent.ACTION_CALL);
 
@@ -81,7 +89,7 @@ public class ContactInfo extends AppCompatActivity {
     public void editContact(View view) {
         DBHandler db = new DBHandler(this);
 
-        TextView name = (TextView) findViewById(R.id.info_name);
+        name = (TextView) findViewById(R.id.info_name);
 
         Contact contact = db.getContactByName(name.getText().toString());
         Intent intent = new Intent(this, ContactEdition.class);

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +23,17 @@ import static com.example.hivian.ft_hangouts.DbBitmapUtility.getBytes;
 public class ContactEdition extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
-    private static Bundle extras;
+    private static Boolean isImageLoaded = false;
+    private ImageView imageView;
+    private TextView name;
+    private TextView lastName;
+    private TextView phone;
+    private TextView email;
+    private TextView address;
+
+    public static Boolean getIsImageLoaded() {
+        return isImageLoaded;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +53,12 @@ public class ContactEdition extends AppCompatActivity {
         Contact contact = (Contact) getIntent().getSerializableExtra("contact");
 
         if (contact != null) {
-            ImageView imageView = (ImageView) findViewById(R.id.edit_image);
-            TextView name = (TextView) findViewById(R.id.edit_name);
-            TextView lastName = (TextView) findViewById(R.id.edit_lastName);
-            TextView phone = (TextView) findViewById(R.id.edit_phone);
-            TextView email = (TextView) findViewById(R.id.edit_email);
-            TextView address = (TextView) findViewById(R.id.edit_address);
+            imageView = (ImageView) findViewById(R.id.edit_image);
+            name = (TextView) findViewById(R.id.edit_name);
+            lastName = (TextView) findViewById(R.id.edit_lastName);
+            phone = (TextView) findViewById(R.id.edit_phone);
+            email = (TextView) findViewById(R.id.edit_email);
+            address = (TextView) findViewById(R.id.edit_address);
 
             if (contact.getImage() != null) {
                 Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
@@ -65,6 +76,13 @@ public class ContactEdition extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        imageView = (ImageView) findViewById(R.id.edit_image);
+        if (resultCode == RESULT_CANCELED) {
+            imageView.setImageResource(android.R.drawable.ic_menu_camera);
+            //imageView.setBackgroundDrawable(
+              //      new ColorDrawable(getResources().getColor(android.R.color.darker_gray)));
+            isImageLoaded = false;
+        }
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -77,10 +95,8 @@ public class ContactEdition extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            ImageView imageView = (ImageView) findViewById(R.id.edit_image);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
-            //isImageLoaded = true;
+            imageView.setImageBitmap(decodeSampledBitmapFromResource(picturePath, 100, 100));
+            isImageLoaded = true;
         }
     }
 
@@ -93,15 +109,24 @@ public class ContactEdition extends AppCompatActivity {
     public void saveEditionContact(View view) {
         DBHandler db = new DBHandler(this);
 
-        ImageView imageView = (ImageView) findViewById(R.id.edit_image);
-        TextView name = (TextView) findViewById(R.id.edit_name);
-        TextView lastName = (TextView) findViewById(R.id.edit_lastName);
-        TextView phone = (TextView) findViewById(R.id.edit_phone);
-        TextView email = (TextView) findViewById(R.id.edit_email);
-        TextView address = (TextView) findViewById(R.id.edit_address);
+        imageView = (ImageView) findViewById(R.id.edit_image);
+        name = (TextView) findViewById(R.id.edit_name);
+        lastName = (TextView) findViewById(R.id.edit_lastName);
+        phone = (TextView) findViewById(R.id.edit_phone);
+        email = (TextView) findViewById(R.id.edit_email);
+        address = (TextView) findViewById(R.id.edit_address);
 
-        Contact contact = db.getContactByName(extras.getString("name"));
+        Contact contact = db.getContactByName(name.getText().toString());
 
+        Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        if (isImageLoaded && image != null) {
+            contact.setImage(DbBitmapUtility.getBytes(image));
+            isImageLoaded = false;
+        } else {
+            Drawable d = getResources().getDrawable(R.drawable.ic_person_black_75dp);
+            image = ((BitmapDrawable)d).getBitmap();
+            contact.setImage(DbBitmapUtility.getBytes(image));
+        }
         contact.setName(name.getText().toString());
         contact.setLastName(lastName.getText().toString());
         contact.setPhone(phone.getText().toString());
@@ -111,7 +136,36 @@ public class ContactEdition extends AppCompatActivity {
 
         MainActivity.getAdapter().notifyDataSetChanged();
 
+        db.close();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(String path, int reqWidth, int reqHeight) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(path, options);
     }
 }

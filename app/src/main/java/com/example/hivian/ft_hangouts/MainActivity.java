@@ -75,18 +75,17 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // When clicked, show a toast with the TextView text
-                Log.d("DEBUG", "CLICKED");
                 TextView textName = (TextView) view.findViewById(R.id.row_name);
-
                 String name = textName.getText().toString();
+
                 Contact contact = db.getContactByName(name);
-                Log.d("NAME", contact.getName());
+
                 Intent intent = new Intent(MainActivity.this, ContactInfo.class);
                 intent.putExtra("contact", contact);
                 startActivity(intent);
             }
         });
+        db.close();
     }
 
     @Override
