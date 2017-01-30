@@ -1,37 +1,26 @@
 package com.example.hivian.ft_hangouts;
 
-import android.Manifest;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -70,6 +59,10 @@ public class ContactCreation extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode == RESULT_CANCELED) {
+            imageView.setImageResource(android.R.drawable.ic_menu_camera);
+            isImageLoaded = false;
+        }
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -86,13 +79,6 @@ public class ContactCreation extends AppCompatActivity {
                 @Override
                 public void run()
                 {
-                    //BitmapFactory.Options options = new BitmapFactory.Options();
-                    //options.inJustDecodeBounds = true;
-                    //Bitmap bm = BitmapFactory.decodeFile(picturePath, options);
-                    /*Log.d("DEBUG1", String.valueOf(imageView.getWidth()));
-                    Log.d("DEBUG2", String.valueOf(imageView.getHeight()));
-                    Log.d("DEBUGa", String.valueOf(bm.getWidth()));
-                    Log.d("DEBUGb", String.valueOf(bm.getHeight()));*/
                     imageView.setImageBitmap(decodeSampledBitmapFromResource(picturePath, 100, 100));
                     Toast.makeText(ContactCreation.this, R.string.alert_image_load, Toast.LENGTH_SHORT).show();
                 }

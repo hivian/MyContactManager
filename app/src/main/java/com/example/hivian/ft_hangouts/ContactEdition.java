@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -79,8 +81,6 @@ public class ContactEdition extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.edit_image);
         if (resultCode == RESULT_CANCELED) {
             imageView.setImageResource(android.R.drawable.ic_menu_camera);
-            //imageView.setBackgroundDrawable(
-              //      new ColorDrawable(getResources().getColor(android.R.color.darker_gray)));
             isImageLoaded = false;
         }
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
@@ -123,9 +123,7 @@ public class ContactEdition extends AppCompatActivity {
             contact.setImage(DbBitmapUtility.getBytes(image));
             isImageLoaded = false;
         } else {
-            Drawable d = getResources().getDrawable(R.drawable.ic_person_black_75dp);
-            image = ((BitmapDrawable)d).getBitmap();
-            contact.setImage(DbBitmapUtility.getBytes(image));
+            contact.setImage(null);
         }
         contact.setName(name.getText().toString());
         contact.setLastName(lastName.getText().toString());
