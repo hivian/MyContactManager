@@ -17,13 +17,18 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class ContactSms extends AppCompatActivity {
 
     private static final String SMS_SENT = "SMS_SENT";
     private static final String SMS_DELIVERED = "SMS_DELIVERED";
     private static Bundle extras;
+    private ListView listView;
+    private CustomSmsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,14 @@ public class ContactSms extends AppCompatActivity {
         } else {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
         }
+
+        listView = (ListView) findViewById(R.id.listView_sms);
+
+        //ArrayList<String> = new ArrayList<>();
+
+
+        //adapter = new CustomSmsAdapter (this, allData);
+       // listView.setAdapter(adapter);
 
         final EditText smsBody = (EditText) findViewById(R.id.sms_body);
         final ImageButton smsSender = (ImageButton) findViewById(R.id.sms_sender);

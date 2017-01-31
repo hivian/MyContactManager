@@ -19,6 +19,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String DB_NAME = "DB";
     // Contacts table name
     private static final String CONTACTS_TABLE = "contacts";
+    private static final String SMS_TABLE = "sms";
     // Shops Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_IMAGE = "image";
@@ -27,10 +28,18 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_PHONE = "phone";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_ADDRESS = "address";
+    private static final String KEY_SMS_HEADER = "sms_header";
+    private static final String KEY_SMS_CONTENT = "sms_content";
+    private static final String KEY_CONTACT_ID = "contact_id";
     private static final String CONTACTS_TABLE_CREATE =
             "CREATE TABLE " + CONTACTS_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
+                    KEY_SMS_HEADER + " TEXT, " +  KEY_SMS_CONTENT + " TEXT, " +
+                    KEY_CONTACT_ID + " INTEGER)";
+    private static final String SMS_TABLE_CREATE =
+            "CREATE TABLE " + SMS_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
                     KEY_IMAGE + " BLOB, " + KEY_NAME + " TEXT, " + KEY_LAST_NAME + " TEXT, " +
                     KEY_PHONE + " TEXT, " + KEY_EMAIL + " TEXT, " + KEY_ADDRESS + " TEXT)";
+
 
     DBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -39,6 +48,7 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CONTACTS_TABLE_CREATE);
+        db.execSQL(SMS_TABLE_CREATE);
     }
 
     @Override
@@ -61,6 +71,18 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_EMAIL, contact.getEmail());
         values.put(KEY_ADDRESS, contact.getAddress());
         db.insert(CONTACTS_TABLE, null, values);
+        db.close();
+    }
+
+    // Adding new sms
+    public void addSms(SmsContent sms) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_SMS_HEADER, sms.getHeader());
+        values.put(KEY_SMS_CONTENT, sms.getContent());
+        values.put(KEY_CONTACT_ID, sms.getContactId());
+        db.insert(SMS_TABLE, null, values);
         db.close();
     }
 
@@ -100,6 +122,31 @@ public class DBHandler extends SQLiteOpenHelper {
 
     // Getting all contacts
     public List<Contact> getAllContacts() {
+        String selectQuery = "SELECT * FROM " + CONTACTS_TABLE;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        List<Contact> allContacts = new ArrayList<Contact>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                Contact contact = new Contact();
+                contact.setId(Integer.parseInt(cursor.getString(0)));
+                contact.setImage(cursor.getBlob(1));
+                contact.setName(cursor.getString(2));
+                contact.setLastName(cursor.getString(3));
+                contact.setPhone(cursor.getString(4));
+                contact.setEmail(cursor.getString(5));
+                contact.setAddress(cursor.getString(6));
+                allContacts.add(contact);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return allContacts;
+    }
+
+    // Getting all sms
+    public List<Contact> getAllSms() {
         String selectQuery = "SELECT * FROM " + CONTACTS_TABLE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

@@ -11,14 +11,17 @@
     tools:context="com.example.hivian.ft_hangouts.ContactSms">
 
 
+    <ListView
+        android:id="@+id/listView_sms"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="40dp">
+    </ListView>
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:layout_alignParentBottom="true">
+
         <EditText
             android:id="@+id/sms_body"
             android:imeOptions="actionSend"
