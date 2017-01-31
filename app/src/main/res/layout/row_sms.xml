@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/sms_layout"
+    android:padding="16dp"
+    android:alpha="1">
 
     <LinearLayout
-        android:id="@+id/singleMessageContainer"
-        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:id="@+id/smsHeader_container"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         android:weightSum="1">
 
         <TextView
+            android:id="@+id/sms_header"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
             android:id="@+id/sms_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dip"
-            android:layout_weight="0.8"
-            android:background="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="end"
             android:textColor="@android:color/primary_text_light" />
     </LinearLayout>
 </LinearLayout>

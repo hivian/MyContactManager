@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,11 +28,17 @@ import java.util.List;
 
 public class ContactSms extends AppCompatActivity {
 
+    private BroadcastReceiver sendBroadcastReceiver;
+    private BroadcastReceiver deliveryBroadcastReceiver;
     private static final String SMS_SENT = "SMS_SENT";
     private static final String SMS_DELIVERED = "SMS_DELIVERED";
     private static Bundle extras;
     private ListView listView;
+    private EditText smsBody;
     private CustomSmsAdapter adapter;
+    private ArrayList< List<String> > allData;
+    private Contact contact;
+    private Boolean smsFailed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +53,69 @@ public class ContactSms extends AppCompatActivity {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
         }
 
+        sendBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(context, R.string.alert_sms_sent_ok, Toast.LENGTH_SHORT).show();
+                        smsFailed = false;
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        Toast.makeText(context, R.string.alert_sms_generic_failure, Toast.LENGTH_SHORT).show();
+                        smsFailed = true;
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        Toast.makeText(context, R.string.alert_sms_no_service, Toast.LENGTH_SHORT).show();
+                        smsFailed = true;
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        Toast.makeText(context, R.string.alert_sms_no_pdu, Toast.LENGTH_SHORT).show();
+                        smsFailed = true;
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        Toast.makeText(context, R.string.alert_sms_radio_off, Toast.LENGTH_SHORT).show();
+                        smsFailed = true;
+                        break;
+                }
+            }
+        };
+
+        deliveryBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getBaseContext(), R.string.alert_sms_delivered_ok, Toast.LENGTH_SHORT).show();
+                        smsBody.setText("");
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Toast.makeText(getBaseContext(), R.string.alert_sms_cancelled, Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+        registerReceiver(deliveryBroadcastReceiver, new IntentFilter(SMS_DELIVERED));
+        registerReceiver(sendBroadcastReceiver , new IntentFilter(SMS_SENT));
+
+        DBHandler db = new DBHandler(this);
+        contact = db.getContactByName(extras.getString("name"));
+        List<SmsContent> allSms = db.getAllSmsFromContact(contact.getId());
         listView = (ListView) findViewById(R.id.listView_sms);
+        allData = new ArrayList<>();
+        for (SmsContent sms : allSms) {
+            ArrayList<String> elem = new ArrayList<>();
+            elem.add(sms.getHeader());
+            elem.add(sms.getContent());
+            allData.add(elem);
+        }
+        adapter = new CustomSmsAdapter(this, allData);
+        listView.setAdapter(adapter);
 
-        //ArrayList<String> = new ArrayList<>();
-
-
-        //adapter = new CustomSmsAdapter (this, allData);
-       // listView.setAdapter(adapter);
 
         final EditText smsBody = (EditText) findViewById(R.id.sms_body);
         final ImageButton smsSender = (ImageButton) findViewById(R.id.sms_sender);
-
         smsBody.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -79,10 +137,18 @@ public class ContactSms extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop()
+    {
+        unregisterReceiver(sendBroadcastReceiver);
+        unregisterReceiver(deliveryBroadcastReceiver);
+        super.onStop();
+    }
+
     public void sendSms(View view) {
         DBHandler db = new DBHandler(this);
 
-        final EditText smsBody = (EditText) findViewById(R.id.sms_body);
+        smsBody = (EditText) findViewById(R.id.sms_body);
         if (smsBody.getText().toString().trim().length() == 0)
             return ;
         String phone = extras.getString("phone");
@@ -90,48 +156,11 @@ public class ContactSms extends AppCompatActivity {
         PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_SENT), 0);
         PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_DELIVERED), 0);
 
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(context, R.string.alert_sms_sent_ok, Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(context, R.string.alert_sms_generic_failure, Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(context, R.string.alert_sms_no_service, Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(context, R.string.alert_sms_no_pdu, Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(context, R.string.alert_sms_radio_off, Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SMS_SENT));
-
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), R.string.alert_sms_delivered_ok, Toast.LENGTH_SHORT).show();
-                        smsBody.setText("");
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(getBaseContext(), R.string.alert_sms_cancelled, Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SMS_DELIVERED));
-
-        Contact contact = db.getContactByName(extras.getString("name"));
-
         SmsContent sms = new SmsContent("HEADER", smsBody.getText().toString(), contact.getId());
         db.addSms(sms);
+        List <String> elem = new ArrayList<>();
+        elem.add(sms.getHeader());
+        elem.add(sms.getContent());
 
         List<SmsContent> content = db.getAllSmsFromContact(contact.getId());
         for (SmsContent s : content) {
@@ -140,8 +169,13 @@ public class ContactSms extends AppCompatActivity {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phone, null, smsBody.getText().toString(),
                 sentPendingIntent, deliveredPendingIntent);
+        if (smsFailed)
+            adapter.add(sms, Color.RED);
+        else
+            adapter.add(sms, Color.WHITE);
+        this.adapter.notifyDataSetChanged();
+
         db.close();
-        //unregisterReceiver(registerReceiver);
     }
 
 }

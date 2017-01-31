@@ -5,9 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.hivian.ft_hangouts.ContactSms">
 
 
@@ -15,9 +12,18 @@
         android:id="@+id/listView_sms"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="40dp">
+        android:dividerHeight="0dp"
+        android:divider="@null"
+        android:layout_marginBottom="50dp"
+        android:transcriptMode="alwaysScroll"
+        android:stackFromBottom="true"
+        android:background="@color/colorLightGray">
     </ListView>
     <RelativeLayout
+
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
