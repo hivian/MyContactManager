@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +35,12 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_CONTACT_ID = "contact_id";
     private static final String CONTACTS_TABLE_CREATE =
             "CREATE TABLE " + CONTACTS_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
-                    KEY_SMS_HEADER + " TEXT, " +  KEY_SMS_CONTENT + " TEXT, " +
-                    KEY_CONTACT_ID + " INTEGER)";
-    private static final String SMS_TABLE_CREATE =
-            "CREATE TABLE " + SMS_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
                     KEY_IMAGE + " BLOB, " + KEY_NAME + " TEXT, " + KEY_LAST_NAME + " TEXT, " +
                     KEY_PHONE + " TEXT, " + KEY_EMAIL + " TEXT, " + KEY_ADDRESS + " TEXT)";
+    private static final String SMS_TABLE_CREATE =
+            "CREATE TABLE " + SMS_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
+                    KEY_SMS_HEADER + " TEXT, " +  KEY_SMS_CONTENT + " TEXT, " +
+                    KEY_CONTACT_ID + " INTEGER)";
 
 
     DBHandler(Context context) {
@@ -55,6 +57,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + CONTACTS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + SMS_TABLE);
         // Creating tables again
         onCreate(db);
     }
@@ -125,7 +128,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String selectQuery = "SELECT * FROM " + CONTACTS_TABLE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        List<Contact> allContacts = new ArrayList<Contact>();
+        List<Contact> allContacts = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
             do {
@@ -146,28 +149,48 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     // Getting all sms
-    public List<Contact> getAllSms() {
-        String selectQuery = "SELECT * FROM " + CONTACTS_TABLE;
+    public List<SmsContent> getAllSms() {
+        String selectQuery = "SELECT * FROM " + SMS_TABLE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        List<Contact> allContacts = new ArrayList<Contact>();
+        List<SmsContent> allSms = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
             do {
-                Contact contact = new Contact();
-                contact.setId(Integer.parseInt(cursor.getString(0)));
-                contact.setImage(cursor.getBlob(1));
-                contact.setName(cursor.getString(2));
-                contact.setLastName(cursor.getString(3));
-                contact.setPhone(cursor.getString(4));
-                contact.setEmail(cursor.getString(5));
-                contact.setAddress(cursor.getString(6));
-                allContacts.add(contact);
+                SmsContent sms = new SmsContent();
+                sms.setId(Integer.parseInt(cursor.getString(0)));
+                sms.setHeader(cursor.getString(1));
+                sms.setContent(cursor.getString(2));
+                sms.setContactId(cursor.getInt(3));
+                allSms.add(sms);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return allContacts;
+        return allSms;
+    }
+
+    // Getting all sms from contact
+    public List<SmsContent> getAllSmsFromContact(int id) {
+        String selectQuery = "SELECT * FROM " + SMS_TABLE + " WHERE " +
+                KEY_CONTACT_ID + " = " + id;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        List<SmsContent> allSms = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                SmsContent sms = new SmsContent();
+                sms.setId(Integer.parseInt(cursor.getString(0)));
+                sms.setHeader(cursor.getString(1));
+                sms.setContent(cursor.getString(2));
+                sms.setContactId(cursor.getInt(3));
+                allSms.add(sms);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return allSms;
     }
 
     // Getting contacts count
@@ -212,12 +235,29 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Deleting a contact
+    public void deleteSms(SmsContent sms) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(SMS_TABLE, KEY_ID + " = ?",
+                new String[] { String.valueOf(sms.getId()) });
+        db.close();
+    }
+
     // Deleting all contacts
     public void deleteAllContacts(DBHandler db) {
         List<Contact> contacts = db.getAllContacts();
 
         for (Contact cont : contacts) {
             db.deleteContact(cont);
+        }
+    }
+
+    // Deleting all sms
+    public void deleteAllSms(DBHandler db) {
+        List<SmsContent> allSms = db.getAllSms();
+
+        for (SmsContent sms : allSms) {
+            db.deleteSms(sms);
         }
     }
 

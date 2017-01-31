@@ -8,14 +8,23 @@ import java.io.Serializable;
 
 public class SmsContent implements Serializable {
 
+    private Integer _id;
     private String _header;
     private String _content;
     private Integer _contactId;
+
+    SmsContent() {
+
+    }
 
     SmsContent(String header, String content, Integer contactId) {
         this._header = header;
         this._content = content;
         this._contactId = contactId;
+    }
+
+    public Integer getId() {
+        return _id;
     }
 
     public String getHeader() {
@@ -28,6 +37,10 @@ public class SmsContent implements Serializable {
 
     public Integer getContactId() {
         return _contactId;
+    }
+
+    void setId(Integer id) {
+        this._id = id;
     }
 
     void setHeader(String header) {

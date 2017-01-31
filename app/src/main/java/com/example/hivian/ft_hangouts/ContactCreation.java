@@ -162,7 +162,10 @@ public class ContactCreation extends AppCompatActivity {
             }
 
             db.close();
-            finish();
+            MainActivity.getAdapter().notifyDataSetChanged();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 

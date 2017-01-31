@@ -14,6 +14,7 @@ import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +22,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContactSms extends AppCompatActivity {
 
@@ -78,6 +80,8 @@ public class ContactSms extends AppCompatActivity {
     }
 
     public void sendSms(View view) {
+        DBHandler db = new DBHandler(this);
+
         final EditText smsBody = (EditText) findViewById(R.id.sms_body);
         if (smsBody.getText().toString().trim().length() == 0)
             return ;
@@ -124,9 +128,20 @@ public class ContactSms extends AppCompatActivity {
             }
         }, new IntentFilter(SMS_DELIVERED));
 
+        Contact contact = db.getContactByName(extras.getString("name"));
+
+        SmsContent sms = new SmsContent("HEADER", smsBody.getText().toString(), contact.getId());
+        db.addSms(sms);
+
+        List<SmsContent> content = db.getAllSmsFromContact(contact.getId());
+        for (SmsContent s : content) {
+            Log.d("BLA", s.getHeader() + " - " + s.getContent() + " - " + s.getContactId());
+        }
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phone, null, smsBody.getText().toString(),
                 sentPendingIntent, deliveredPendingIntent);
+        db.close();
+        //unregisterReceiver(registerReceiver);
     }
 
 }
