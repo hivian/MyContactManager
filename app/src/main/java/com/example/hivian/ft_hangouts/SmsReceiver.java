@@ -32,12 +32,10 @@ public class SmsReceiver extends BroadcastReceiver {
 
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                // get sms objects
                 Object[] pdus = (Object[]) bundle.get("pdus");
                 if (pdus.length == 0) {
                     return;
                 }
-                // large message might be broken into many
                 SmsMessage[] messages = new SmsMessage[pdus.length];
                 sb = new StringBuilder();
                 for (int i = 0; i < pdus.length; i++) {
@@ -52,7 +50,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                 db.addSms(new SmsContent(sdf.format(new Date()), message, contact.getId(), SmsContent.RECEIVED));
 
-                /*allData = new ArrayList<>();
+                allData = new ArrayList<>();
                 allSms = db.getAllSmsFromContact(contact.getId());
                 for (SmsContent sms : allSms) {
                     ArrayList<String> elem = new ArrayList<>();
@@ -62,13 +60,8 @@ public class SmsReceiver extends BroadcastReceiver {
                     allData.add(elem);
                 }
                 ContactSms.setAdapter(new CustomSmsAdapter(context, allData));
-                ContactSms.listView.setAdapter(ContactSms.getAdapter());*/
-                //ContactSms.getAdapter().notifyDataSetChanged();
-                //((CustomSmsAdapter)ContactSms.listView.getAdapter()).notifyDataSetInvalidated();
-                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                Log.d("DEBUG", phone);
-                // prevent any other broadcast receivers from receiving broadcast
-                // abortBroadcast();
+                ContactSms.listView.setAdapter(ContactSms.getAdapter());
+                //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
             }
             db.close();
         }
