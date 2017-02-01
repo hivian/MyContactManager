@@ -121,13 +121,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (isAppInBackground()) {
+        if (Utility.isAppInBackground(this)) {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             backgroundTime = sdf.format(new Date());
             Log.d("DEBUG", backgroundTime);
             wasInBackground = true;
         }
-
     }
 
     @Override
@@ -147,16 +146,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ContactCreation.class);
 
         startActivity(intent);
-    }
-
-    private boolean isAppInBackground() {
-        final ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        final List<ActivityManager.RunningTaskInfo> tasks = manager.getRunningTasks(1);
-
-        if (!tasks.isEmpty()) {
-            final ComponentName topActivity = tasks.get(0).topActivity;
-            return !topActivity.getPackageName().equals(getPackageName());
-        }
-        return false;
     }
 }

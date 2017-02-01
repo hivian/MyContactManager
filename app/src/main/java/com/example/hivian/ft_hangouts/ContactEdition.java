@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -16,12 +17,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static com.example.hivian.ft_hangouts.DbBitmapUtility.getBytes;
 
 public class ContactEdition extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static Boolean isImageLoaded = false;
+    private static Boolean wasInBackground = false;
+    private static String backgroundTime;
     private ImageView imageView;
     private TextView name;
     private TextView lastName;
@@ -89,6 +95,29 @@ public class ContactEdition extends AppCompatActivity {
 
             imageView.setImageBitmap(decodeSampledBitmapFromResource(picturePath, 100, 100));
             isImageLoaded = true;
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Utility.isAppInBackground(this)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            backgroundTime = sdf.format(new Date());
+            wasInBackground = true;
+        }
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        View parentLayout = findViewById(R.id.activity_contact_edition);
+
+        if (backgroundTime != null && wasInBackground) {
+            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
+                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            wasInBackground = false;
         }
     }
 

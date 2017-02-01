@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.PowerManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -35,6 +36,8 @@ public class ContactSms extends AppCompatActivity {
     private BroadcastReceiver deliveryBroadcastReceiver;
     private static final String SMS_SENT = "SMS_SENT";
     private static final String SMS_DELIVERED = "SMS_DELIVERED";
+    private static Boolean wasInBackground = false;
+    private static String backgroundTime;
     private static CustomSmsAdapter adapter;
     public static ListView listView;
     private static Bundle extras;
@@ -48,14 +51,6 @@ public class ContactSms extends AppCompatActivity {
 
     public static void setAdapter(CustomSmsAdapter _adapter) {
        adapter = _adapter;
-    }
-
-    public static ListView getListView() {
-        return listView;
-    }
-
-    public void setListView(ListView _listView) {
-        listView = _listView;
     }
 
     @Override
@@ -157,14 +152,31 @@ public class ContactSms extends AppCompatActivity {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        View parentLayout = findViewById(R.id.activity_contact_sms);
+
+        if (backgroundTime != null && wasInBackground) {
+            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
+                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            wasInBackground = false;
+        }
+    }
+
+    @Override
     protected void onStop()
     {
+        super.onStop();
+        if (Utility.isAppInBackground(this)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            backgroundTime = sdf.format(new Date());
+            wasInBackground = true;
+        }
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         if (pm.isScreenOn() == true) {
             unregisterReceiver(sendBroadcastReceiver);
             unregisterReceiver(deliveryBroadcastReceiver);
         }
-        super.onStop();
     }
 
     public void sendSms(View view) {

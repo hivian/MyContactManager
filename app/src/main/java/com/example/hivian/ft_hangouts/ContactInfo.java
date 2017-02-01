@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,10 +17,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
 public class ContactInfo extends AppCompatActivity {
+    private static Boolean wasInBackground = false;
+    private static String backgroundTime;
     private ImageView imageView;
     private TextView name;
     private TextView lastName;
@@ -58,6 +63,29 @@ public class ContactInfo extends AppCompatActivity {
             phone.setText(contact.getPhone());
             email.setText(contact.getEmail());
             address.setText(contact.getAddress());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Utility.isAppInBackground(this)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            backgroundTime = sdf.format(new Date());
+            wasInBackground = true;
+        }
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        View parentLayout = findViewById(R.id.activity_contact_info);
+
+        if (backgroundTime != null && wasInBackground) {
+            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
+                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            wasInBackground = false;
         }
     }
 
