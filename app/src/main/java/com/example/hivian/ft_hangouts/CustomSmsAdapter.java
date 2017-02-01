@@ -62,7 +62,7 @@ public class CustomSmsAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
-            vi = inflater.inflate(R.layout.row_sms, null);
+            vi = inflater.inflate(R.layout.row_sms,  null);
         LinearLayout layout = (LinearLayout) vi.findViewById(R.id.smsHeader_container);
         TextView text1 = (TextView) vi.findViewById(R.id.sms_header);
         TextView text2 = (TextView) vi.findViewById(R.id.sms_content);

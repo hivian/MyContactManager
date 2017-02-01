@@ -185,10 +185,6 @@ public class ContactSms extends AppCompatActivity {
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phone, null, smsBody.getText().toString(),
                 sentPendingIntent, deliveredPendingIntent);
-        if (smsFailed)
-            adapter.add(sms, Color.RED);
-        else
-            adapter.add(sms, Color.WHITE);
         this.adapter.notifyDataSetChanged();
         smsBody.setText("");
 
