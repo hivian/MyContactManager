@@ -8,6 +8,9 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by hivian on 2/1/17.
  */
@@ -38,12 +41,17 @@ public class SmsReceiver extends BroadcastReceiver {
                     sb.append(messages[i].getMessageBody());
                 }
 
-
-                phone = messages[0].getOriginatingAddress();
+                phone = messages[0].getOriginatingAddress().replace("+33", "0");
                 message = sb.toString();
 
+                Contact contact = db.getContactByPhone(phone);
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                db.addSms(new SmsContent(context.getString(R.string.header_received_sms) +
+                        " " + sdf.format(new Date()), message, contact.getId()));
+
+                ContactSms.getAdapter().notifyDataSetChanged();
                 Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                Log.d("DEBUG", "WORKED");
+                Log.d("DEBUG", phone);
                 // prevent any other broadcast receivers from receiving broadcast
                 // abortBroadcast();
             }

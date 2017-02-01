@@ -2,6 +2,8 @@ package com.example.hivian.ft_hangouts;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +23,11 @@ public class CustomSmsAdapter extends BaseAdapter {
     Context context;
     List<List<String>> data;
     private static LayoutInflater inflater = null;
-    int contentColor;
 
     public CustomSmsAdapter(Context context, List<List<String>> data) {
         // TODO Auto-generated constructor stub
         this.context = context;
         this.data = data;
-        this.contentColor = Color.WHITE;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -35,8 +35,7 @@ public class CustomSmsAdapter extends BaseAdapter {
     public void add(SmsContent object, int color) {
         List <String> elem = new ArrayList<>();
         elem.add(object.getHeader());
-        elem.add(object.getContent());
-        contentColor = color;
+        elem.add(object.getContent()        );
         data.add(elem);
     }
 
@@ -69,7 +68,20 @@ public class CustomSmsAdapter extends BaseAdapter {
         TextView text2 = (TextView) vi.findViewById(R.id.sms_content);
         text1.setText(data.get(position).get(0));
         text2.setText(data.get(position).get(1));
-        layout.setBackgroundColor(contentColor);
+        Log.d("ICI1", text1.getText().toString().substring(0, 5));
+        Log.d("ICI2", parent.getResources().getString(R.string.header_sending_sms));
+        if (text1.getText().toString().equals(parent.getResources().getString(R.string.header_sending_sms))) {
+            layout.setBackgroundColor(Color.WHITE);
+            layout.setGravity(Gravity.END);
+            text1.setGravity(Gravity.END);
+            text2.setGravity(Gravity.END);
+        }
+        else {
+            layout.setBackgroundColor(Color.BLUE);
+            layout.setGravity(Gravity.START);
+            text1.setGravity(Gravity.START);
+            text2.setGravity(Gravity.START);
+        }
 
         return vi;
     }

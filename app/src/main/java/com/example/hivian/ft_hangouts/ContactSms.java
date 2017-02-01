@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -35,13 +36,17 @@ public class ContactSms extends AppCompatActivity {
     private BroadcastReceiver deliveryBroadcastReceiver;
     private static final String SMS_SENT = "SMS_SENT";
     private static final String SMS_DELIVERED = "SMS_DELIVERED";
+    private static CustomSmsAdapter adapter;
     private static Bundle extras;
     private ListView listView;
     private EditText smsBody;
-    private CustomSmsAdapter adapter;
     private ArrayList< List<String> > allData;
     private Contact contact;
     private Boolean smsFailed = false;
+
+    public static CustomSmsAdapter getAdapter() {
+        return adapter;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +153,11 @@ public class ContactSms extends AppCompatActivity {
     @Override
     protected void onStop()
     {
-        unregisterReceiver(sendBroadcastReceiver);
-        unregisterReceiver(deliveryBroadcastReceiver);
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if (pm.isScreenOn() == true) {
+            unregisterReceiver(sendBroadcastReceiver);
+            unregisterReceiver(deliveryBroadcastReceiver);
+        }
         super.onStop();
     }
 

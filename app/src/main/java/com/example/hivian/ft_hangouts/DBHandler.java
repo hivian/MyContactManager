@@ -123,7 +123,24 @@ public class DBHandler extends SQLiteOpenHelper {
         return contact;
     }
 
-    // Getting one contact by name
+    // Getting one contact by phone
+    public Contact getContactByPhone(String phone) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(CONTACTS_TABLE, new String[]
+                        { KEY_ID, KEY_IMAGE, KEY_NAME, KEY_LAST_NAME, KEY_PHONE, KEY_EMAIL, KEY_ADDRESS },
+                KEY_PHONE + "=?", new String[] { phone }, null, null, null, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+        Contact contact = new Contact(cursor.getBlob(1), cursor.getString(2),
+                cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+        contact.setId(cursor.getInt(0));
+        cursor.close();
+        db.close();
+        return contact;
+    }
+
+    // Getting one sms by contact id
     public List<SmsContent> getSmsByContactId(Integer id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(SMS_TABLE, new String[]
