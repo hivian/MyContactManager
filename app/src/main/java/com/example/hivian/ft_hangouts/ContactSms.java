@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.PowerManager;
@@ -37,15 +36,26 @@ public class ContactSms extends AppCompatActivity {
     private static final String SMS_SENT = "SMS_SENT";
     private static final String SMS_DELIVERED = "SMS_DELIVERED";
     private static CustomSmsAdapter adapter;
+    public static ListView listView;
     private static Bundle extras;
-    private ListView listView;
     private EditText smsBody;
     private ArrayList< List<String> > allData;
     private Contact contact;
-    private Boolean smsFailed = false;
 
     public static CustomSmsAdapter getAdapter() {
         return adapter;
+    }
+
+    public static void setAdapter(CustomSmsAdapter _adapter) {
+       adapter = _adapter;
+    }
+
+    public static ListView getListView() {
+        return listView;
+    }
+
+    public void setListView(ListView _listView) {
+        listView = _listView;
     }
 
     @Override
@@ -70,23 +80,18 @@ public class ContactSms extends AppCompatActivity {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(context, R.string.alert_sms_sent_ok, Toast.LENGTH_SHORT).show();
-                        smsFailed = false;
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         Toast.makeText(context, R.string.alert_sms_generic_failure, Toast.LENGTH_SHORT).show();
-                        smsFailed = true;
                         break;
                     case SmsManager.RESULT_ERROR_NO_SERVICE:
                         Toast.makeText(context, R.string.alert_sms_no_service, Toast.LENGTH_SHORT).show();
-                        smsFailed = true;
                         break;
                     case SmsManager.RESULT_ERROR_NULL_PDU:
                         Toast.makeText(context, R.string.alert_sms_no_pdu, Toast.LENGTH_SHORT).show();
-                        smsFailed = true;
                         break;
                     case SmsManager.RESULT_ERROR_RADIO_OFF:
                         Toast.makeText(context, R.string.alert_sms_radio_off, Toast.LENGTH_SHORT).show();
-                        smsFailed = true;
                         break;
                 }
             }
@@ -120,6 +125,7 @@ public class ContactSms extends AppCompatActivity {
             ArrayList<String> elem = new ArrayList<>();
             elem.add(sms.getHeader());
             elem.add(sms.getContent());
+            elem.add(sms.getType().toString());
             allData.add(elem);
         }
         adapter = new CustomSmsAdapter(this, allData);
@@ -172,23 +178,35 @@ public class ContactSms extends AppCompatActivity {
         PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_DELIVERED), 0);
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        SmsContent sms = new SmsContent(getResources().getString(R.string.header_sending_sms) +
-                " " + sdf.format(new Date()), smsBody.getText().toString(), contact.getId());
+        SmsContent sms = new SmsContent(sdf.format(new Date()), smsBody.getText().toString(),
+                contact.getId(), SmsContent.SENT);
         db.addSms(sms);
         List <String> elem = new ArrayList<>();
         elem.add(sms.getHeader());
         elem.add(sms.getContent());
+        elem.add(sms.getType().toString());
+        List<SmsContent> allSms = db.getAllSmsFromContact(contact.getId());
+
+        allData = new ArrayList<>();
+        for (SmsContent sms_data : allSms) {
+            ArrayList<String> sms_elem = new ArrayList<>();
+            sms_elem.add(sms_data.getHeader());
+            sms_elem.add(sms_data.getContent());
+            sms_elem.add(sms_data.getType().toString());
+            allData.add(sms_elem);
+        }
+        adapter = new CustomSmsAdapter(this, allData);
+        listView.setAdapter(adapter);
+
+        //adapter.notifyDataSetChanged();
         List<SmsContent> content = db.getAllSmsFromContact(contact.getId());
         for (SmsContent s : content) {
-            Log.d("BLA", s.getHeader() + " - " + s.getContent() + " - " + s.getContactId());
+            Log.d("BLA", s.getHeader() + " - " + s.getContent() + " - " + s.getContactId() +  " - " + s.getType());
         }
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phone, null, smsBody.getText().toString(),
                 sentPendingIntent, deliveredPendingIntent);
-        this.adapter.notifyDataSetChanged();
         smsBody.setText("");
-
         db.close();
     }
-
 }

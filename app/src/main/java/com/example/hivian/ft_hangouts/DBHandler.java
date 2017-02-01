@@ -33,6 +33,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_SMS_HEADER = "sms_header";
     private static final String KEY_SMS_CONTENT = "sms_content";
     private static final String KEY_CONTACT_ID = "contact_id";
+    private static final String KEY_SMS_TYPE = "sms_type";
     private static final String CONTACTS_TABLE_CREATE =
             "CREATE TABLE " + CONTACTS_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
                     KEY_IMAGE + " BLOB, " + KEY_NAME + " TEXT, " + KEY_LAST_NAME + " TEXT, " +
@@ -40,7 +41,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String SMS_TABLE_CREATE =
             "CREATE TABLE " + SMS_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
                     KEY_SMS_HEADER + " TEXT, " +  KEY_SMS_CONTENT + " TEXT, " +
-                    KEY_CONTACT_ID + " INTEGER)";
+                    KEY_CONTACT_ID + " INTEGER," + KEY_SMS_TYPE + " INTEGER)";
 
 
     DBHandler(Context context) {
@@ -85,6 +86,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_SMS_HEADER, sms.getHeader());
         values.put(KEY_SMS_CONTENT, sms.getContent());
         values.put(KEY_CONTACT_ID, sms.getContactId());
+        values.put(KEY_SMS_TYPE, sms.getType());
         db.insert(SMS_TABLE, null, values);
         db.close();
     }
@@ -144,7 +146,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public List<SmsContent> getSmsByContactId(Integer id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(SMS_TABLE, new String[]
-                        { KEY_ID, KEY_SMS_HEADER, KEY_SMS_CONTENT, KEY_CONTACT_ID },
+                        { KEY_ID, KEY_SMS_HEADER, KEY_SMS_CONTENT, KEY_CONTACT_ID, KEY_SMS_TYPE },
                 KEY_CONTACT_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
         List<SmsContent> allSms = new ArrayList<>();
 
@@ -155,6 +157,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 sms.setHeader(cursor.getString(1));
                 sms.setContent(cursor.getString(2));
                 sms.setContactId(cursor.getInt(3));
+                sms.setType(cursor.getInt(4));
                 allSms.add(sms);
             } while (cursor.moveToNext());
         }
@@ -202,6 +205,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 sms.setHeader(cursor.getString(1));
                 sms.setContent(cursor.getString(2));
                 sms.setContactId(cursor.getInt(3));
+                sms.setType(cursor.getInt(4));
                 allSms.add(sms);
             } while (cursor.moveToNext());
         }
@@ -225,6 +229,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 sms.setHeader(cursor.getString(1));
                 sms.setContent(cursor.getString(2));
                 sms.setContactId(cursor.getInt(3));
+                sms.setType(cursor.getInt(4));
                 allSms.add(sms);
             } while (cursor.moveToNext());
         }
@@ -275,6 +280,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_SMS_HEADER, sms.getHeader());
         values.put(KEY_SMS_CONTENT, sms.getContent());
         values.put(KEY_CONTACT_ID, sms.getContactId());
+        values.put(KEY_SMS_TYPE, sms.getType());
         return db.update(SMS_TABLE, values, KEY_ID + " = ?",
                 new String[]{String.valueOf(sms.getId())});
     }

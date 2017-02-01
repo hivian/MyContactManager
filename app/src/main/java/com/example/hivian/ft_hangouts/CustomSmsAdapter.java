@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,13 +29,6 @@ public class CustomSmsAdapter extends BaseAdapter {
         this.data = data;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    public void add(SmsContent object, int color) {
-        List <String> elem = new ArrayList<>();
-        elem.add(object.getHeader());
-        elem.add(object.getContent()        );
-        data.add(elem);
     }
 
     @Override
@@ -66,21 +58,31 @@ public class CustomSmsAdapter extends BaseAdapter {
         LinearLayout layout = (LinearLayout) vi.findViewById(R.id.smsHeader_container);
         TextView text1 = (TextView) vi.findViewById(R.id.sms_header);
         TextView text2 = (TextView) vi.findViewById(R.id.sms_content);
-        text1.setText(data.get(position).get(0));
+        LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TableRow.LayoutParams params2 = new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT);
         text2.setText(data.get(position).get(1));
-        Log.d("ICI1", text1.getText().toString().substring(0, 5));
-        Log.d("ICI2", parent.getResources().getString(R.string.header_sending_sms));
-        if (text1.getText().toString().equals(parent.getResources().getString(R.string.header_sending_sms))) {
+        Log.d("ICI3", data.get(position).get(2));
+        if (Integer.valueOf(data.get(position).get(2)) == SmsContent.SENT) {
+            params1.gravity = Gravity.END;
+            params2.gravity = Gravity.END;
+            layout.setLayoutParams(params1);
             layout.setBackgroundColor(Color.WHITE);
             layout.setGravity(Gravity.END);
-            text1.setGravity(Gravity.END);
-            text2.setGravity(Gravity.END);
-        }
-        else {
-            layout.setBackgroundColor(Color.BLUE);
-            layout.setGravity(Gravity.START);
-            text1.setGravity(Gravity.START);
-            text2.setGravity(Gravity.START);
+            text1.setLayoutParams(params2);
+            text2.setLayoutParams(params2);
+            text1.setText(parent.getResources().getString(R.string.header_sending_sms)
+                    + " " + data.get(position).get(0));
+        } else {
+            params1.gravity = Gravity.START;
+            params2.gravity = Gravity.START;
+            layout.setLayoutParams(params1);
+            layout.setBackgroundColor(parent.getResources().getColor(R.color.colorYellow));
+            text1.setLayoutParams(params2);
+            text2.setLayoutParams(params2);
+            text1.setText(parent.getResources().getString(R.string.header_received_sms)
+                    + " " + data.get(position).get(0));
         }
 
         return vi;

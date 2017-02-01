@@ -52,26 +52,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>Contacts</font>"));
+
         //this.deleteDatabase("DB");
         final DBHandler db = new DBHandler(this);
-
-        /*for (int i = 0; i < 1; i++) {
-            SmsContent s = new SmsContent("Header" + String.valueOf(4), "Content" + String.valueOf(4), 2);
-            db.addSms(s);
-        }*/
-
-        /*List<SmsContent> content = db.getAllSmsFromContact(2);
-
-        for (SmsContent s : content) {
-            Log.d("BLA", s.getHeader() + " - " + s.getContent() + " - " + s.getContactId());
-        }*/
-
+        //db.deleteAllContacts(db);
         //db.deleteAllSms(db);
-        //this.deleteDatabase("DB");
+
         ListView listView;
 
         List<Contact> contacts = db.getAllContacts();
-        //db.deleteAllContacts(db);
+
         ArrayList <List <String>> allData = new ArrayList<>();
 
         for (Contact cont : contacts) {
