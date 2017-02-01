@@ -27,4 +27,5 @@
     <string name="alert_sms_no_pdu">Text too long</string>
     <string name="alert_sms_radio_off">Airplane mode activated</string>
     <string name="alert_image_load">Image loaded</string>
+    <string name="header_sending_sms">Sent :</string>
 </resources>

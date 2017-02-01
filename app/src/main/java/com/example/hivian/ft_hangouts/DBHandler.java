@@ -123,6 +123,29 @@ public class DBHandler extends SQLiteOpenHelper {
         return contact;
     }
 
+    // Getting one contact by name
+    public List<SmsContent> getSmsByContactId(Integer id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(SMS_TABLE, new String[]
+                        { KEY_ID, KEY_SMS_HEADER, KEY_SMS_CONTENT, KEY_CONTACT_ID },
+                KEY_CONTACT_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
+        List<SmsContent> allSms = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                SmsContent sms = new SmsContent();
+                sms.setId(Integer.parseInt(cursor.getString(0)));
+                sms.setHeader(cursor.getString(1));
+                sms.setContent(cursor.getString(2));
+                sms.setContactId(cursor.getInt(3));
+                allSms.add(sms);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return allSms;
+    }
+
     // Getting all contacts
     public List<Contact> getAllContacts() {
         String selectQuery = "SELECT * FROM " + CONTACTS_TABLE;
@@ -225,6 +248,18 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_ADDRESS, contact.getAddress());
         return db.update(CONTACTS_TABLE, values, KEY_ID + " = ?",
                 new String[]{String.valueOf(contact.getId())});
+    }
+
+    // Updating a sms
+    public Integer updateSms(SmsContent sms) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_SMS_HEADER, sms.getHeader());
+        values.put(KEY_SMS_CONTENT, sms.getContent());
+        values.put(KEY_CONTACT_ID, sms.getContactId());
+        return db.update(SMS_TABLE, values, KEY_ID + " = ?",
+                new String[]{String.valueOf(sms.getId())});
     }
 
     // Deleting a contact

@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -23,7 +24,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ContactSms extends AppCompatActivity {
@@ -53,9 +56,12 @@ public class ContactSms extends AppCompatActivity {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
         }
 
+        smsBody = (EditText) findViewById(R.id.sms_body);
+
         sendBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.d("DEBUG", "TOTO1");
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(context, R.string.alert_sms_sent_ok, Toast.LENGTH_SHORT).show();
@@ -84,10 +90,10 @@ public class ContactSms extends AppCompatActivity {
         deliveryBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                Log.d("DEBUG", "TOTO2");
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(getBaseContext(), R.string.alert_sms_delivered_ok, Toast.LENGTH_SHORT).show();
-                        smsBody.setText("");
                         break;
                     case Activity.RESULT_CANCELED:
                         Toast.makeText(getBaseContext(), R.string.alert_sms_cancelled, Toast.LENGTH_SHORT).show();
@@ -95,6 +101,8 @@ public class ContactSms extends AppCompatActivity {
                 }
             }
         };
+
+
         registerReceiver(deliveryBroadcastReceiver, new IntentFilter(SMS_DELIVERED));
         registerReceiver(sendBroadcastReceiver , new IntentFilter(SMS_SENT));
 
@@ -148,7 +156,6 @@ public class ContactSms extends AppCompatActivity {
     public void sendSms(View view) {
         DBHandler db = new DBHandler(this);
 
-        smsBody = (EditText) findViewById(R.id.sms_body);
         if (smsBody.getText().toString().trim().length() == 0)
             return ;
         String phone = extras.getString("phone");
@@ -156,12 +163,13 @@ public class ContactSms extends AppCompatActivity {
         PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_SENT), 0);
         PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_DELIVERED), 0);
 
-        SmsContent sms = new SmsContent("HEADER", smsBody.getText().toString(), contact.getId());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SmsContent sms = new SmsContent(getResources().getString(R.string.header_sending_sms) +
+                " " + sdf.format(new Date()), smsBody.getText().toString(), contact.getId());
         db.addSms(sms);
         List <String> elem = new ArrayList<>();
         elem.add(sms.getHeader());
         elem.add(sms.getContent());
-
         List<SmsContent> content = db.getAllSmsFromContact(contact.getId());
         for (SmsContent s : content) {
             Log.d("BLA", s.getHeader() + " - " + s.getContent() + " - " + s.getContactId());
@@ -174,6 +182,7 @@ public class ContactSms extends AppCompatActivity {
         else
             adapter.add(sms, Color.WHITE);
         this.adapter.notifyDataSetChanged();
+        smsBody.setText("");
 
         db.close();
     }

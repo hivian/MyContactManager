@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 
 public class ContactInfo extends AppCompatActivity {
     private ImageView imageView;
@@ -108,9 +110,14 @@ public class ContactInfo extends AppCompatActivity {
                         Log.d("DEBUG", textView.getText().toString());
                         Contact contact = db.getContactByName(textView.getText().toString());
                         db.deleteContact(contact);
+                        List<SmsContent> allSms = db.getAllSmsFromContact(contact.getId());
+                        for (SmsContent sms : allSms) {
+                            db.deleteSms(sms);
+                        }
                         MainActivity.getAdapter().notifyDataSetChanged();
 
                         Intent intent = new Intent(ContactInfo.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }
                 })
