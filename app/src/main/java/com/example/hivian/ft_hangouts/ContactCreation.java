@@ -132,10 +132,8 @@ public class ContactCreation extends AppCompatActivity {
         email = (EditText)findViewById(R.id.email);
         address = (EditText)findViewById(R.id.address);
 
-        if (isImageLoaded) {
+        if (isImageLoaded)
             imageDb = getBytes(image);
-            isImageLoaded = false;
-        }
         else
             imageDb = null;
         if (name.getText().toString().trim().length() == 0) {

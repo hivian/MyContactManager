@@ -128,8 +128,6 @@ public class ContactEdition extends AppCompatActivity {
     }
 
     public void saveEditionContact(View view) {
-        DBHandler db = new DBHandler(this);
-
         imageView = (ImageView) findViewById(R.id.edit_image);
         name = (TextView) findViewById(R.id.edit_name);
         lastName = (TextView) findViewById(R.id.edit_lastName);
@@ -144,15 +142,14 @@ public class ContactEdition extends AppCompatActivity {
             Toast toast = Toast.makeText(this, R.string.alert_no_phone, Toast.LENGTH_LONG);
             toast.show();
         } else {
+            DBHandler db = new DBHandler(this);
             Contact contactEdit = db.getContact(contact.getId());
 
             Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-            if (isImageLoaded && image != null) {
+            if (isImageLoaded && image != null)
                 contactEdit.setImage(DbBitmapUtility.getBytes(image));
-                isImageLoaded = false;
-            } else {
+            else
                 contactEdit.setImage(null);
-            }
             contactEdit.setName(name.getText().toString());
             contactEdit.setLastName(lastName.getText().toString());
             contactEdit.setPhone(phone.getText().toString());
