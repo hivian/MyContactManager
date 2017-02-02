@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -135,27 +137,35 @@ public class ContactEdition extends AppCompatActivity {
         email = (TextView) findViewById(R.id.edit_email);
         address = (TextView) findViewById(R.id.edit_address);
 
-        Contact contactEdit = db.getContact(contact.getId());
-
-        Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        if (isImageLoaded && image != null) {
-            contactEdit.setImage(DbBitmapUtility.getBytes(image));
-            isImageLoaded = false;
+        if (name.getText().toString().trim().length() == 0) {
+            Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
+            toast.show();
+        } else if (phone.getText().toString().trim().length() == 0) {
+            Toast toast = Toast.makeText(this, R.string.alert_no_phone, Toast.LENGTH_LONG);
+            toast.show();
         } else {
-            contactEdit.setImage(null);
+            Contact contactEdit = db.getContact(contact.getId());
+
+            Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+            if (isImageLoaded && image != null) {
+                contactEdit.setImage(DbBitmapUtility.getBytes(image));
+                isImageLoaded = false;
+            } else {
+                contactEdit.setImage(null);
+            }
+            contactEdit.setName(name.getText().toString());
+            contactEdit.setLastName(lastName.getText().toString());
+            contactEdit.setPhone(phone.getText().toString());
+            contactEdit.setEmail(email.getText().toString());
+            contactEdit.setAddress(address.getText().toString());
+            db.updateContact(contactEdit);
+
+            MainActivity.getAdapter().notifyDataSetChanged();
+
+            db.close();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
-        contactEdit.setName(name.getText().toString());
-        contactEdit.setLastName(lastName.getText().toString());
-        contactEdit.setPhone(phone.getText().toString());
-        contactEdit.setEmail(email.getText().toString());
-        contactEdit.setAddress(address.getText().toString());
-        db.updateContact(contactEdit);
-
-        MainActivity.getAdapter().notifyDataSetChanged();
-
-        db.close();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
     }
 }
