@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.PowerManager;
@@ -17,13 +16,11 @@ import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,7 +67,6 @@ public class ContactSms extends AppCompatActivity {
         sendBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.d("DEBUG", "TOTO1");
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(context, R.string.alert_sms_sent_ok, Toast.LENGTH_SHORT).show();
@@ -94,7 +90,6 @@ public class ContactSms extends AppCompatActivity {
         deliveryBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.d("DEBUG", "TOTO2");
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(getBaseContext(), R.string.alert_sms_delivered_ok, Toast.LENGTH_SHORT).show();
@@ -212,10 +207,6 @@ public class ContactSms extends AppCompatActivity {
         adapter = new CustomSmsAdapter(this, allData);
         listView.setAdapter(adapter);
 
-        List<SmsContent> content = db.getAllSmsFromContact(contact.getId());
-        /*for (SmsContent s : content) {
-            Log.d("BLA", s.getHeader() + " - " + s.getContent() + " - " + s.getContactId() +  " - " + s.getType());
-        }*/
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phone, null, smsBody.getText().toString(),
                 sentPendingIntent, deliveredPendingIntent);

@@ -2,7 +2,6 @@ package com.example.hivian.ft_hangouts;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +62,6 @@ public class CustomSmsAdapter extends BaseAdapter {
         TableRow.LayoutParams params2 = new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT);
         text2.setText(data.get(position).get(1));
-        Log.d("ICI3", data.get(position).get(2));
         if (Integer.valueOf(data.get(position).get(2)) == SmsContent.SENT) {
             params1.gravity = Gravity.END;
             params2.gravity = Gravity.END;

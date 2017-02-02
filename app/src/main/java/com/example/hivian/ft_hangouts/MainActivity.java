@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static Boolean wasInBackground = false;
     private static String backgroundTime;
     private static CustomAdapter adapter;
+    private FloatingActionButton fab;
 
     public static Boolean getPurple() {
         return isPurple;
@@ -49,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>Contacts</font>"));
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        if (getPurple()) {
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_purple)));
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
+        } else {
+            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
+        }
 
         //this.deleteDatabase("DB");
         final DBHandler db = new DBHandler(this);
@@ -97,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         if (id == R.id.action_blue) {
             fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
@@ -121,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
         if (Utility.isAppInBackground(this)) {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
             backgroundTime = sdf.format(new Date());
-            Log.d("DEBUG", backgroundTime);
             wasInBackground = true;
         }
     }
@@ -139,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createContact(View view) {
-        Log.d("DEBUG", "CREATE CONTACT");
         Intent intent = new Intent(this, ContactCreation.class);
 
         startActivity(intent);

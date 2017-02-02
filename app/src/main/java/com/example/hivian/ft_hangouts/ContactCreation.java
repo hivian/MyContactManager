@@ -150,14 +150,9 @@ public class ContactCreation extends AppCompatActivity {
                 toast.show();
                 return ;
             }
+
             db.addContact(new Contact(imageDb, name.getText().toString(), lastName.getText().toString(),
                     phone.getText().toString(), email.getText().toString(), address.getText().toString()));
-
-            List<Contact> contacts = db.getAllContacts();
-            for (Contact cont : contacts) {
-                String log = "Id: " + cont.getId() + " ,Name: " + cont.getName() + " ,LastName: " + cont.getLastName() + " ,Phone: " + cont.getPhone() + " ,Email: " + cont.getEmail() + " ,Address: " + cont.getAddress();
-                Log.d("Contact: : ", log);
-            }
 
             db.close();
             MainActivity.getAdapter().notifyDataSetChanged();

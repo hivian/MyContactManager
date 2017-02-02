@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.util.Log;
-import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +18,7 @@ public class SmsReceiver extends BroadcastReceiver {
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     private ArrayList<List<String>> allData;
     List<SmsContent> allSms;
+    Contact contact;
     private String phone;
     private String message;
     StringBuilder sb;
@@ -43,10 +41,16 @@ public class SmsReceiver extends BroadcastReceiver {
                     sb.append(messages[i].getMessageBody());
                 }
 
-                phone = messages[0].getOriginatingAddress().replace("+33", "0");
                 message = sb.toString();
+                phone = messages[0].getOriginatingAddress();
+                contact = db.getContactByPhone(phone);
+                if (contact == null) {
+                    phone = messages[0].getOriginatingAddress().replace("+33", "0");
+                    contact = db.getContactByPhone(phone);
+                    if (contact == null)
+                        return ;
+                }
 
-                Contact contact = db.getContactByPhone(phone);
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                 db.addSms(new SmsContent(sdf.format(new Date()), message, contact.getId(), SmsContent.RECEIVED));
 
@@ -61,7 +65,6 @@ public class SmsReceiver extends BroadcastReceiver {
                 }
                 ContactSms.setAdapter(new CustomSmsAdapter(context, allData));
                 ContactSms.listView.setAdapter(ContactSms.getAdapter());
-                //Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
             }
             db.close();
         }
