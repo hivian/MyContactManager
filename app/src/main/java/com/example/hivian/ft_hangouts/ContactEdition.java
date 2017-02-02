@@ -3,7 +3,6 @@ package com.example.hivian.ft_hangouts;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -16,11 +15,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.example.hivian.ft_hangouts.DbBitmapUtility.getBytes;
 
 public class ContactEdition extends AppCompatActivity {
 
@@ -34,6 +31,7 @@ public class ContactEdition extends AppCompatActivity {
     private TextView phone;
     private TextView email;
     private TextView address;
+    private Contact contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +48,7 @@ public class ContactEdition extends AppCompatActivity {
             button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
 
-        Contact contact = (Contact) getIntent().getSerializableExtra("contact");
+        contact = (Contact) getIntent().getSerializableExtra("contact");
 
         if (contact != null) {
             imageView = (ImageView) findViewById(R.id.edit_image);
@@ -93,7 +91,7 @@ public class ContactEdition extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            imageView.setImageBitmap(decodeSampledBitmapFromResource(picturePath, 100, 100));
+            imageView.setImageBitmap(Utility.decodeSampledBitmapFromResource(picturePath, 100, 100));
             isImageLoaded = true;
         }
     }
@@ -137,21 +135,21 @@ public class ContactEdition extends AppCompatActivity {
         email = (TextView) findViewById(R.id.edit_email);
         address = (TextView) findViewById(R.id.edit_address);
 
-        Contact contact = db.getContactByName(name.getText().toString());
+        Contact contactEdit = db.getContact(contact.getId());
 
         Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
         if (isImageLoaded && image != null) {
-            contact.setImage(DbBitmapUtility.getBytes(image));
+            contactEdit.setImage(DbBitmapUtility.getBytes(image));
             isImageLoaded = false;
         } else {
-            contact.setImage(null);
+            contactEdit.setImage(null);
         }
-        contact.setName(name.getText().toString());
-        contact.setLastName(lastName.getText().toString());
-        contact.setPhone(phone.getText().toString());
-        contact.setEmail(email.getText().toString());
-        contact.setAddress(address.getText().toString());
-        db.updateContact(contact);
+        contactEdit.setName(name.getText().toString());
+        contactEdit.setLastName(lastName.getText().toString());
+        contactEdit.setPhone(phone.getText().toString());
+        contactEdit.setEmail(email.getText().toString());
+        contactEdit.setAddress(address.getText().toString());
+        db.updateContact(contactEdit);
 
         MainActivity.getAdapter().notifyDataSetChanged();
 
@@ -159,33 +157,5 @@ public class ContactEdition extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-    }
-
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
-    }
-
-    public static Bitmap decodeSampledBitmapFromResource(String path, int reqWidth, int reqHeight) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(path, options);
     }
 }

@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -38,9 +39,12 @@ public class ContactInfo extends AppCompatActivity {
         setContentView(R.layout.activity_contact_info);
         getSupportActionBar().setTitle("Options");
 
+        LinearLayout taskBar = (LinearLayout) findViewById(R.id.task_bar);
         if (MainActivity.getPurple()) {
+            taskBar.setBackgroundColor(getResources().getColor(R.color.colorPurpleDark));
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
         } else {
+            taskBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
         }
 

@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.PowerManager;
@@ -13,7 +14,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
-import android.telephony.SmsMessage;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -156,6 +155,9 @@ public class ContactSms extends AppCompatActivity {
         super.onResume();
         View parentLayout = findViewById(R.id.activity_contact_sms);
 
+        registerReceiver(deliveryBroadcastReceiver, new IntentFilter(SMS_DELIVERED));
+        registerReceiver(sendBroadcastReceiver , new IntentFilter(SMS_SENT));
+
         if (backgroundTime != null && wasInBackground) {
             Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
                     + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -210,11 +212,10 @@ public class ContactSms extends AppCompatActivity {
         adapter = new CustomSmsAdapter(this, allData);
         listView.setAdapter(adapter);
 
-        //adapter.notifyDataSetChanged();
         List<SmsContent> content = db.getAllSmsFromContact(contact.getId());
-        for (SmsContent s : content) {
+        /*for (SmsContent s : content) {
             Log.d("BLA", s.getHeader() + " - " + s.getContent() + " - " + s.getContactId() +  " - " + s.getType());
-        }
+        }*/
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phone, null, smsBody.getText().toString(),
                 sentPendingIntent, deliveredPendingIntent);

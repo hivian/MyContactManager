@@ -33,7 +33,9 @@
         <activity
             android:name=".ContactEdition"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ContactSms"></activity>
+        <activity
+            android:name=".ContactSms"
+            android:windowSoftInputMode="stateHidden" />
         <receiver android:name=".SmsReceiver" android:enabled="true">
             <intent-filter android:priority="2147483647" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
