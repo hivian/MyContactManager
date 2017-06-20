@@ -1,10 +1,15 @@
 package com.example.hivian.ft_hangouts;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -25,6 +30,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.hivian.ft_hangouts.MESSAGE";
+    public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     private static Boolean isPurple = false;
     private static Boolean wasInBackground = false;
     private static String backgroundTime;
@@ -45,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("EXIT", false)) {
+            finish();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -95,7 +104,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         db.close();
+        if (Build.VERSION.SDK_INT >= 23) {
+            int checkStoragePermission = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
+            int checkCallPhonePermission = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.SEND_SMS);
+            if (checkStoragePermission + checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) ||
+                        ActivityCompat.shouldShowRequestPermissionRationale(this,
+                                Manifest.permission.SEND_SMS)) {
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE,
+                                          Manifest.permission.SEND_SMS},
+                            PERMISSIONS_MULTIPLE_REQUEST);
+                }
+            }
+        }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_MULTIPLE_REQUEST: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("EXIT", true);
+                    startActivity(intent);
+                }
+            }
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

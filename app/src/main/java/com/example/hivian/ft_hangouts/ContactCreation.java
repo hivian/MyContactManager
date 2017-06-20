@@ -69,6 +69,7 @@ public class ContactCreation extends AppCompatActivity {
             isImageLoaded = false;
         }
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
+            Log.d("DEBUG", "HERE2");
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
 
@@ -89,6 +90,7 @@ public class ContactCreation extends AppCompatActivity {
                 }
             });
             isImageLoaded = true;
+            Log.d("DEBUG", "HERE3");
         }
     }
 
