@@ -29,7 +29,8 @@
     <string name="alert_sms_radio_off">Airplane mode activated</string>
     <string name="alert_image_load">Image loaded</string>
     <string name="alert_no_read_perm">No read permission on external storage</string>
-    <string name="alert_no_sms_perm">No send-sms permission</string>
+    <string name="alert_no_sms_perm">No sms sending permission</string>
+    <string name="alert_no_call_perm">No phone call permission</string>
     <string name="header_sending_sms">Sent :</string>
     <string name="header_received_sms">Received :</string>
 </resources>

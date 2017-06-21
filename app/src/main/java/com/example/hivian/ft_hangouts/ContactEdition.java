@@ -184,10 +184,14 @@ public class ContactEdition extends AppCompatActivity {
             Contact contactEdit = db.getContact(contact.getId());
 
             Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-            if (isImageLoaded && image != null)
+            if (image != null)
+                isImageLoaded = true;
+            if (image) {
                 contactEdit.setImage(DbBitmapUtility.getBytes(image));
-            else
+            } else {
                 contactEdit.setImage(null);
+            }
+            isImageLoaded = false;
             contactEdit.setName(name.getText().toString());
             contactEdit.setLastName(lastName.getText().toString());
             contactEdit.setPhone(phone.getText().toString());

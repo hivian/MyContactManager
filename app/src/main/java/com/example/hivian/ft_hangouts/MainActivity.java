@@ -117,7 +117,9 @@ public class MainActivity extends AppCompatActivity {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.READ_EXTERNAL_STORAGE) ||
                         ActivityCompat.shouldShowRequestPermissionRationale(this,
-                                Manifest.permission.SEND_SMS)) {
+                                Manifest.permission.SEND_SMS) ||
+                        ActivityCompat.shouldShowRequestPermissionRationale(this,
+                                Manifest.permission.CALL_PHONE)) {
                 } else {
                     ActivityCompat.requestPermissions(this,
                             new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE,

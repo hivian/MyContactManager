@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -108,15 +109,16 @@ public class ContactInfo extends AppCompatActivity {
 
     public void callContact(View view) {
         phone = (TextView) findViewById(R.id.info_phone);
-
         Intent callIntent = new Intent(Intent.ACTION_CALL);
 
         callIntent.setData(Uri.parse("tel:" + phone.getText().toString()));
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+            startActivity(callIntent);
+        } else {
+            Toast toast = Toast.makeText(this, R.string.alert_no_call_perm, Toast.LENGTH_LONG);
+            toast.show();
         }
-        startActivity(callIntent);
     }
 
     public void editContact(View view) {

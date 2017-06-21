@@ -1,7 +1,10 @@
 package com.example.hivian.ft_hangouts;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import java.io.ByteArrayOutputStream;
 
@@ -21,5 +24,12 @@ public class DbBitmapUtility {
     // convert from byte array to bitmap
     public static Bitmap getImage(byte[] image) {
         return BitmapFactory.decodeByteArray(image, 0, image.length);
+    }
+
+    public static RoundedBitmapDrawable setBitmapCircular(Resources res, Bitmap bitmap) {
+        RoundedBitmapDrawable dr =
+                RoundedBitmapDrawableFactory.create(res, bitmap);
+        dr.setCircular(true);
+        return (dr);
     }
 }

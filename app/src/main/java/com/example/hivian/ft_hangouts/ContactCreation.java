@@ -169,10 +169,12 @@ public class ContactCreation extends AppCompatActivity {
         email = (EditText)findViewById(R.id.email);
         address = (EditText)findViewById(R.id.address);
 
-        if (isImageLoaded)
+        if (isImageLoaded) {
             imageDb = getBytes(image);
-        else
+            isImageLoaded = false;
+        } else {
             imageDb = null;
+        }
         if (name.getText().toString().trim().length() == 0) {
             Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
             toast.show();
