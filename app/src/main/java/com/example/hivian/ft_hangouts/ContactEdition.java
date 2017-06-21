@@ -76,9 +76,13 @@ public class ContactEdition extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-        MenuItem shareItem = menu.findItem(R.id.action_save);
+        MenuItem shareItemSave = menu.findItem(R.id.action_save);
+        MenuItem shareItemBlue = menu.findItem(R.id.action_blue);
+        MenuItem shareItemPurple = menu.findItem(R.id.action_purple);
 
-        shareItem.setVisible(true);
+        shareItemSave.setVisible(true);
+        shareItemBlue.setVisible(false);
+        shareItemPurple.setVisible(false);
 
         return true;
     }

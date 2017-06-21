@@ -52,8 +52,6 @@ public class ContactCreation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_creation);
-
-
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.create_contact)  + "</font>"));
 
         if (MainActivity.getPurple()) {
@@ -68,9 +66,13 @@ public class ContactCreation extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-        MenuItem shareItem = menu.findItem(R.id.action_save);
+        MenuItem shareItemSave = menu.findItem(R.id.action_save);
+        MenuItem shareItemBlue = menu.findItem(R.id.action_blue);
+        MenuItem shareItemPurple = menu.findItem(R.id.action_purple);
 
-        shareItem.setVisible(true);
+        shareItemSave.setVisible(true);
+        shareItemBlue.setVisible(false);
+        shareItemPurple.setVisible(false);
 
         return true;
     }
@@ -78,7 +80,6 @@ public class ContactCreation extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
 
         if (id == R.id.action_save) {
             saveContact();

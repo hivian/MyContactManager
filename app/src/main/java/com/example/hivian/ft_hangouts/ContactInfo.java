@@ -10,10 +10,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -131,7 +133,7 @@ public class ContactInfo extends AppCompatActivity {
     public void deleteContact(View view) {
         final DBHandler db = new DBHandler(this);
 
-        new AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setMessage(getResources().getString(R.string.alert_delete_message))
                 .setCancelable(false)
                 .setPositiveButton(getResources().getString(R.string.alert_delete_ok),
@@ -155,5 +157,15 @@ public class ContactInfo extends AppCompatActivity {
                 })
                 .setNegativeButton(getResources().getString(R.string.alert_delete_cancel), null)
                 .show();
+        Button buttonPositive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        Button buttonNegative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+
+        if (MainActivity.getPurple()) {
+            buttonPositive.setTextColor(ContextCompat.getColor(this, android.R.color.holo_purple));
+            buttonNegative.setTextColor(ContextCompat.getColor(this, android.R.color.holo_purple));
+        } else {
+            buttonPositive.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            buttonNegative.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        }
     }
 }
