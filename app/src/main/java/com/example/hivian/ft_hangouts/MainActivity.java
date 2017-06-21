@@ -108,9 +108,12 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 23) {
             int checkStoragePermission = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE);
-            int checkCallPhonePermission = ContextCompat.checkSelfPermission(this,
+            int checkSendSmsPermission = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.SEND_SMS);
-            if (checkStoragePermission + checkCallPhonePermission != PackageManager.PERMISSION_GRANTED) {
+            int checkCallPhonePermission = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.CALL_PHONE);
+            if (checkStoragePermission + checkSendSmsPermission + checkCallPhonePermission
+                    != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.READ_EXTERNAL_STORAGE) ||
                         ActivityCompat.shouldShowRequestPermissionRationale(this,
@@ -118,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     ActivityCompat.requestPermissions(this,
                             new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE,
-                                    Manifest.permission.SEND_SMS},
+                                    Manifest.permission.SEND_SMS,
+                                    Manifest.permission.CALL_PHONE},
                             PERMISSIONS_MULTIPLE_REQUEST);
                 }
             }
@@ -132,7 +136,8 @@ public class MainActivity extends AppCompatActivity {
             case PERMISSIONS_MULTIPLE_REQUEST: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 } else {
                 }
             }
