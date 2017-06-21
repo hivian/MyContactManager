@@ -107,16 +107,6 @@
                 android:maxLength="100"
                 android:inputType="textPostalAddress" />
 
-            <Button
-                android:text="@string/contact_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit_button_save"
-                android:layout_marginTop="50dp"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:background="@color/colorPrimary"
-                android:onClick="saveEditionContact" />
-
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

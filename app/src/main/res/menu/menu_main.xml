@@ -12,4 +12,12 @@
         android:orderInCategory="100"
         android:title="@string/action_purple"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/ic_done_black_75dp"
+        android:title="@string/action_save"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
 </menu>

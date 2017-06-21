@@ -11,6 +11,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -41,13 +44,10 @@ public class ContactEdition extends AppCompatActivity {
         setContentView(R.layout.activity_contact_edition);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.edit_contact)  + "</font>"));
 
-        Button button = (Button)findViewById(R.id.edit_button_save);
         if (MainActivity.getPurple()) {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
-            button.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
         } else {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-            button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
 
         contact = (Contact) getIntent().getSerializableExtra("contact");
@@ -71,6 +71,30 @@ public class ContactEdition extends AppCompatActivity {
             address.setText(contact.getAddress());
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        MenuItem shareItem = menu.findItem(R.id.action_save);
+
+        shareItem.setVisible(true);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+
+        if (id == R.id.action_save) {
+            saveEditionContact();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -127,7 +151,7 @@ public class ContactEdition extends AppCompatActivity {
         startActivityForResult(intent, RESULT_LOAD_IMAGE);
     }
 
-    public void saveEditionContact(View view) {
+    public void saveEditionContact() {
         imageView = (ImageView) findViewById(R.id.edit_image);
         name = (TextView) findViewById(R.id.edit_name);
         lastName = (TextView) findViewById(R.id.edit_lastName);

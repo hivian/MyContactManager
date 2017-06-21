@@ -1,8 +1,11 @@
 package com.example.hivian.ft_hangouts;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,11 +14,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.text.Html;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,18 +53,38 @@ public class ContactCreation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_creation);
 
-        Button button = (Button)findViewById(R.id.button_save);
 
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.create_contact)  + "</font>"));
 
         if (MainActivity.getPurple()) {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
-            button.setBackgroundColor(getResources().getColor(android.R.color.holo_purple));
         } else {
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-            button.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
         imageView = (ImageView) findViewById(R.id.imageView);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        MenuItem shareItem = menu.findItem(R.id.action_save);
+
+        shareItem.setVisible(true);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+
+        if (id == R.id.action_save) {
+            saveContact();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -118,12 +145,19 @@ public class ContactCreation extends AppCompatActivity {
     }
 
     public void browseFolder(View view) {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-        startActivityForResult(intent, RESULT_LOAD_IMAGE);
+            startActivityForResult(intent, RESULT_LOAD_IMAGE);
+        } else {
+            isImageLoaded = false;
+            Toast toast = Toast.makeText(this, R.string.alert_no_read_perm, Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
-    public void saveContact(View view) {
+    public void saveContact() {
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
         byte[] imageDb;

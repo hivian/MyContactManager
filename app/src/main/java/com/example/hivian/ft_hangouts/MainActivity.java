@@ -29,8 +29,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final static String EXTRA_MESSAGE = "com.example.hivian.ft_hangouts.MESSAGE";
-    public  static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
+    public static final String EXTRA_MESSAGE = "com.example.hivian.ft_hangouts.MESSAGE";
+    public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     private static Boolean isPurple = false;
     private static Boolean wasInBackground = false;
     private static String backgroundTime;
@@ -51,9 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("EXIT", false)) {
-            finish();
-        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -104,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         db.close();
+        checkPermissions();
+    }
+
+    private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
             int checkStoragePermission = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     ActivityCompat.requestPermissions(this,
                             new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE,
-                                          Manifest.permission.SEND_SMS},
+                                    Manifest.permission.SEND_SMS},
                             PERMISSIONS_MULTIPLE_REQUEST);
                 }
             }
@@ -133,10 +134,6 @@ public class MainActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 } else {
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra("EXIT", true);
-                    startActivity(intent);
                 }
             }
         }
