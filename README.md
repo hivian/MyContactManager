@@ -1,4 +1,4 @@
-# ft_hangouts
+# MyContactManager
 Android studio App : phone book and messaging
 
 - Contact managing: CRUD + add profile picture
