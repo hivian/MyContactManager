@@ -29,21 +29,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MESSAGE = "com.example.hivian.ft_hangouts.MESSAGE";
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
-    private static Boolean isPurple = false;
     private static Boolean wasInBackground = false;
     private static String backgroundTime;
     private static CustomAdapter adapter;
-    private FloatingActionButton fab;
-
-    public static Boolean getPurple() {
-        return isPurple;
-    }
-
-    public void setPurple(Boolean bool) {
-        this.isPurple = bool;
-    }
 
     public static CustomAdapter getAdapter() {
         return adapter;
@@ -56,15 +45,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>Contacts</font>"));
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (getPurple()) {
-            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_purple)));
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
-        } else {
-            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-        }
 
         //this.deleteDatabase("DB");
         final DBHandler db = new DBHandler(this);
@@ -149,26 +129,6 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_blue) {
-            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-            setPurple(false);
-            return true;
-        }
-        if (id == R.id.action_purple) {
-            fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_purple)));
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
-            setPurple(true);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -53,4 +53,16 @@
         android:onClick="deleteContact"
         circle:name="@string/menu_delete" />
 
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/menu_cancel"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:background="@drawable/circle"
+        android:elevation="2dp"
+        android:src="@drawable/ic_close_black_75dp"
+        android:tint="@android:color/white"
+        android:padding="10dp"
+        android:onClick="cancelMenu"
+        circle:name="@string/menu_delete" />
+
 </merge>

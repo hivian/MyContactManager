@@ -58,12 +58,6 @@ public class ContactSms extends AppCompatActivity {
         extras = getIntent().getExtras();
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + extras.getString("name")  + "</font>"));
 
-        if (MainActivity.getPurple()) {
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
-        } else {
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-        }
-
         smsBody = (EditText) findViewById(R.id.sms_body);
 
         sendBroadcastReceiver = new BroadcastReceiver() {

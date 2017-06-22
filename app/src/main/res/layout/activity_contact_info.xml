@@ -8,79 +8,52 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/scrollview_contact_info">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-            <LinearLayout
-                android:orientation="horizontal"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="165dp"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
+                android:layout_height="match_parent">
+            <ImageView
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:layout_width="match_parent"
+                android:layout_height="275dp"
+                android:background="#9ED9D9"
+                android:id="@+id/info_image"
+                android:src="@drawable/ic_person_black_75dp"
+                android:cropToPadding="false" />
+            <TextView
+                android:layout_alignBottom="@+id/info_image"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:ems="10"
+                android:id="@+id/info_name"
+                android:textSize="30sp"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit ="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:theme="@android:style/Theme.Holo.Light"
+                android:gravity="start"
+                android:paddingLeft="50dp"
+                android:paddingStart="50dp"
+                android:shadowRadius="2"
+                android:textAllCaps="true"
+                android:textColor="@android:color/white" />
+            </RelativeLayout>
 
-                <ImageView
-                    android:scaleType="centerCrop"
-                    android:adjustViewBounds="true"
-                    android:layout_width="150dp"
-                    android:id="@+id/info_image"
-                    android:layout_margin="8dp"
-                    android:layout_height="145dp"
-                    android:src="@drawable/ic_person_black_75dp"
-                    android:cropToPadding="false" />
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_height="145dp"
-                    android:layout_weight="0.5"
-                    android:layout_margin="8dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.30"
-                        android:ems="10" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.20"
-                        android:ems="10"
-                        android:id="@+id/info_name"
-                        android:textColor="@color/colorDark"
-                        android:textSize="20sp"
-                        android:maxLines="1"
-                        android:scrollHorizontally="true"
-                        android:ellipsize="marquee"
-                        android:marqueeRepeatLimit ="marquee_forever"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:theme="@android:style/Theme.Holo.Light" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.30"
-                        android:ems="10" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.20"
-                        android:ems="10"
-                        android:id="@+id/info_lastName"
-                        android:textColor="@color/colorDark"
-                        android:textSize="20sp"
-                        android:maxLines="1"
-                        android:scrollHorizontally="true"
-                        android:theme="@android:style/Theme.Holo.Light" />
-                </LinearLayout>
-            </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
                 <ImageView
@@ -105,7 +78,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
                 <ImageView
@@ -131,7 +104,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
                 <ImageView
@@ -157,8 +130,8 @@
         android:id="@+id/circle_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:visibility="invisible">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
         <include layout="@layout/circle_menu" />
     </com.szugyi.circlemenu.view.CircleLayout>
 </RelativeLayout>

@@ -50,12 +50,6 @@ public class ContactEdition extends AppCompatActivity {
         setContentView(R.layout.activity_contact_edition);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.edit_contact)  + "</font>"));
 
-        if (MainActivity.getPurple()) {
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
-        } else {
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-        }
-
         contact = (Contact) getIntent().getSerializableExtra("contact");
 
         if (contact != null) {
@@ -84,12 +78,8 @@ public class ContactEdition extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         MenuItem shareItemSave = menu.findItem(R.id.action_save);
-        MenuItem shareItemBlue = menu.findItem(R.id.action_blue);
-        MenuItem shareItemPurple = menu.findItem(R.id.action_purple);
 
         shareItemSave.setVisible(true);
-        shareItemBlue.setVisible(false);
-        shareItemPurple.setVisible(false);
 
         return true;
     }

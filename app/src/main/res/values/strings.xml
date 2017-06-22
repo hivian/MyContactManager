@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ft_hangouts</string>
+    <string name="app_name">My Contact Manager</string>
     <string name="action_settings">Settings</string>
     <string name="action_blue">Blue</string>
     <string name="action_purple">Purple</string>
@@ -13,6 +13,7 @@
     <string name="contact_email">Email</string>
     <string name="contact_address">Address</string>
     <string name="contact_save">SAVE</string>
+    <string name="placeholder_none">(None)</string>
     <string name="alert_no_name">Field name empty</string>
     <string name="alert_no_phone">Field phone empty</string>
     <string name="alert_duplicates">Name already registered</string>

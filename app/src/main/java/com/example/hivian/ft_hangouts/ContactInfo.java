@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +33,11 @@ import java.util.Date;
 import java.util.List;
 
 
-public class ContactInfo extends AppCompatActivity {
+public class ContactInfo extends AppCompatActivity implements View.OnClickListener {
     private static Boolean wasInBackground = false;
     private static String backgroundTime;
     private ImageView imageView;
     private TextView name;
-    private TextView lastName;
     private TextView phone;
     private TextView email;
     private TextView address;
@@ -47,18 +48,11 @@ public class ContactInfo extends AppCompatActivity {
         setContentView(R.layout.activity_contact_info);
         getSupportActionBar().setTitle("Options");
 
-        if (MainActivity.getPurple()) {
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
-        } else {
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
-        }
-
         Contact contact = (Contact) getIntent().getSerializableExtra("contact");
 
         if (contact != null) {
             imageView = (ImageView) findViewById(R.id.info_image);
             name = (TextView) findViewById(R.id.info_name);
-            lastName = (TextView) findViewById(R.id.info_lastName);
             phone = (TextView) findViewById(R.id.info_phone);
             email = (TextView) findViewById(R.id.info_email);
             address = (TextView) findViewById(R.id.info_address);
@@ -68,31 +62,35 @@ public class ContactInfo extends AppCompatActivity {
                 imageView.setImageBitmap(imageBm);
             }
             name.setText(contact.getName());
-            lastName.setText(contact.getLastName());
             phone.setText(contact.getPhone());
-            email.setText(contact.getEmail());
-            address.setText(contact.getAddress());
+            if (email.getText().equals("")) {
+                email.setTypeface(null, Typeface.ITALIC);
+                email.setText(R.string.placeholder_none);
+            }
+            else
+                email.setText(contact.getEmail());
+            if (address.getText().equals("")) {
+                address.setTypeface(null, Typeface.ITALIC);
+                address.setText(R.string.placeholder_none);
+            }
+            else
+                address.setText(contact.getAddress());
+
         }
+
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollview_contact_info);
+        scrollView.getChildAt(0).setOnClickListener(this);
+
+        CircleLayout circleLayout = (CircleLayout) findViewById(R.id.circle_layout);
+        circleLayout.setOnClickListener(this);
 
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
-        int action = event.getAction();
-
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                Log.d("DEBUG", "DOWN");
-            case MotionEvent.ACTION_MOVE:
-                Log.d("DEBUG", "MOVE");
-            case MotionEvent.ACTION_UP:
-                Log.d("DEBUG", "UP");
-            case MotionEvent.ACTION_CANCEL:
-                Log.d("DEBUG", "CANCEL");
-        }
-        // TODO Auto-generated method stub
-        return super.onTouchEvent(event);
+    public void onClick(View v) {
+        // do something when the button is clicked
+        Log.d("DEBUG", "TOUCHED");
+        CircleLayout circleLayout = (CircleLayout) findViewById(R.id.circle_layout);
+        circleLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -184,12 +182,12 @@ public class ContactInfo extends AppCompatActivity {
         Button buttonPositive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         Button buttonNegative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
 
-        if (MainActivity.getPurple()) {
-            buttonPositive.setTextColor(ContextCompat.getColor(this, android.R.color.holo_purple));
-            buttonNegative.setTextColor(ContextCompat.getColor(this, android.R.color.holo_purple));
-        } else {
-            buttonPositive.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            buttonNegative.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-        }
+        buttonPositive.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        buttonNegative.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+    }
+
+    public void cancelMenu(View view) {
+        CircleLayout circleLayout = (CircleLayout) findViewById(R.id.circle_layout);
+        circleLayout.setVisibility(View.GONE);
     }
 }

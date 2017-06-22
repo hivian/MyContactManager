@@ -2,17 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.hivian.ft_hangouts.MainActivity">
-    <item
-        android:id="@+id/action_blue"
-        android:orderInCategory="100"
-        android:title="@string/action_blue"
-        
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_purple"
-        android:orderInCategory="100"
-        android:title="@string/action_purple"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_save"
