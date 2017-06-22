@@ -70,11 +70,8 @@ public class MainActivity extends AppCompatActivity {
         final DBHandler db = new DBHandler(this);
         //db.deleteAllContacts(db);
         //db.deleteAllSms(db);
-
         ListView listView;
-
         List<Contact> contacts = db.getAllContacts();
-
         ArrayList <List <String>> allData = new ArrayList<>();
 
         for (Contact cont : contacts) {

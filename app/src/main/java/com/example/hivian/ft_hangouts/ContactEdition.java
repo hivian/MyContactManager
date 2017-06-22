@@ -1,6 +1,7 @@
 package com.example.hivian.ft_hangouts;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,10 +15,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,6 +69,7 @@ public class ContactEdition extends AppCompatActivity {
             if (contact.getImage() != null) {
                 Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
                 imageView.setImageBitmap(imageBm);
+                isImageLoaded = true;
             }
             name.setText(contact.getName());
             lastName.setText(contact.getLastName());
@@ -177,17 +181,16 @@ public class ContactEdition extends AppCompatActivity {
             Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
             toast.show();
         } else if (phone.getText().toString().trim().length() == 0) {
-            Toast toast = Toast.makeText(this, R.string.alert_no_phone, Toast.LENGTH_LONG);
+              Toast toast = Toast.makeText(this, R.string.alert_no_phone, Toast.LENGTH_LONG);
             toast.show();
         } else {
             DBHandler db = new DBHandler(this);
             Contact contactEdit = db.getContact(contact.getId());
 
-            Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-            if (image != null)
-                isImageLoaded = true;
-            if (image) {
+            if (isImageLoaded) {
+                Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
                 contactEdit.setImage(DbBitmapUtility.getBytes(image));
+                isImageLoaded = false;
             } else {
                 contactEdit.setImage(null);
             }
@@ -202,6 +205,13 @@ public class ContactEdition extends AppCompatActivity {
             MainActivity.getAdapter().notifyDataSetChanged();
 
             db.close();
+
+            View view = this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
