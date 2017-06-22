@@ -205,13 +205,7 @@ public class ContactEdition extends AppCompatActivity {
             MainActivity.getAdapter().notifyDataSetChanged();
 
             db.close();
-
-            View view = this.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-
+            Utility.hideKeyboard(this);
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

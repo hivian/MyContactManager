@@ -196,12 +196,7 @@ public class ContactCreation extends AppCompatActivity {
 
             db.close();
 
-            View view = this.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-
+            Utility.hideKeyboard(this);
             MainActivity.getAdapter().notifyDataSetChanged();
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

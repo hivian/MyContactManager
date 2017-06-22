@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -14,12 +15,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.szugyi.circlemenu.view.CircleImageView;
+import com.szugyi.circlemenu.view.CircleLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,12 +47,9 @@ public class ContactInfo extends AppCompatActivity {
         setContentView(R.layout.activity_contact_info);
         getSupportActionBar().setTitle("Options");
 
-        LinearLayout taskBar = (LinearLayout) findViewById(R.id.task_bar);
         if (MainActivity.getPurple()) {
-            taskBar.setBackgroundColor(getResources().getColor(R.color.colorPurpleDark));
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.holo_purple)));
         } else {
-            taskBar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
         }
 
@@ -71,6 +73,26 @@ public class ContactInfo extends AppCompatActivity {
             email.setText(contact.getEmail());
             address.setText(contact.getAddress());
         }
+
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+
+        int action = event.getAction();
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                Log.d("DEBUG", "DOWN");
+            case MotionEvent.ACTION_MOVE:
+                Log.d("DEBUG", "MOVE");
+            case MotionEvent.ACTION_UP:
+                Log.d("DEBUG", "UP");
+            case MotionEvent.ACTION_CANCEL:
+                Log.d("DEBUG", "CANCEL");
+        }
+        // TODO Auto-generated method stub
+        return super.onTouchEvent(event);
     }
 
     @Override

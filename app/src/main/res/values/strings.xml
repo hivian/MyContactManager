@@ -33,4 +33,8 @@
     <string name="alert_no_call_perm">No phone call permission</string>
     <string name="header_sending_sms">Sent :</string>
     <string name="header_received_sms">Received :</string>
+    <string name="menu_sms">Message</string>
+    <string name="menu_call">Call</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
 </resources>

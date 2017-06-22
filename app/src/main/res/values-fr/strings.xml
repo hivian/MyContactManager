@@ -34,4 +34,8 @@
     <string name="alert_no_call_perm">Appels non autorisés</string>
     <string name="header_sending_sms">Envoyé :</string>
     <string name="header_received_sms">Reçu :</string>
+    <string name="menu_sms">Message</string>
+    <string name="menu_call">Appel</string>
+    <string name="menu_edit">Modifier</string>
+    <string name="menu_delete">Delete</string>
 </resources>
