@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -65,12 +67,16 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
             phone.setText(contact.getPhone());
             if (email.getText().equals("")) {
                 email.setTypeface(null, Typeface.ITALIC);
+                email.setTextColor(Color.GRAY);
+                email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f);
                 email.setText(R.string.placeholder_none);
             }
             else
                 email.setText(contact.getEmail());
             if (address.getText().equals("")) {
                 address.setTypeface(null, Typeface.ITALIC);
+                address.setTextColor(Color.GRAY);
+                address.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f);
                 address.setText(R.string.placeholder_none);
             }
             else

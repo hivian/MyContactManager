@@ -11,19 +11,16 @@ public class Contact implements Serializable {
     private Integer _id;
     private byte[] _image;
     private String _name;
-    private String _lastName;
     private String _phone;
     private String _email;
     private String _address;
 
     public Contact() {
-
     }
 
-    public Contact(byte[] image, String name, String lastName, String phone, String email, String address) {
+    public Contact(byte[] image, String name, String phone, String email, String address) {
         this._image = image;
         this._name = name;
-        this._lastName = lastName;
         this._phone = phone;
         this._email = email;
         this._address = address;
@@ -39,10 +36,6 @@ public class Contact implements Serializable {
 
     public void setName(String name) {
         this._name = name;
-    }
-
-    public void setLastName(String lastName) {
-        this._lastName = lastName;
     }
 
     public void setPhone(String phone) {
@@ -67,10 +60,6 @@ public class Contact implements Serializable {
 
     public String getName() {
         return _name;
-    }
-
-    public String getLastName() {
-        return _lastName;
     }
 
     public String getPhone() {

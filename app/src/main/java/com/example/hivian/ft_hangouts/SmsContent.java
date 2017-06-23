@@ -17,7 +17,6 @@ public class SmsContent implements Serializable {
     private Integer _type;
 
     SmsContent() {
-
     }
 
     SmsContent(String header, String content, Integer contactId, Integer type) {

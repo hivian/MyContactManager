@@ -38,7 +38,6 @@ public class ContactEdition extends AppCompatActivity {
     private static String backgroundTime;
     private ImageView imageView;
     private TextView name;
-    private TextView lastName;
     private TextView phone;
     private TextView email;
     private TextView address;
@@ -55,7 +54,6 @@ public class ContactEdition extends AppCompatActivity {
         if (contact != null) {
             imageView = (ImageView) findViewById(R.id.edit_image);
             name = (TextView) findViewById(R.id.edit_name);
-            lastName = (TextView) findViewById(R.id.edit_lastName);
             phone = (TextView) findViewById(R.id.edit_phone);
             email = (TextView) findViewById(R.id.edit_email);
             address = (TextView) findViewById(R.id.edit_address);
@@ -66,7 +64,6 @@ public class ContactEdition extends AppCompatActivity {
                 isImageLoaded = true;
             }
             name.setText(contact.getName());
-            lastName.setText(contact.getLastName());
             phone.setText(contact.getPhone());
             email.setText(contact.getEmail());
             address.setText(contact.getAddress());
@@ -162,7 +159,6 @@ public class ContactEdition extends AppCompatActivity {
     public void saveEditionContact() {
         imageView = (ImageView) findViewById(R.id.edit_image);
         name = (TextView) findViewById(R.id.edit_name);
-        lastName = (TextView) findViewById(R.id.edit_lastName);
         phone = (TextView) findViewById(R.id.edit_phone);
         email = (TextView) findViewById(R.id.edit_email);
         address = (TextView) findViewById(R.id.edit_address);
@@ -186,7 +182,6 @@ public class ContactEdition extends AppCompatActivity {
             }
             isImageLoaded = false;
             contactEdit.setName(name.getText().toString());
-            contactEdit.setLastName(lastName.getText().toString());
             contactEdit.setPhone(phone.getText().toString());
             contactEdit.setEmail(email.getText().toString());
             contactEdit.setAddress(address.getText().toString());

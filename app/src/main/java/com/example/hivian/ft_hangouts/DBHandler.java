@@ -26,7 +26,6 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_IMAGE = "image";
     private static final String KEY_NAME = "name";
-    private static final String KEY_LAST_NAME = "last_name";
     private static final String KEY_PHONE = "phone";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_ADDRESS = "address";
@@ -36,8 +35,8 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String KEY_SMS_TYPE = "sms_type";
     private static final String CONTACTS_TABLE_CREATE =
             "CREATE TABLE " + CONTACTS_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
-                    KEY_IMAGE + " BLOB, " + KEY_NAME + " TEXT, " + KEY_LAST_NAME + " TEXT, " +
-                    KEY_PHONE + " TEXT, " + KEY_EMAIL + " TEXT, " + KEY_ADDRESS + " TEXT)";
+                    KEY_IMAGE + " BLOB, " + KEY_NAME + " TEXT, " + KEY_PHONE + " TEXT, " +
+                    KEY_EMAIL + " TEXT, " + KEY_ADDRESS + " TEXT)";
     private static final String SMS_TABLE_CREATE =
             "CREATE TABLE " + SMS_TABLE + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
                     KEY_SMS_HEADER + " TEXT, " +  KEY_SMS_CONTENT + " TEXT, " +
@@ -70,7 +69,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
         values.put(KEY_IMAGE, contact.getImage());
         values.put(KEY_NAME, contact.getName());
-        values.put(KEY_LAST_NAME, contact.getLastName());
         values.put(KEY_PHONE, contact.getPhone());
         values.put(KEY_EMAIL, contact.getEmail());
         values.put(KEY_ADDRESS, contact.getAddress());
@@ -95,13 +93,13 @@ public class DBHandler extends SQLiteOpenHelper {
     public Contact getContact(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(CONTACTS_TABLE, new String[]
-                { KEY_ID, KEY_IMAGE, KEY_NAME, KEY_LAST_NAME, KEY_PHONE, KEY_EMAIL, KEY_ADDRESS },
+                { KEY_ID, KEY_IMAGE, KEY_NAME, KEY_PHONE, KEY_EMAIL, KEY_ADDRESS },
                 KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
         Contact contact = new Contact(cursor.getBlob(1), cursor.getString(2),
-                cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+                cursor.getString(3), cursor.getString(4), cursor.getString(5));
         contact.setId(cursor.getInt(0));
         cursor.close();
         db.close();
@@ -112,13 +110,13 @@ public class DBHandler extends SQLiteOpenHelper {
     public Contact getContactByName(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(CONTACTS_TABLE, new String[]
-                        { KEY_ID, KEY_IMAGE, KEY_NAME, KEY_LAST_NAME, KEY_PHONE, KEY_EMAIL, KEY_ADDRESS },
+                        { KEY_ID, KEY_IMAGE, KEY_NAME, KEY_PHONE, KEY_EMAIL, KEY_ADDRESS },
                 KEY_NAME + "=?", new String[] { name }, null, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
         Contact contact = new Contact(cursor.getBlob(1), cursor.getString(2),
-                cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+                cursor.getString(3), cursor.getString(4), cursor.getString(5));
         contact.setId(cursor.getInt(0));
         cursor.close();
         db.close();
@@ -130,12 +128,12 @@ public class DBHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(CONTACTS_TABLE, new String[]
-                        { KEY_ID, KEY_IMAGE, KEY_NAME, KEY_LAST_NAME, KEY_PHONE, KEY_EMAIL, KEY_ADDRESS },
+                        { KEY_ID, KEY_IMAGE, KEY_NAME, KEY_PHONE, KEY_EMAIL, KEY_ADDRESS },
                 KEY_PHONE + "=?", new String[] { phone }, null, null, null, null);
         if (!cursor.moveToFirst())
             return null;
         Contact contact = new Contact(cursor.getBlob(1), cursor.getString(2),
-                cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6));
+                cursor.getString(3), cursor.getString(4), cursor.getString(5));
         contact.setId(cursor.getInt(0));
         cursor.close();
         db.close();
@@ -179,10 +177,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 contact.setId(Integer.parseInt(cursor.getString(0)));
                 contact.setImage(cursor.getBlob(1));
                 contact.setName(cursor.getString(2));
-                contact.setLastName(cursor.getString(3));
-                contact.setPhone(cursor.getString(4));
-                contact.setEmail(cursor.getString(5));
-                contact.setAddress(cursor.getString(6));
+                contact.setPhone(cursor.getString(3));
+                contact.setEmail(cursor.getString(4));
+                contact.setAddress(cursor.getString(5));
                 allContacts.add(contact);
             } while (cursor.moveToNext());
         }
@@ -264,7 +261,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
         values.put(KEY_IMAGE, contact.getImage());
         values.put(KEY_NAME, contact.getName());
-        values.put(KEY_LAST_NAME, contact.getLastName());
         values.put(KEY_PHONE, contact.getPhone());
         values.put(KEY_EMAIL, contact.getEmail());
         values.put(KEY_ADDRESS, contact.getAddress());

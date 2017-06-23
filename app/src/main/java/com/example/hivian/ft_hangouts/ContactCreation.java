@@ -44,7 +44,6 @@ public class ContactCreation extends AppCompatActivity {
     private static Boolean isImageLoaded = false;
     private ImageView imageView;
     private EditText name;
-    private EditText lastName;
     private EditText phone;
     private EditText email;
     private EditText address;
@@ -155,7 +154,6 @@ public class ContactCreation extends AppCompatActivity {
         byte[] imageDb;
 
         name = (EditText)findViewById(R.id.name);
-        lastName = (EditText)findViewById(R.id.lastName);
         phone = (EditText)findViewById(R.id.phone);
         email = (EditText)findViewById(R.id.email);
         address = (EditText)findViewById(R.id.address);
@@ -181,7 +179,7 @@ public class ContactCreation extends AppCompatActivity {
                 return ;
             }
 
-            db.addContact(new Contact(imageDb, name.getText().toString(), lastName.getText().toString(),
+            db.addContact(new Contact(imageDb, name.getText().toString(),
                     phone.getText().toString(), email.getText().toString(), address.getText().toString()));
 
             db.close();
