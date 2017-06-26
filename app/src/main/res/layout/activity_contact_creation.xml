@@ -60,13 +60,12 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.20"
                         android:ems="10"
-                        android:id="@+id/lastName"
-                        android:hint="@string/contact_lastName"
+                        android:id="@+id/phone"
+                        android:hint="@string/contact_phone"
                         android:theme="@android:style/Theme.Holo.Light"
                         android:maxLength="20"
-                        android:inputType="textPersonName" />
+                        android:inputType="phone" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -75,21 +74,11 @@
                         />
                 </LinearLayout>
             </LinearLayout>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:ems="10"
-                android:id="@+id/phone"
-                android:hint="@string/contact_phone"
-                android:theme="@android:style/Theme.Holo.Light"
-                android:maxLength="20"
-                android:inputType="phone" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="10dp"
                 android:ems="10"
                 android:id="@+id/email"
                 android:hint="@string/contact_email"

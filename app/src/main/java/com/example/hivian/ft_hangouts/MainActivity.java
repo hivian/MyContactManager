@@ -30,10 +30,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
-    private static Boolean wasInBackground = false;
-    private static String backgroundTime;
     private static CustomAdapter adapter;
-
     public static CustomAdapter getAdapter() {
         return adapter;
     }
@@ -134,23 +131,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (Utility.isAppInBackground(this)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            backgroundTime = sdf.format(new Date());
-            wasInBackground = true;
-        }
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        View parentLayout = findViewById(R.id.content_main);
-
-        if (backgroundTime != null && wasInBackground) {
-            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
-                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            wasInBackground = false;
-        }
     }
 
     public void createContact(View view) {

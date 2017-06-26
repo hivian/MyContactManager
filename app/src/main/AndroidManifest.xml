@@ -32,7 +32,9 @@
         <activity
             android:name=".ContactCreation"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ContactInfo" />
+        <activity
+            android:name=".ContactInfo"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ContactEdition"
             android:windowSoftInputMode="stateHidden" />

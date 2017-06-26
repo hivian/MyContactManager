@@ -125,7 +125,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     // Getting one contact by phone
     public Contact getContactByPhone(String phone) {
-
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(CONTACTS_TABLE, new String[]
                         { KEY_ID, KEY_IMAGE, KEY_NAME, KEY_PHONE, KEY_EMAIL, KEY_ADDRESS },

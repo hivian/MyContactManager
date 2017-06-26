@@ -1,6 +1,9 @@
 package com.example.hivian.ft_hangouts;
 
 import android.Manifest;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +14,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,15 +22,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
+import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import com.szugyi.circlemenu.view.CircleImageView;
 import com.szugyi.circlemenu.view.CircleLayout;
 
@@ -35,29 +45,27 @@ import java.util.Date;
 import java.util.List;
 
 
-public class ContactInfo extends AppCompatActivity implements View.OnClickListener {
-    private static Boolean wasInBackground = false;
-    private static String backgroundTime;
-    private ImageView imageView;
+public class ContactInfo extends AppCompatActivity {
     private TextView name;
     private TextView phone;
-    private TextView email;
-    private TextView address;
+    private ImageView imageMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_info);
         getSupportActionBar().setTitle("Options");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        imageMenu = (ImageView) findViewById(R.id.fab_menu);
 
         Contact contact = (Contact) getIntent().getSerializableExtra("contact");
 
         if (contact != null) {
-            imageView = (ImageView) findViewById(R.id.info_image);
+            ImageView imageView = (ImageView) findViewById(R.id.info_image);
             name = (TextView) findViewById(R.id.info_name);
             phone = (TextView) findViewById(R.id.info_phone);
-            email = (TextView) findViewById(R.id.info_email);
-            address = (TextView) findViewById(R.id.info_address);
+            TextView email = (TextView) findViewById(R.id.info_email);
+            TextView address = (TextView) findViewById(R.id.info_address);
 
             if (contact.getImage() != null) {
                 Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
@@ -65,7 +73,7 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
             }
             name.setText(contact.getName());
             phone.setText(contact.getPhone());
-            if (email.getText().equals("")) {
+            if (contact.getEmail().equals("")) {
                 email.setTypeface(null, Typeface.ITALIC);
                 email.setTextColor(Color.GRAY);
                 email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f);
@@ -73,7 +81,7 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
             }
             else
                 email.setText(contact.getEmail());
-            if (address.getText().equals("")) {
+            if (contact.getAddress().equals("")) {
                 address.setTypeface(null, Typeface.ITALIC);
                 address.setTextColor(Color.GRAY);
                 address.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f);
@@ -81,45 +89,62 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
             }
             else
                 address.setText(contact.getAddress());
-
         }
+        /*FloatingActionButton actionButton = new FloatingActionButton.Builder(this)
+                .setContentView(icon)
+                .build();*/
 
-        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollview_contact_info);
-        scrollView.getChildAt(0).setOnClickListener(this);
+        ImageView rlIcon1 = new ImageView(this);
+        ImageView rlIcon2 = new ImageView(this);
+        ImageView rlIcon3 = new ImageView(this);
+        ImageView rlIcon4 = new ImageView(this);
+        rlIcon1.setImageDrawable(getResources().getDrawable(R.drawable.ic_message_black_75dp));
+        rlIcon2.setImageDrawable(getResources().getDrawable(R.drawable.ic_call_black_75dp));
+        rlIcon3.setImageDrawable(getResources().getDrawable(R.drawable.ic_mode_edit_black_75dp));
+        rlIcon4.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete_black_75dp));
+        //rlIcon1.setBackgroundColor(getResources().getColor(R.color.colorPrimaryTransparent));
+        rlIcon1.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_opacity));
+        rlIcon2.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_opacity));
+        rlIcon3.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_opacity));
+        rlIcon4.setBackgroundDrawable(getResources().getDrawable(R.drawable.circle_opacity));
 
-        CircleLayout circleLayout = (CircleLayout) findViewById(R.id.circle_layout);
-        circleLayout.setOnClickListener(this);
+        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(this);
+        itemBuilder.setLayoutParams(new FrameLayout.LayoutParams(150,150));
+
+        ImageView menuInfo = (ImageView) findViewById(R.id.fab_menu);
+        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+                .addSubActionView(itemBuilder.setContentView(rlIcon1).build())
+                .addSubActionView(itemBuilder.setContentView(rlIcon2).build())
+                .addSubActionView(itemBuilder.setContentView(rlIcon3).build())
+                .addSubActionView(itemBuilder.setContentView(rlIcon4).build())
+                .attachTo(menuInfo)
+                .setStartAngle(100) // A whole circle!
+                .setEndAngle(260)
+                .build();
 
     }
 
-    public void onClick(View v) {
-        // do something when the button is clicked
-        Log.d("DEBUG", "TOUCHED");
-        CircleLayout circleLayout = (CircleLayout) findViewById(R.id.circle_layout);
-        circleLayout.setVisibility(View.VISIBLE);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (Utility.isAppInBackground(this)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            backgroundTime = sdf.format(new Date());
-            wasInBackground = true;
-        }
-
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        View parentLayout = findViewById(R.id.activity_contact_info);
-
-        if (backgroundTime != null && wasInBackground) {
-            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
-                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            wasInBackground = false;
-        }
     }
 
     public void toSmsManager(View view) {
@@ -192,8 +217,10 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
         buttonNegative.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
     }
 
+    public void runMenu(View view) {
+
+    }
+
     public void cancelMenu(View view) {
-        CircleLayout circleLayout = (CircleLayout) findViewById(R.id.circle_layout);
-        circleLayout.setVisibility(View.GONE);
     }
 }

@@ -18,6 +18,7 @@ import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,8 +35,6 @@ public class ContactSms extends AppCompatActivity {
     private BroadcastReceiver deliveryBroadcastReceiver;
     private static final String SMS_SENT = "SMS_SENT";
     private static final String SMS_DELIVERED = "SMS_DELIVERED";
-    private static Boolean wasInBackground = false;
-    private static String backgroundTime;
     private static CustomSmsAdapter adapter;
     public static ListView listView;
     private static Bundle extras;
@@ -57,6 +56,7 @@ public class ContactSms extends AppCompatActivity {
         setContentView(R.layout.activity_contact_sms);
         extras = getIntent().getExtras();
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + extras.getString("name")  + "</font>"));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         smsBody = (EditText) findViewById(R.id.sms_body);
 
@@ -116,7 +116,6 @@ public class ContactSms extends AppCompatActivity {
         adapter = new CustomSmsAdapter(this, allData);
         listView.setAdapter(adapter);
 
-
         final EditText smsBody = (EditText) findViewById(R.id.sms_body);
         final ImageButton smsSender = (ImageButton) findViewById(R.id.sms_sender);
         smsBody.addTextChangedListener(new TextWatcher() {
@@ -142,31 +141,32 @@ public class ContactSms extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, ContactInfo.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                intent.putExtra("contact", contact);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onResume(){
         super.onResume();
-        View parentLayout = findViewById(R.id.activity_contact_sms);
-
         registerReceiver(deliveryBroadcastReceiver, new IntentFilter(SMS_DELIVERED));
         registerReceiver(sendBroadcastReceiver , new IntentFilter(SMS_SENT));
-
-        if (backgroundTime != null && wasInBackground) {
-            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
-                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            wasInBackground = false;
-        }
     }
 
     @Override
     protected void onStop()
     {
         super.onStop();
-        if (Utility.isAppInBackground(this)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            backgroundTime = sdf.format(new Date());
-            wasInBackground = true;
-        }
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if (pm.isScreenOn() == true) {
+        if (pm.isScreenOn()) {
             unregisterReceiver(sendBroadcastReceiver);
             unregisterReceiver(deliveryBroadcastReceiver);
         }

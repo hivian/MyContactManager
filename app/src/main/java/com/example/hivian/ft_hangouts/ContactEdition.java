@@ -1,8 +1,10 @@
 package com.example.hivian.ft_hangouts;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -20,8 +22,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +38,6 @@ public class ContactEdition extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static Boolean isImageLoaded = false;
-    private static Boolean wasInBackground = false;
-    private static String backgroundTime;
     private ImageView imageView;
     private TextView name;
     private TextView phone;
@@ -48,6 +50,7 @@ public class ContactEdition extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_edition);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.edit_contact)  + "</font>"));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         contact = (Contact) getIntent().getSerializableExtra("contact");
 
@@ -81,18 +84,23 @@ public class ContactEdition extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-
-        if (id == R.id.action_save) {
-            saveEditionContact();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, ContactInfo.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                intent.putExtra("contact", contact);
+                startActivity(intent);
+                return true;
+            case R.id.action_save:
+                saveEditionContact();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -123,24 +131,11 @@ public class ContactEdition extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (Utility.isAppInBackground(this)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            backgroundTime = sdf.format(new Date());
-            wasInBackground = true;
-        }
-
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        View parentLayout = findViewById(R.id.activity_contact_edition);
-
-        if (backgroundTime != null && wasInBackground) {
-            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
-                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            wasInBackground = false;
-        }
     }
 
     public void browseEditionFolder(View view) {

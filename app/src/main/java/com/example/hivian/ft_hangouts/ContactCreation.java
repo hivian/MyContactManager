@@ -39,8 +39,6 @@ import static com.example.hivian.ft_hangouts.DbBitmapUtility.getBytes;
 public class ContactCreation extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
-    private static Boolean wasInBackground = false;
-    private static String backgroundTime;
     private static Boolean isImageLoaded = false;
     private ImageView imageView;
     private EditText name;
@@ -54,6 +52,7 @@ public class ContactCreation extends AppCompatActivity {
         setContentView(R.layout.activity_contact_creation);
         getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.create_contact)  + "</font>"));
         imageView = (ImageView) findViewById(R.id.imageView);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -69,13 +68,18 @@ public class ContactCreation extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_save) {
-            saveContact();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            case R.id.action_save:
+                saveContact();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -115,24 +119,11 @@ public class ContactCreation extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (Utility.isAppInBackground(this)) {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            backgroundTime = sdf.format(new Date());
-            wasInBackground = true;
-        }
-
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        View parentLayout = findViewById(R.id.activity_contact_creation);
-
-        if (backgroundTime != null && wasInBackground) {
-            Snackbar.make(parentLayout, getResources().getString(R.string.alert_background)
-                    + " " + backgroundTime, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            wasInBackground = false;
-        }
     }
 
     public void browseFolder(View view) {
