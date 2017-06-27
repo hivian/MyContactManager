@@ -16,9 +16,7 @@
             android:layout_height="wrap_content" >
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-
+                android:layout_height="match_parent" >
                 <ImageView
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
@@ -52,8 +50,6 @@
                     android:shadowColor="@color/colorDark"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white" />
-
-
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"
@@ -84,6 +80,7 @@
                     android:maxLines="1"
                     android:scrollHorizontally="true"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:theme="@android:style/Theme.Holo.Light" />
             </LinearLayout>
             <LinearLayout
@@ -109,6 +106,7 @@
                     android:maxLines="1"
                     android:scrollHorizontally="true"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:gravity="center_vertical"
                     android:theme="@android:style/Theme.Holo.Light" />
             </LinearLayout>
@@ -135,12 +133,13 @@
                     android:maxLines="1"
                     android:scrollHorizontally="true"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:theme="@android:style/Theme.Holo.Light" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <ImageView
-        android:id="@+id/fab_menu"
+        android:id="@+id/info_menu"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:padding="5dp"
@@ -149,9 +148,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="250dp"
         android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/circle"
         android:src="@drawable/ic_menu_black_75dp"
         android:tint="@android:color/white"
-        android:onClick="runMenu"
-        />
+        android:onClick="runMenu" />
 </RelativeLayout>
