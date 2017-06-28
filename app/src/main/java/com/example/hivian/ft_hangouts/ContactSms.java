@@ -145,7 +145,7 @@ public class ContactSms extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent(this, ContactInfo.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("contact", contact);
                 startActivity(intent);
                 return true;
