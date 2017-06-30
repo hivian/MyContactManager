@@ -16,10 +16,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,10 +34,11 @@ import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 import java.util.List;
 
 
-public class ContactInfo extends AppCompatActivity implements View.OnClickListener {
+public class ContactInfo extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
     private TextView name;
     private TextView phone;
-    private ImageView imageMenu;
+    private FloatingActionMenu actionMenu;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +48,7 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
             getSupportActionBar().setTitle("Options");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        imageMenu = (ImageView) findViewById(R.id.info_menu);
+        ImageView imageMenu = (ImageView) findViewById(R.id.info_menu);
 
         Contact contact = (Contact) getIntent().getSerializableExtra("contact");
 
@@ -77,6 +83,15 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
                 address.setText(contact.getAddress());
         }
         initInfoMenu();
+        scrollView = (ScrollView) findViewById(R.id.scrollview_contact_info);
+        scrollView.setOnTouchListener(this);
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        actionMenu.close(true);
+        return false;
     }
 
     @Override
@@ -147,7 +162,7 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
         itemBuilder.setLayoutParams(new FrameLayout.LayoutParams(160,160));
 
         ImageView menuInfo = (ImageView) findViewById(R.id.info_menu);
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(this)
+        actionMenu = new FloatingActionMenu.Builder(this)
                 .addSubActionView(itemBuilder.setContentView(menuIcon1).build())
                 .addSubActionView(itemBuilder.setContentView(menuIcon2).build())
                 .addSubActionView(itemBuilder.setContentView(menuIcon3).build())

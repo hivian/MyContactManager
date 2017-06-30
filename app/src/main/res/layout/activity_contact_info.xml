@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
+                android:paddingRight="@dimen/activity_horizontal_margin" >
                 <ImageView
                     android:id="@+id/info_icon1"
                     android:layout_width="26dp"
@@ -136,21 +136,19 @@
                     android:layout_marginStart="10dp"
                     android:theme="@android:style/Theme.Holo.Light" />
             </LinearLayout>
+            <ImageView
+                android:id="@+id/info_menu"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:padding="5dp"
+                android:layout_gravity="end"
+                android:elevation="10dp"
+                android:layout_marginTop="-225dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/circle"
+                android:src="@drawable/ic_menu_black_75dp"
+                android:tint="@android:color/white" />
         </LinearLayout>
     </ScrollView>
-    <ImageView
-        android:id="@+id/info_menu"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:padding="5dp"
-        android:elevation="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="250dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/circle"
-        android:src="@drawable/ic_menu_black_75dp"
-        android:tint="@android:color/white"
-        android:onClick="runMenu" />
 </RelativeLayout>
