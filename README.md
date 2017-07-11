@@ -8,7 +8,7 @@ Android studio App : phone book and messaging
 
 <h4>Previews:</h4>
 
-<table >
+<table cellspacing="0" cellpadding="0">
   <tr>
     <td><img src="https://github.com/hivian/MyContactManager/blob/master/list_screen.png" width="350"></td>
     <td><img src="https://github.com/hivian/MyContactManager/blob/master/info_screen.png" width="350"></td>
