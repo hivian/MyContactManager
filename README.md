@@ -10,8 +10,8 @@ Android studio App : phone book and messaging
 
 <table >
   <tr>
-    <td><img src="https://github.com/hivian/MyContactManager/blob/master/list_screen.png" width="300"></td>
-    <td><img src="https://github.com/hivian/MyContactManager/blob/master/list_screen.png" width="300"></td>
-    <td><img src="https://github.com/hivian/MyContactManager/blob/master/list_screen.png" width="300"></td>
+    <td><img src="https://github.com/hivian/MyContactManager/blob/master/list_screen.png" width="350"></td>
+    <td><img src="https://github.com/hivian/MyContactManager/blob/master/info_screen.png" width="350"></td>
+    <td><img src="https://github.com/hivian/MyContactManager/blob/master/edit_screen.png" width="350"></td>
   </tr>
 </table>
