@@ -5,3 +5,9 @@ Android studio App : phone book and messaging
 - SMS sender/receiver + chat history
 - Phone call
 - Customizable interface
+
+<h4>Previews:</h4>
+
+![img](list_screen.png?raw=true)
+![img](info_screen.png?raw=true)
+![img](edit_screen.png?raw=true)
