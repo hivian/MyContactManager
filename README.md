@@ -9,5 +9,6 @@ Android studio App : phone book and messaging
 <h4>Previews:</h4>
 
 ![img](list_screen.png?raw=true)
+<img src="https://github.com/list_screen.png" width="48">
 ![img](info_screen.png?raw=true)
 ![img](edit_screen.png?raw=true)
