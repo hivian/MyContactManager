@@ -20,6 +20,7 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -55,8 +56,11 @@ public class ContactSms extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_sms);
         extras = getIntent().getExtras();
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + extras.getString("name")  + "</font>"));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + extras.getString("name") + "</font>"));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        Utility.changeStatusBarColor(this);
 
         smsBody = (EditText) findViewById(R.id.sms_body);
 

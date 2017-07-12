@@ -18,12 +18,9 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +45,7 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
             getSupportActionBar().setTitle("Options");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        ImageView imageMenu = (ImageView) findViewById(R.id.info_menu);
+        Utility.changeStatusBarColor(this);
 
         Contact contact = (Contact) getIntent().getSerializableExtra("contact");
 

@@ -50,9 +50,12 @@ public class ContactCreation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_creation);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.create_contact)  + "</font>"));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.create_contact) + "</font>"));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
         imageView = (ImageView) findViewById(R.id.imageView);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Utility.changeStatusBarColor(this);
     }
 
     @Override

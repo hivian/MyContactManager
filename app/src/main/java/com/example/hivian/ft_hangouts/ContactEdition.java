@@ -49,8 +49,11 @@ public class ContactEdition extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_edition);
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.edit_contact)  + "</font>"));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.edit_contact) + "</font>"));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        Utility.changeStatusBarColor(this);
 
         contact = (Contact) getIntent().getSerializableExtra("contact");
 

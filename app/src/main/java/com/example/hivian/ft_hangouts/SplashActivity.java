@@ -3,6 +3,7 @@ package com.example.hivian.ft_hangouts;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,6 +22,7 @@ public class SplashActivity extends Activity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         splashTimer = new Timer();
         splashTimer.schedule(new TimerTask()

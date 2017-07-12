@@ -2,6 +2,9 @@ package com.example.hivian.ft_hangouts;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,11 +65,13 @@ public class CustomSmsAdapter extends BaseAdapter {
         TableRow.LayoutParams params2 = new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT);
         text2.setText(data.get(position).get(1));
+        GradientDrawable gradientDrawable = (GradientDrawable)layout.getBackground();
         if (Integer.valueOf(data.get(position).get(2)) == SmsContent.SENT) {
             params1.gravity = Gravity.END;
             params2.gravity = Gravity.END;
             layout.setLayoutParams(params1);
-            layout.setBackgroundColor(Color.WHITE);
+            layout.setBackgroundResource(R.drawable.corner_sms);
+            gradientDrawable.setColor(Color.WHITE);
             layout.setGravity(Gravity.END);
             text1.setLayoutParams(params2);
             text2.setLayoutParams(params2);
@@ -76,7 +81,8 @@ public class CustomSmsAdapter extends BaseAdapter {
             params1.gravity = Gravity.START;
             params2.gravity = Gravity.START;
             layout.setLayoutParams(params1);
-            layout.setBackgroundColor(parent.getResources().getColor(R.color.colorYellow));
+            gradientDrawable.setColor(parent.getResources().getColor(R.color.colorYellow));
+            layout.setBackgroundResource(R.drawable.corner_sms);
             text1.setLayoutParams(params2);
             text2.setLayoutParams(params2);
             text1.setText(parent.getResources().getString(R.string.header_received_sms)
