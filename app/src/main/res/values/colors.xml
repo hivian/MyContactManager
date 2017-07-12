@@ -8,4 +8,6 @@
     <color name="colorDark">#000000</color>
     <color name="colorLightGray">#EDEDED</color>
     <color name="colorPurpleDark">#7D26CD</color>
+    <color name="colorOrange">#E99F02</color>
+    <color name="colorGreen">#8BC24A</color>
 </resources>

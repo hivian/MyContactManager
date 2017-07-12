@@ -58,20 +58,23 @@ public class CustomSmsAdapter extends BaseAdapter {
         if (vi == null)
             vi = inflater.inflate(R.layout.row_sms,  null);
         LinearLayout layout = (LinearLayout) vi.findViewById(R.id.smsHeader_container);
+        GradientDrawable gradientDrawable;
         TextView text1 = (TextView) vi.findViewById(R.id.sms_header);
         TextView text2 = (TextView) vi.findViewById(R.id.sms_content);
         LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TableRow.LayoutParams params2 = new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT);
+
         text2.setText(data.get(position).get(1));
-        GradientDrawable gradientDrawable = (GradientDrawable)layout.getBackground();
         if (Integer.valueOf(data.get(position).get(2)) == SmsContent.SENT) {
             params1.gravity = Gravity.END;
             params2.gravity = Gravity.END;
             layout.setLayoutParams(params1);
             layout.setBackgroundResource(R.drawable.corner_sms);
-            gradientDrawable.setColor(Color.WHITE);
+            gradientDrawable = (GradientDrawable)layout.getBackground();
+            gradientDrawable.setColor(parent.getResources().getColor(R.color.colorGreen));
+            layout.setBackground(gradientDrawable);
             layout.setGravity(Gravity.END);
             text1.setLayoutParams(params2);
             text2.setLayoutParams(params2);
@@ -81,8 +84,10 @@ public class CustomSmsAdapter extends BaseAdapter {
             params1.gravity = Gravity.START;
             params2.gravity = Gravity.START;
             layout.setLayoutParams(params1);
-            gradientDrawable.setColor(parent.getResources().getColor(R.color.colorYellow));
             layout.setBackgroundResource(R.drawable.corner_sms);
+            gradientDrawable = (GradientDrawable)layout.getBackground();
+            gradientDrawable.setColor(parent.getResources().getColor(R.color.colorOrange));
+            layout.setBackground(gradientDrawable);
             text1.setLayoutParams(params2);
             text2.setLayoutParams(params2);
             text1.setText(parent.getResources().getString(R.string.header_received_sms)
