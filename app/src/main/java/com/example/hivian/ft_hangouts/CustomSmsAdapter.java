@@ -1,10 +1,8 @@
 package com.example.hivian.ft_hangouts;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,17 +65,18 @@ public class CustomSmsAdapter extends BaseAdapter {
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT);
 
         text2.setText(data.get(position).get(1));
-        if (Integer.valueOf(data.get(position).get(2)) == SmsContent.SENT) {
+        if (Integer.valueOf(data.get(position).get(2)).equals(SmsContent.SENT)) {
             params1.gravity = Gravity.END;
             params2.gravity = Gravity.END;
             layout.setLayoutParams(params1);
             layout.setBackgroundResource(R.drawable.corner_sms);
             gradientDrawable = (GradientDrawable)layout.getBackground();
-            gradientDrawable.setColor(parent.getResources().getColor(R.color.colorGreen));
+            gradientDrawable.setColor(ContextCompat.getColor(context, R.color.colorOrange));
             layout.setBackground(gradientDrawable);
             layout.setGravity(Gravity.END);
             text1.setLayoutParams(params2);
             text2.setLayoutParams(params2);
+            text2.setTextColor(ContextCompat.getColor(context, R.color.colorDarkBlue));
             text1.setText(parent.getResources().getString(R.string.header_sending_sms)
                     + " " + data.get(position).get(0));
         } else {
@@ -86,10 +85,11 @@ public class CustomSmsAdapter extends BaseAdapter {
             layout.setLayoutParams(params1);
             layout.setBackgroundResource(R.drawable.corner_sms);
             gradientDrawable = (GradientDrawable)layout.getBackground();
-            gradientDrawable.setColor(parent.getResources().getColor(R.color.colorOrange));
+            gradientDrawable.setColor(ContextCompat.getColor(context, R.color.colorLightBlue));
             layout.setBackground(gradientDrawable);
             text1.setLayoutParams(params2);
             text2.setLayoutParams(params2);
+            text2.setTextColor(ContextCompat.getColor(context, R.color.colorRed));
             text1.setText(parent.getResources().getString(R.string.header_received_sms)
                     + " " + data.get(position).get(0));
         }
