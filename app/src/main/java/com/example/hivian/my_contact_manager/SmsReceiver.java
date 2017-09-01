@@ -1,10 +1,15 @@
-package com.example.hivian.ft_hangouts;
+package com.example.hivian.my_contact_manager;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,11 +52,13 @@ public class SmsReceiver extends BroadcastReceiver {
                 if (contact == null) {
                     phone = messages[0].getOriginatingAddress().replace("+33", "0");
                     contact = db.getContactByPhone(phone);
-                    if (contact == null)
-                        return ;
+                    if (contact == null) {
+                        db.addContact(new Contact(null, phone, phone, "", ""));
+                    }
                 }
 
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                contact = db.getContactByPhone(phone);
                 db.addSms(new SmsContent(sdf.format(new Date()), message, contact.getId(), SmsContent.RECEIVED));
 
                 allData = new ArrayList<>();
@@ -63,8 +70,15 @@ public class SmsReceiver extends BroadcastReceiver {
                     elem.add(sms.getType().toString());
                     allData.add(elem);
                 }
-                ContactSms.setAdapter(new CustomSmsAdapter(context, allData));
-                ContactSms.listView.setAdapter(ContactSms.getAdapter());
+                if (ContactSms.getAdapter() != null) {
+                    ContactSms.setAdapter(new CustomSmsAdapter(context, allData));
+                    ContactSms.listView.setAdapter(ContactSms.getAdapter());
+                }
+
+                Intent i = new Intent(context, SmsNotificationService.class);
+                i.putExtra("ContentTitle", phone);
+                i.putExtra("ContentMessage", message);
+                context.startService(i);
             }
             db.close();
         }

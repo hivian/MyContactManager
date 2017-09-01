@@ -1,4 +1,4 @@
-package com.example.hivian.ft_hangouts;
+package com.example.hivian.my_contact_manager;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -21,7 +21,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import static com.example.hivian.ft_hangouts.DbBitmapUtility.getBytes;
+import static com.example.hivian.my_contact_manager.DbBitmapUtility.getBytes;
 
 
 public class ContactCreation extends AppCompatActivity {

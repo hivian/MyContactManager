@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.hivian.ft_hangouts">
+    package="com.example.hivian.my_contact_manager">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -17,7 +17,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.example.hivian.my_contact_manager.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,27 +25,29 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.hivian.my_contact_manager.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ContactCreation"
+            android:name="com.example.hivian.my_contact_manager.ContactCreation"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ContactInfo"
+            android:name="com.example.hivian.my_contact_manager.ContactInfo"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ContactEdition"
+            android:name="com.example.hivian.my_contact_manager.ContactEdition"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ContactSms"
+            android:name="com.example.hivian.my_contact_manager.ContactSms"
             android:windowSoftInputMode="stateHidden" />
-        <receiver android:name=".SmsReceiver" android:enabled="true">
+        <receiver android:name="com.example.hivian.my_contact_manager.SmsReceiver" android:enabled="true">
             <intent-filter android:priority="2147483647" >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+        <service android:name="com.example.hivian.my_contact_manager.SmsNotificationService" >
+        </service>
     </application>
 
 </manifest>

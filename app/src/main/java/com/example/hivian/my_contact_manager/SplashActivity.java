@@ -1,4 +1,4 @@
-package com.example.hivian.ft_hangouts;
+package com.example.hivian.my_contact_manager;
 
 import android.app.Activity;
 import android.content.Intent;
