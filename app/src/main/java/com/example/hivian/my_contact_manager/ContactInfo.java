@@ -36,6 +36,7 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
     private TextView phone;
     private FloatingActionMenu actionMenu;
     private ScrollView scrollView;
+    private DBHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

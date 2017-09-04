@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static CustomAdapter getAdapter() {
         return adapter;
     }
+    private DBHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +38,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>Contacts</font>"));
         }
 
-        //this.deleteDatabase("DB");
-        final DBHandler db = new DBHandler(this);
-        //db.deleteAllContacts(db);
-        //db.deleteAllSms(db);
+        db = new DBHandler(this);
         ListView listView;
         List<Contact> contacts = db.getAllContacts();
         ArrayList <List <String>> allData = new ArrayList<>();
@@ -68,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        db.close();
         checkPermissions();
         Utility.changeStatusBarColor(this);
     }
@@ -123,19 +120,15 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-    }
-
     public void createContact(View view) {
         Intent intent = new Intent(this, ContactCreation.class);
 
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        db.close();
+        super.onDestroy();
     }
 }

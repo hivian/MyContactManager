@@ -57,7 +57,7 @@ public class SmsReceiver extends BroadcastReceiver {
                     }
                 }
 
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat sdf = new SimpleDateFormat("y/M/d HH:mm:ss");
                 contact = db.getContactByPhone(phone);
                 db.addSms(new SmsContent(sdf.format(new Date()), message, contact.getId(), SmsContent.RECEIVED));
 
@@ -76,8 +76,8 @@ public class SmsReceiver extends BroadcastReceiver {
                 }
 
                 Intent i = new Intent(context, SmsNotificationService.class);
-                i.putExtra("ContentTitle", phone);
-                i.putExtra("ContentMessage", message);
+                i.putExtra("contentTitle", contact.getName());
+                i.putExtra("contentMessage", message);
                 context.startService(i);
             }
             db.close();

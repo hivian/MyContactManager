@@ -41,9 +41,17 @@ public class DBHandler extends SQLiteOpenHelper {
                     KEY_SMS_HEADER + " TEXT, " +  KEY_SMS_CONTENT + " TEXT, " +
                     KEY_CONTACT_ID + " INTEGER," + KEY_SMS_TYPE + " INTEGER)";
 
+    private static DBHandler dbInstance = null;
 
-    DBHandler(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+    public static DBHandler getInstance(Context context) {
+        if (dbInstance == null) {
+            dbInstance = new DBHandler(context, DB_NAME, DB_VERSION);
+        }
+        return dbInstance;
+    }
+
+    DBHandler(Context context, String dbName, int dbVersion) {
+        super(context, dbName, null, dbVersion);
     }
 
     @Override

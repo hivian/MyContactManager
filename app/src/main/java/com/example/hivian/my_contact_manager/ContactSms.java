@@ -14,6 +14,7 @@ import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ContactSms extends AppCompatActivity {
 
@@ -37,6 +39,7 @@ public class ContactSms extends AppCompatActivity {
     private EditText smsBody;
     private ArrayList< List<String> > allData;
     private Contact contact;
+    private DBHandler db;
 
     public static CustomSmsAdapter getAdapter() {
         return adapter;
@@ -100,7 +103,7 @@ public class ContactSms extends AppCompatActivity {
         registerReceiver(deliveryBroadcastReceiver, new IntentFilter(SMS_DELIVERED));
         registerReceiver(sendBroadcastReceiver , new IntentFilter(SMS_SENT));
 
-        DBHandler db = new DBHandler(this);
+        db = new DBHandler(this);
         contact = db.getContactByName(extras.getString("name"));
         List<SmsContent> allSms = db.getAllSmsFromContact(contact.getId());
         listView = (ListView) findViewById(R.id.listView_sms);
@@ -181,7 +184,7 @@ public class ContactSms extends AppCompatActivity {
         PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_SENT), 0);
         PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_DELIVERED), 0);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("y/M/d HH:mm:ss");
         SmsContent sms = new SmsContent(sdf.format(new Date()), smsBody.getText().toString(),
                 contact.getId(), SmsContent.SENT);
         db.addSms(sms);
@@ -206,6 +209,11 @@ public class ContactSms extends AppCompatActivity {
         smsManager.sendTextMessage(phone, null, smsBody.getText().toString(),
                 sentPendingIntent, deliveredPendingIntent);
         smsBody.setText("");
+    }
+
+    @Override
+    protected void onDestroy() {
         db.close();
+        super.onDestroy();
     }
 }
