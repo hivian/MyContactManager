@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.utilities;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.example.hivian.my_contact_manager.R;
 
 import java.util.List;
 
@@ -38,7 +40,6 @@ public class Utility {
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
-
             final int halfHeight = height / 2;
             final int halfWidth = width / 2;
 
@@ -68,7 +69,7 @@ public class Utility {
     }
 
     public static void changeStatusBarColor(Activity activity) {
-        if (Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
 
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

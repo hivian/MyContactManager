@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -7,6 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+
+import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.views.ContactSmsActivity;
+import com.example.hivian.my_contact_manager.models.db.DBHandler;
+import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
+import com.example.hivian.my_contact_manager.R;
 
 /**
  * Created by hivian on 9/1/17.
@@ -17,7 +23,7 @@ public class SmsNotificationService extends IntentService {
 
     public SmsNotificationService() {
         super("smsService");
-        db.getReadableDatabase();
+        db = DBHandler.getInstance(this);
     }
 
     @Override
@@ -33,14 +39,14 @@ public class SmsNotificationService extends IntentService {
                 .setContentTitle(contact != null ? contact.getName() : contentTitle)
                 .setContentText(contentMessage)
                 .setSmallIcon(R.drawable.ic_message_white_24dp)
-                .setLargeIcon(contact.getImage() != null ? DbBitmapUtility.getImage(contact.getImage()) : null)
+                .setLargeIcon(contact.getImage() != null ? BitmapUtility.getImage(contact.getImage()) : null)
                 .setContentIntent(pIntent)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setOngoing(true);
 
-        Intent smsIntent = new Intent(this, ContactSms.class);
+        Intent smsIntent = new Intent(this, ContactSmsActivity.class);
         smsIntent.putExtra("name", contact.getName());
         smsIntent.putExtra("phone", contact.getPhone());
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
@@ -53,9 +59,4 @@ public class SmsNotificationService extends IntentService {
 
     }
 
-    @Override
-    public void onDestroy() {
-        db.close();
-        super.onDestroy();
-    }
 }

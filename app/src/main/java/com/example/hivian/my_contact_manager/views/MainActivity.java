@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.views;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -15,6 +15,13 @@ import android.content.Intent;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.hivian.my_contact_manager.R;
+import com.example.hivian.my_contact_manager.adapters.CustomAdapter;
+import com.example.hivian.my_contact_manager.utilities.Utility;
+import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.models.db.DBHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>Contacts</font>"));
         }
 
-        db = new DBHandler(this);
+        db = DBHandler.getInstance(this);
         ListView listView;
         List<Contact> contacts = db.getAllContacts();
         ArrayList <List <String>> allData = new ArrayList<>();
@@ -61,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Contact contact = db.getContactByName(name);
 
-                Intent intent = new Intent(MainActivity.this, ContactInfo.class);
+                Intent intent = new Intent(MainActivity.this, ContactInfoActivity.class);
                 intent.putExtra("contact", contact);
                 startActivity(intent);
             }
@@ -71,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkPermissions() {
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int checkStoragePermission = ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE);
             int checkSendSmsPermission = ContextCompat.checkSelfPermission(this,
@@ -115,20 +122,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     public void createContact(View view) {
-        Intent intent = new Intent(this, ContactCreation.class);
-
+        Intent intent = new Intent(this, ContactCreationActivity.class);
         startActivity(intent);
     }
 
-    @Override
-    protected void onDestroy() {
-        db.close();
-        super.onDestroy();
-    }
 }

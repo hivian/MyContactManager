@@ -1,19 +1,23 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.receivers;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.util.Log;
 
-import java.text.SimpleDateFormat;
+import com.example.hivian.my_contact_manager.adapters.CustomSmsAdapter;
+import com.example.hivian.my_contact_manager.views.ContactSmsActivity;
+import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.models.Sms;
+import com.example.hivian.my_contact_manager.models.db.DBHandler;
+import com.example.hivian.my_contact_manager.services.SmsNotificationService;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by hivian on 2/1/17.
@@ -22,7 +26,7 @@ import java.util.List;
 public class SmsReceiver extends BroadcastReceiver {
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     private ArrayList<List<String>> allData;
-    List<SmsContent> allSms;
+    List<Sms> allSms;
     Contact contact;
     private String phone;
     private String message;
@@ -31,7 +35,7 @@ public class SmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(SMS_RECEIVED)) {
-            DBHandler db = new DBHandler(context);
+            DBHandler db = DBHandler.getInstance(context);
 
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
@@ -57,22 +61,23 @@ public class SmsReceiver extends BroadcastReceiver {
                     }
                 }
 
-                SimpleDateFormat sdf = new SimpleDateFormat("y/M/d HH:mm:ss");
+                DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+                        DateFormat.MEDIUM, Locale.getDefault());
                 contact = db.getContactByPhone(phone);
-                db.addSms(new SmsContent(sdf.format(new Date()), message, contact.getId(), SmsContent.RECEIVED));
+                db.addSms(new Sms(df.format(new Date()), message, contact.getId(), Sms.RECEIVED));
 
                 allData = new ArrayList<>();
                 allSms = db.getAllSmsFromContact(contact.getId());
-                for (SmsContent sms : allSms) {
+                for (Sms sms : allSms) {
                     ArrayList<String> elem = new ArrayList<>();
                     elem.add(sms.getHeader());
                     elem.add(sms.getContent());
                     elem.add(sms.getType().toString());
                     allData.add(elem);
                 }
-                if (ContactSms.getAdapter() != null) {
-                    ContactSms.setAdapter(new CustomSmsAdapter(context, allData));
-                    ContactSms.listView.setAdapter(ContactSms.getAdapter());
+                if (ContactSmsActivity.getAdapter() != null) {
+                    ContactSmsActivity.setAdapter(new CustomSmsAdapter(context, allData));
+                    ContactSmsActivity.listView.setAdapter(ContactSmsActivity.getAdapter());
                 }
 
                 Intent i = new Intent(context, SmsNotificationService.class);
@@ -80,7 +85,6 @@ public class SmsReceiver extends BroadcastReceiver {
                 i.putExtra("contentMessage", message);
                 context.startService(i);
             }
-            db.close();
         }
     }
 }

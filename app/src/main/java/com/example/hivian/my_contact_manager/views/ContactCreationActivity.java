@@ -1,7 +1,6 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.views;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -11,56 +10,44 @@ import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.content.Intent;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hivian.my_contact_manager.R;
+import com.example.hivian.my_contact_manager.utilities.Utility;
+import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.models.db.DBHandler;
 
-public class ContactEdition extends AppCompatActivity {
+import static com.example.hivian.my_contact_manager.utilities.BitmapUtility.getBytes;
+
+
+public class ContactCreationActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static Boolean isImageLoaded = false;
     private ImageView imageView;
-    private TextView name;
-    private TextView phone;
-    private TextView email;
-    private TextView address;
-    private Contact contact;
+    private DBHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_edition);
+        setContentView(R.layout.activity_contact_creation);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.edit_contact) + "</font>"));
+            getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.create_contact) + "</font>"));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        db = DBHandler.getInstance(this);
+
+        imageView = (ImageView) findViewById(R.id.imageView);
         Utility.changeStatusBarColor(this);
-
-        contact = (Contact) getIntent().getSerializableExtra("contact");
-
-        if (contact != null) {
-            imageView = (ImageView) findViewById(R.id.edit_image);
-            name = (TextView) findViewById(R.id.edit_name);
-            phone = (TextView) findViewById(R.id.edit_phone);
-            email = (TextView) findViewById(R.id.edit_email);
-            address = (TextView) findViewById(R.id.edit_address);
-
-            if (contact.getImage() != null) {
-                Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
-                imageView.setImageBitmap(imageBm);
-                isImageLoaded = true;
-            }
-            name.setText(contact.getName());
-            phone.setText(contact.getPhone());
-            email.setText(contact.getEmail());
-            address.setText(contact.getAddress());
-        }
     }
 
     @Override
@@ -74,18 +61,16 @@ public class ContactEdition extends AppCompatActivity {
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, ContactInfo.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("contact", contact);
                 startActivity(intent);
                 return true;
             case R.id.action_save:
-                saveEditionContact();
+                saveContact();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -96,7 +81,6 @@ public class ContactEdition extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        imageView = (ImageView) findViewById(R.id.edit_image);
         if (resultCode == RESULT_CANCELED) {
             imageView.setImageResource(android.R.drawable.ic_menu_camera);
             isImageLoaded = false;
@@ -110,25 +94,21 @@ public class ContactEdition extends AppCompatActivity {
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
+            final String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            imageView.setImageBitmap(Utility.decodeSampledBitmapFromResource(picturePath, 100, 100));
+            imageView.post(new Runnable() {
+                @Override
+                public void run() {
+                    imageView.setImageBitmap(Utility.decodeSampledBitmapFromResource(picturePath, 100, 100));
+                    Toast.makeText(ContactCreationActivity.this, R.string.alert_image_load, Toast.LENGTH_SHORT).show();
+                }
+            });
             isImageLoaded = true;
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-    }
-
-    public void browseEditionFolder(View view) {
+    public void browseFolder(View view) {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -141,41 +121,39 @@ public class ContactEdition extends AppCompatActivity {
         }
     }
 
-    public void saveEditionContact() {
-        imageView = (ImageView) findViewById(R.id.edit_image);
-        name = (TextView) findViewById(R.id.edit_name);
-        phone = (TextView) findViewById(R.id.edit_phone);
-        email = (TextView) findViewById(R.id.edit_email);
-        address = (TextView) findViewById(R.id.edit_address);
+    private void saveContact() {
+        ImageView imageView = (ImageView)findViewById(R.id.imageView);
+        Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+        byte[] imageDb;
 
+        EditText name = (EditText) findViewById(R.id.name);
+        EditText phone = (EditText) findViewById(R.id.phone);
+        EditText email = (EditText) findViewById(R.id.email);
+        EditText address = (EditText) findViewById(R.id.address);
+
+        if (isImageLoaded) {
+            imageDb = getBytes(image);
+            isImageLoaded = false;
+        } else {
+            imageDb = null;
+        }
         if (name.getText().toString().trim().length() == 0) {
             Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
             toast.show();
         } else if (phone.getText().toString().trim().length() == 0) {
-              Toast toast = Toast.makeText(this, R.string.alert_no_phone, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, R.string.alert_no_phone, Toast.LENGTH_LONG);
             toast.show();
         } else {
-            DBHandler db = new DBHandler(this);
-            Contact contactEdit = db.getContact(contact.getId());
-
-            if (isImageLoaded) {
-                Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-                contactEdit.setImage(DbBitmapUtility.getBytes(image));
-                isImageLoaded = false;
-            } else {
-                contactEdit.setImage(null);
+            if (db.isDuplicate(db, name.getText().toString())) {
+                Toast toast = Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG);
+                toast.show();
+                return ;
             }
-            isImageLoaded = false;
-            contactEdit.setName(name.getText().toString());
-            contactEdit.setPhone(phone.getText().toString());
-            contactEdit.setEmail(email.getText().toString());
-            contactEdit.setAddress(address.getText().toString());
-            db.updateContact(contactEdit);
+            db.addContact(new Contact(imageDb, name.getText().toString(),
+                    phone.getText().toString(), email.getText().toString(), address.getText().toString()));
 
-            MainActivity.getAdapter().notifyDataSetChanged();
-
-            db.close();
             Utility.hideKeyboard(this);
+            MainActivity.getAdapter().notifyDataSetChanged();
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

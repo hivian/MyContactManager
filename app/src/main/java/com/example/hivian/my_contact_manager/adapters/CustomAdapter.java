@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,6 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
+import com.example.hivian.my_contact_manager.R;
+import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.models.db.DBHandler;
+
 import java.util.List;
 
 /**
@@ -23,7 +29,6 @@ public class CustomAdapter extends BaseAdapter {
     DBHandler db;
 
     public CustomAdapter(Context context, List<List<String>> data) {
-        // TODO Auto-generated constructor stub
         this.context = context;
         this.data = data;
         inflater = (LayoutInflater) context
@@ -33,41 +38,38 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return data.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.row, null);
-        db = new DBHandler(parent.getContext());
+
+        db = DBHandler.getInstance(parent.getContext());
+
         ImageView image = (ImageView) vi.findViewById(R.id.row_image);
         TextView name = (TextView) vi.findViewById(R.id.row_name);
         TextView phone = (TextView) vi.findViewById(R.id.row_phone);
         Contact contact = db.getContactByName(data.get(position).get(0));
         if (contact.getImage() != null) {
-            Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
+            Bitmap imageBm = BitmapUtility.getImage(contact.getImage());
             Resources res = vi.getResources();
-            image.setImageDrawable(DbBitmapUtility.setBitmapCircular(res, imageBm));
+            image.setImageDrawable(BitmapUtility.setBitmapCircular(res, imageBm));
         }
         name.setText(data.get(position).get(0));
         phone.setText(data.get(position).get(1));
-        db.close();
 
         return vi;
     }

@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -11,6 +11,10 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.example.hivian.my_contact_manager.R;
+import com.example.hivian.my_contact_manager.models.Sms;
+
 import java.util.List;
 
 /**
@@ -19,12 +23,11 @@ import java.util.List;
 
 public class CustomSmsAdapter extends BaseAdapter {
 
-    Context context;
-    List<List<String>> data;
+    private Context context;
+    private List<List<String>> data;
     private static LayoutInflater inflater = null;
 
     public CustomSmsAdapter(Context context, List<List<String>> data) {
-        // TODO Auto-generated constructor stub
         this.context = context;
         this.data = data;
         inflater = (LayoutInflater) context
@@ -33,25 +36,21 @@ public class CustomSmsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
         return data.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
         return data.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.row_sms,  null);
@@ -65,7 +64,7 @@ public class CustomSmsAdapter extends BaseAdapter {
                 TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.MATCH_PARENT);
 
         text2.setText(data.get(position).get(1));
-        if (Integer.valueOf(data.get(position).get(2)).equals(SmsContent.SENT)) {
+        if (Integer.valueOf(data.get(position).get(2)).equals(Sms.SENT)) {
             params1.gravity = Gravity.END;
             params2.gravity = Gravity.END;
             layout.setLayoutParams(params1);

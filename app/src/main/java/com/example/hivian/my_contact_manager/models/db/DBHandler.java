@@ -1,10 +1,13 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.models.db;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.models.Sms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,11 +83,10 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_EMAIL, contact.getEmail());
         values.put(KEY_ADDRESS, contact.getAddress());
         db.insert(CONTACTS_TABLE, null, values);
-        db.close();
     }
 
     // Adding new sms
-    public void addSms(SmsContent sms) {
+    public void addSms(Sms sms) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -93,7 +95,6 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(KEY_CONTACT_ID, sms.getContactId());
         values.put(KEY_SMS_TYPE, sms.getType());
         db.insert(SMS_TABLE, null, values);
-        db.close();
     }
 
     // Getting one contact
@@ -109,7 +110,6 @@ public class DBHandler extends SQLiteOpenHelper {
                 cursor.getString(3), cursor.getString(4), cursor.getString(5));
         contact.setId(cursor.getInt(0));
         cursor.close();
-        db.close();
         return contact;
     }
 
@@ -126,7 +126,6 @@ public class DBHandler extends SQLiteOpenHelper {
                 cursor.getString(3), cursor.getString(4), cursor.getString(5));
         contact.setId(cursor.getInt(0));
         cursor.close();
-        db.close();
         return contact;
     }
 
@@ -142,21 +141,20 @@ public class DBHandler extends SQLiteOpenHelper {
                 cursor.getString(3), cursor.getString(4), cursor.getString(5));
         contact.setId(cursor.getInt(0));
         cursor.close();
-        db.close();
         return contact;
     }
 
     // Getting one sms by contact id
-    public List<SmsContent> getSmsByContactId(Integer id) {
+    public List<Sms> getSmsByContactId(Integer id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(SMS_TABLE, new String[]
                         { KEY_ID, KEY_SMS_HEADER, KEY_SMS_CONTENT, KEY_CONTACT_ID, KEY_SMS_TYPE },
                 KEY_CONTACT_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
-        List<SmsContent> allSms = new ArrayList<>();
+        List<Sms> allSms = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
             do {
-                SmsContent sms = new SmsContent();
+                Sms sms = new Sms();
                 sms.setId(Integer.parseInt(cursor.getString(0)));
                 sms.setHeader(cursor.getString(1));
                 sms.setContent(cursor.getString(2));
@@ -166,14 +164,13 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return allSms;
     }
 
     // Getting all contacts
     public List<Contact> getAllContacts() {
         String selectQuery = "SELECT * FROM " + CONTACTS_TABLE;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         List<Contact> allContacts = new ArrayList<>();
 
@@ -190,20 +187,19 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return allContacts;
     }
 
     // Getting all sms
-    public List<SmsContent> getAllSms() {
+    public List<Sms> getAllSms() {
         String selectQuery = "SELECT * FROM " + SMS_TABLE;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        List<SmsContent> allSms = new ArrayList<>();
+        List<Sms> allSms = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
             do {
-                SmsContent sms = new SmsContent();
+                Sms sms = new Sms();
                 sms.setId(Integer.parseInt(cursor.getString(0)));
                 sms.setHeader(cursor.getString(1));
                 sms.setContent(cursor.getString(2));
@@ -213,21 +209,20 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return allSms;
     }
 
     // Getting all sms from contact
-    public List<SmsContent> getAllSmsFromContact(int id) {
+    public List<Sms> getAllSmsFromContact(int id) {
         String selectQuery = "SELECT * FROM " + SMS_TABLE + " WHERE " +
                 KEY_CONTACT_ID + " = " + id;
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        List<SmsContent> allSms = new ArrayList<>();
+        List<Sms> allSms = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
             do {
-                SmsContent sms = new SmsContent();
+                Sms sms = new Sms();
                 sms.setId(Integer.parseInt(cursor.getString(0)));
                 sms.setHeader(cursor.getString(1));
                 sms.setContent(cursor.getString(2));
@@ -237,7 +232,6 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return allSms;
     }
 
@@ -275,7 +269,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     // Updating a sms
-    public Integer updateSms(SmsContent sms) {
+    public Integer updateSms(Sms sms) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -292,15 +286,13 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(CONTACTS_TABLE, KEY_ID + " = ?",
                 new String[] { String.valueOf(contact.getId()) });
-        db.close();
     }
 
     // Deleting a contact
-    public void deleteSms(SmsContent sms) {
+    public void deleteSms(Sms sms) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(SMS_TABLE, KEY_ID + " = ?",
                 new String[] { String.valueOf(sms.getId()) });
-        db.close();
     }
 
     // Deleting all contacts
@@ -314,9 +306,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
     // Deleting all sms
     public void deleteAllSms(DBHandler db) {
-        List<SmsContent> allSms = db.getAllSms();
+        List<Sms> allSms = db.getAllSms();
 
-        for (SmsContent sms : allSms) {
+        for (Sms sms : allSms) {
             db.deleteSms(sms);
         }
     }

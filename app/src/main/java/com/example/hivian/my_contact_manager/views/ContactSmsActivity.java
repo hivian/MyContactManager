@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.views;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -14,20 +14,27 @@ import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
-import java.text.SimpleDateFormat;
+
+import com.example.hivian.my_contact_manager.R;
+import com.example.hivian.my_contact_manager.adapters.CustomSmsAdapter;
+import com.example.hivian.my_contact_manager.utilities.Utility;
+import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.models.Sms;
+import com.example.hivian.my_contact_manager.models.db.DBHandler;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ContactSms extends AppCompatActivity {
+public class ContactSmsActivity extends AppCompatActivity {
 
     private BroadcastReceiver sendBroadcastReceiver;
     private BroadcastReceiver deliveryBroadcastReceiver;
@@ -103,12 +110,12 @@ public class ContactSms extends AppCompatActivity {
         registerReceiver(deliveryBroadcastReceiver, new IntentFilter(SMS_DELIVERED));
         registerReceiver(sendBroadcastReceiver , new IntentFilter(SMS_SENT));
 
-        db = new DBHandler(this);
+        db = DBHandler.getInstance(this);
         contact = db.getContactByName(extras.getString("name"));
-        List<SmsContent> allSms = db.getAllSmsFromContact(contact.getId());
+        List<Sms> allSms = db.getAllSmsFromContact(contact.getId());
         listView = (ListView) findViewById(R.id.listView_sms);
         allData = new ArrayList<>();
-        for (SmsContent sms : allSms) {
+        for (Sms sms : allSms) {
             ArrayList<String> elem = new ArrayList<>();
             elem.add(sms.getHeader());
             elem.add(sms.getContent());
@@ -146,7 +153,7 @@ public class ContactSms extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, ContactInfo.class);
+                Intent intent = new Intent(this, ContactInfoActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("contact", contact);
                 startActivity(intent);
@@ -175,8 +182,6 @@ public class ContactSms extends AppCompatActivity {
     }
 
     public void sendSms(View view) {
-        DBHandler db = new DBHandler(this);
-
         if (smsBody.getText().toString().trim().length() == 0)
             return ;
         String phone = extras.getString("phone");
@@ -184,18 +189,19 @@ public class ContactSms extends AppCompatActivity {
         PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_SENT), 0);
         PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_DELIVERED), 0);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("y/M/d HH:mm:ss");
-        SmsContent sms = new SmsContent(sdf.format(new Date()), smsBody.getText().toString(),
-                contact.getId(), SmsContent.SENT);
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+                DateFormat.MEDIUM, Locale.getDefault());
+        Sms sms = new Sms(df.format(new Date()), smsBody.getText().toString(),
+                contact.getId(), Sms.SENT);
         db.addSms(sms);
         List <String> elem = new ArrayList<>();
         elem.add(sms.getHeader());
         elem.add(sms.getContent());
         elem.add(sms.getType().toString());
-        List<SmsContent> allSms = db.getAllSmsFromContact(contact.getId());
+        List<Sms> allSms = db.getAllSmsFromContact(contact.getId());
 
         allData = new ArrayList<>();
-        for (SmsContent sms_data : allSms) {
+        for (Sms sms_data : allSms) {
             ArrayList<String> sms_elem = new ArrayList<>();
             sms_elem.add(sms_data.getHeader());
             sms_elem.add(sms_data.getContent());
@@ -211,9 +217,4 @@ public class ContactSms extends AppCompatActivity {
         smsBody.setText("");
     }
 
-    @Override
-    protected void onDestroy() {
-        db.close();
-        super.onDestroy();
-    }
 }

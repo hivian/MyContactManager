@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.views;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -25,13 +25,19 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hivian.my_contact_manager.R;
+import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
+import com.example.hivian.my_contact_manager.utilities.Utility;
+import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.models.Sms;
+import com.example.hivian.my_contact_manager.models.db.DBHandler;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import java.util.List;
 
 
-public class ContactInfo extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
+public class ContactInfoActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
     private TextView name;
     private TextView phone;
     private FloatingActionMenu actionMenu;
@@ -48,6 +54,8 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
         }
         Utility.changeStatusBarColor(this);
 
+        db = DBHandler.getInstance(this);
+
         Contact contact = (Contact) getIntent().getSerializableExtra("contact");
 
         if (contact != null) {
@@ -58,7 +66,7 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
             TextView address = (TextView) findViewById(R.id.info_address);
 
             if (contact.getImage() != null) {
-                Bitmap imageBm = DbBitmapUtility.getImage(contact.getImage());
+                Bitmap imageBm = BitmapUtility.getImage(contact.getImage());
                 imageView.setImageBitmap(imageBm);
             }
             name.setText(contact.getName());
@@ -80,6 +88,7 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
             else
                 address.setText(contact.getAddress());
         }
+
         initInfoMenu();
         scrollView = (ScrollView) findViewById(R.id.scrollview_contact_info);
         scrollView.setOnTouchListener(this);
@@ -121,16 +130,6 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
     }
 
     private void initInfoMenu() {
@@ -184,7 +183,7 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
         name = (TextView) findViewById(R.id.info_name);
         phone = (TextView) findViewById(R.id.info_phone);
 
-        Intent intent = new Intent(this, ContactSms.class);
+        Intent intent = new Intent(this, ContactSmsActivity.class);
 
         intent.putExtra("name", name.getText().toString());
         intent.putExtra("phone", phone.getText().toString());
@@ -206,19 +205,15 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
     }
 
     private void editContact() {
-        DBHandler db = new DBHandler(this);
-
         name = (TextView) findViewById(R.id.info_name);
 
         Contact contact = db.getContactByName(name.getText().toString());
-        Intent intent = new Intent(this, ContactEdition.class);
+        Intent intent = new Intent(this, ContactEditionActivity.class);
         intent.putExtra("contact", contact);
         startActivity(intent);
     }
 
     private void deleteContact() {
-        final DBHandler db = new DBHandler(this);
-
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setMessage(getResources().getString(R.string.alert_delete_message))
                 .setCancelable(false)
@@ -230,13 +225,13 @@ public class ContactInfo extends AppCompatActivity implements View.OnClickListen
                         Log.d("DEBUG", textView.getText().toString());
                         Contact contact = db.getContactByName(textView.getText().toString());
                         db.deleteContact(contact);
-                        List<SmsContent> allSms = db.getAllSmsFromContact(contact.getId());
-                        for (SmsContent sms : allSms) {
+                        List<Sms> allSms = db.getAllSmsFromContact(contact.getId());
+                        for (Sms sms : allSms) {
                             db.deleteSms(sms);
                         }
                         MainActivity.getAdapter().notifyDataSetChanged();
 
-                        Intent intent = new Intent(ContactInfo.this, MainActivity.class);
+                        Intent intent = new Intent(ContactInfoActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }

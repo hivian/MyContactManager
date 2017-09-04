@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.utilities;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream;
  * Created by hivian on 1/25/17.
  */
 
-public class DbBitmapUtility {
+public class BitmapUtility {
 
     // convert from bitmap to byte array
     public static byte[] getBytes(Bitmap bitmap) {
@@ -27,8 +27,7 @@ public class DbBitmapUtility {
     }
 
     public static RoundedBitmapDrawable setBitmapCircular(Resources res, Bitmap bitmap) {
-        RoundedBitmapDrawable dr =
-                RoundedBitmapDrawableFactory.create(res, bitmap);
+        RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(res, bitmap);
         dr.setCircular(true);
         return (dr);
     }

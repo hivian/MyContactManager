@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.models;
 
 import java.io.Serializable;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by hivian on 1/30/17.
  */
 
-public class SmsContent implements Serializable {
+public class Sms implements Serializable {
 
     public static final Integer SENT = 0;
     public static final Integer RECEIVED = 1;
@@ -16,10 +16,10 @@ public class SmsContent implements Serializable {
     private Integer _contactId;
     private Integer _type;
 
-    SmsContent() {
+    public Sms() {
     }
 
-    SmsContent(String header, String content, Integer contactId, Integer type) {
+    public Sms(String header, String content, Integer contactId, Integer type) {
         this._header = header;
         this._content = content;
         this._contactId = contactId;
@@ -46,23 +46,23 @@ public class SmsContent implements Serializable {
         return _type;
     }
 
-    void setId(Integer id) {
+    public void setId(Integer id) {
         this._id = id;
     }
 
-    void setHeader(String header) {
+    public void setHeader(String header) {
         this._header = header;
     }
 
-    void setContent(String content) {
+    public void setContent(String content) {
         this._content = content;
     }
 
-    void setContactId(Integer contactId) {
+    public void setContactId(Integer contactId) {
         this._contactId = contactId;
     }
 
-    void setType(Integer type) {
+    public void setType(Integer type) {
         this._type = type;
     }
 }

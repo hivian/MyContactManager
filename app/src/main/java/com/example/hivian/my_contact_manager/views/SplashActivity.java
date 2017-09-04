@@ -1,9 +1,11 @@
-package com.example.hivian.my_contact_manager;
+package com.example.hivian.my_contact_manager.views;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.WindowManager;
+
+import com.example.hivian.my_contact_manager.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,7 +23,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash_screen);
+        setContentView(R.layout.activity_splash);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         splashTimer = new Timer();
