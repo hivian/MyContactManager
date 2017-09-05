@@ -3,8 +3,6 @@ package com.example.hivian.my_contact_manager.views.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
 
 import com.example.hivian.my_contact_manager.R;
 import com.example.hivian.my_contact_manager.models.Contact;
@@ -23,7 +21,13 @@ public class MainActivity extends AppCompatActivity implements ContactListFragme
         setContentView(R.layout.main_activity);
 
         if (findViewById(R.id.fragment_holder) != null) {
+
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
             if (savedInstanceState != null) {
+                fragmentA = new ContactListFragment();
+                fragmentB = new ContactInfoFragment();
                 return;
             }
 
@@ -38,14 +42,31 @@ public class MainActivity extends AppCompatActivity implements ContactListFragme
     }
 
     @Override
+    public void onBackPressed() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            if (fragmentB.actionMenu != null) {
+                fragmentB.actionMenu.close(true);
+            }
+            getSupportFragmentManager().popBackStack();
+        }
+    }
+
+    @Override
     public void passData(Contact contact) {
-        Bundle args = new Bundle();
-        args.putSerializable("contact", contact);
-        fragmentB.setArguments(args);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_holder, fragmentB)
-                .addToBackStack(null)
-                .commit();
+        if (fragmentB != null) {
+            Bundle args = new Bundle();
+            args.putSerializable("contact", contact);
+            fragmentB.setArguments(args);
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
+                    .replace(R.id.fragment_holder, fragmentB)
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 
 }

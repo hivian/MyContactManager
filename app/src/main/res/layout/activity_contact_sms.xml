@@ -17,8 +17,9 @@
         android:layout_marginBottom="60dp"
         android:transcriptMode="alwaysScroll"
         android:stackFromBottom="true"
-        android:background="@color/colorLightGray">
+        android:background="@color/colorLightGray" >
     </ListView>
+
     <RelativeLayout
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -26,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
+
         <EditText
             android:id="@+id/sms_body"
             android:imeOptions="actionSend"
@@ -38,6 +40,7 @@
             android:scrollbars = "vertical"
             android:layout_alignParentBottom="true"
             android:theme="@android:style/Theme.Holo.Light" />
+
         <ImageButton
             android:id="@+id/sms_sender"
             android:layout_width="36dp"
@@ -50,6 +53,7 @@
             android:src="@drawable/ic_send_black_75dp"
             android:background="@drawable/ic_send_black_75dp"
             android:onClick="sendSms" />
+
     </RelativeLayout>
 
 </RelativeLayout>

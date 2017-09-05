@@ -31,4 +31,5 @@
             android:maxWidth="200dp"
             android:textColor="@android:color/primary_text_light" />
     </LinearLayout>
+
 </LinearLayout>

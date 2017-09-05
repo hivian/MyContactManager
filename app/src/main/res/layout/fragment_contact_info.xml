@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_contact_info"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.hivian.my_contact_manager.views.activities.ContactInfoActivity">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollview_contact_info">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
+
                 <ImageView
                     android:scaleType="centerCrop"
                     android:adjustViewBounds="true"
@@ -51,11 +52,13 @@
                     android:textAllCaps="true"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight=".03"
                 android:background="@color/colorDark" />
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:id="@+id/test"
@@ -65,11 +68,13 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin" >
+
                 <ImageView
                     android:id="@+id/info_icon1"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:src="@drawable/ic_call_black_75dp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -83,6 +88,7 @@
                     android:layout_marginStart="10dp"
                     android:theme="@android:style/Theme.Holo.Light" />
             </LinearLayout>
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_marginTop="30dp"
@@ -91,11 +97,13 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin">
+
                 <ImageView
                     android:id="@+id/info_icon2"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:src="@drawable/ic_mail_black_75dp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -110,6 +118,7 @@
                     android:gravity="center_vertical"
                     android:theme="@android:style/Theme.Holo.Light" />
             </LinearLayout>
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_marginTop="30dp"
@@ -117,12 +126,14 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
+                android:paddingRight="@dimen/activity_horizontal_margin" >
+
                 <ImageView
                     android:id="@+id/info_icon3"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:src="@drawable/ic_place_black_75dp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -136,6 +147,7 @@
                     android:layout_marginStart="10dp"
                     android:theme="@android:style/Theme.Holo.Light" />
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/info_menu"
                 android:layout_width="55dp"
@@ -150,5 +162,7 @@
                 android:src="@drawable/ic_menu_black_75dp"
                 android:tint="@android:color/white" />
         </LinearLayout>
+
     </ScrollView>
+
 </RelativeLayout>

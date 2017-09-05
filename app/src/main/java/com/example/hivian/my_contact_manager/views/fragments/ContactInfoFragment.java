@@ -55,7 +55,7 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
 
     private TextView name;
     private TextView phone;
-    private FloatingActionMenu actionMenu;
+    public FloatingActionMenu actionMenu;
     private ScrollView scrollView;
     private DBHandler db;
 
@@ -65,6 +65,7 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_contact_info, container, false);
 
         setHasOptionsMenu(true);
+
         ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (ab != null) {
             ab.setTitle("Options");
@@ -152,9 +153,8 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                actionMenu.close(true);
+                getFragmentManager().popBackStack();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

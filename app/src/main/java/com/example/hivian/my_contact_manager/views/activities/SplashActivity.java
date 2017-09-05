@@ -20,8 +20,7 @@ public class SplashActivity extends Activity {
     private Timer splashTimer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -43,11 +42,11 @@ public class SplashActivity extends Activity {
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy()  {
         super.onDestroy();
-        if (scheduled)
+        if (scheduled) {
             splashTimer.cancel();
+        }
         splashTimer.purge();
     }
 }

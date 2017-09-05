@@ -8,19 +8,22 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.hivian.my_contact_manager.views.activities.ContactEditionActivity">
+    tools:context="com.example.hivian.my_contact_manager.views.activities.ContactEditionActivity" >
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="165dp" >
+
 
                 <ImageView
                     android:scaleType="centerCrop"
@@ -39,7 +42,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
-                    android:layout_margin="8dp">
+                    android:layout_margin="8dp" >
+
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -49,12 +53,13 @@
                         android:hint="@string/contact_name"
                         android:maxLength="20"
                         android:theme="@android:style/Theme.Holo.Light" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.30"
-                        android:ems="10"
-                        />
+                        android:ems="10" />
+
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -65,13 +70,15 @@
                         android:theme="@android:style/Theme.Holo.Light"
                         android:maxLength="20"
                         android:inputType="phone" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.30"
-                        android:ems="10"
-                        />
+                        android:ems="10" />
+
                 </LinearLayout>
+
             </LinearLayout>
 
             <EditText
@@ -97,5 +104,7 @@
                 android:inputType="textPostalAddress" />
 
         </LinearLayout>
+
     </ScrollView>
+
 </RelativeLayout>

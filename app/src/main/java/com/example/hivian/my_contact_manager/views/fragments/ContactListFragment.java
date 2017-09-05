@@ -11,10 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,15 +58,10 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
 
         setHasOptionsMenu(true);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ActionBar ab = ((AppCompatActivity)getActivity()).getSupportActionBar();
         if (ab != null) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                ab.setTitle(Html.fromHtml("<font color='white'>Contacts</font>" , Html.FROM_HTML_MODE_LEGACY));
-            } else {
-                ab.setTitle(Html.fromHtml("<font color='white'>Contacts</font>"));
-            }
+            ab.setTitle("Contacts");
+            ab.setDisplayHomeAsUpEnabled(false);
         }
         Utility.changeStatusBarColor(getActivity());
 
