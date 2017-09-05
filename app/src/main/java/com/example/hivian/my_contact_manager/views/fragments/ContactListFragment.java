@@ -1,32 +1,43 @@
-package com.example.hivian.my_contact_manager.views;
+package com.example.hivian.my_contact_manager.views.fragments;
 
 import android.Manifest;
+import android.app.Fragment;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.content.Intent;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.hivian.my_contact_manager.R;
 import com.example.hivian.my_contact_manager.adapters.CustomAdapter;
-import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
+import com.example.hivian.my_contact_manager.utilities.Utility;
+import com.example.hivian.my_contact_manager.views.activities.ContactCreationActivity;
+import com.example.hivian.my_contact_manager.views.activities.ContactInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by hivian on 9/4/17.
+ */
 
-public class MainActivity extends AppCompatActivity {
+public class ContactListFragment extends Fragment implements View.OnClickListener {
 
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
     private static CustomAdapter adapter;
@@ -35,20 +46,17 @@ public class MainActivity extends AppCompatActivity {
     }
     private DBHandler db;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>Contacts</font>"));
-        }
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
 
-        db = DBHandler.getInstance(this);
+        setHasOptionsMenu(true);
+
+        db = DBHandler.getInstance(getActivity());
         ListView listView;
         List<Contact> contacts = db.getAllContacts();
-        ArrayList <List <String>> allData = new ArrayList<>();
+        ArrayList<List <String>> allData = new ArrayList<>();
 
         for (Contact cont : contacts) {
             ArrayList<String> elem = new ArrayList<>();
@@ -57,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
             allData.add(elem);
         }
 
-        listView = (ListView) findViewById(R.id.listView);
-        adapter = new CustomAdapter (this, allData);
+        listView = (ListView) view.findViewById(R.id.listView);
+        adapter = new CustomAdapter(getActivity(), allData);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,33 +76,38 @@ public class MainActivity extends AppCompatActivity {
 
                 Contact contact = db.getContactByName(name);
 
-                Intent intent = new Intent(MainActivity.this, ContactInfoActivity.class);
+                Intent intent = new Intent(getActivity(), ContactInfoActivity.class);
                 intent.putExtra("contact", contact);
                 startActivity(intent);
             }
         });
         checkPermissions();
-        Utility.changeStatusBarColor(this);
+        Utility.changeStatusBarColor(getActivity());
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+
+        return view;
     }
+
 
     private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int checkStoragePermission = ContextCompat.checkSelfPermission(this,
+            int checkStoragePermission = ContextCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.READ_EXTERNAL_STORAGE);
-            int checkSendSmsPermission = ContextCompat.checkSelfPermission(this,
+            int checkSendSmsPermission = ContextCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.SEND_SMS);
-            int checkCallPhonePermission = ContextCompat.checkSelfPermission(this,
+            int checkCallPhonePermission = ContextCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.CALL_PHONE);
             if (checkStoragePermission + checkSendSmsPermission + checkCallPhonePermission
                     != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                         Manifest.permission.READ_EXTERNAL_STORAGE) ||
-                        ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                                 Manifest.permission.SEND_SMS) ||
-                        ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                                 Manifest.permission.CALL_PHONE)) {
                 } else {
-                    ActivityCompat.requestPermissions(this,
+                    ActivityCompat.requestPermissions(getActivity(),
                             new String[]{ Manifest.permission.READ_EXTERNAL_STORAGE,
                                     Manifest.permission.SEND_SMS,
                                     Manifest.permission.CALL_PHONE},
@@ -119,16 +132,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu,inflater);
+    }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    public void createContact(View view) {
-        Intent intent = new Intent(this, ContactCreationActivity.class);
+    public void onClick(View view) {
+        Intent intent = new Intent(getActivity(), ContactCreationActivity.class);
         startActivity(intent);
     }
-
 }

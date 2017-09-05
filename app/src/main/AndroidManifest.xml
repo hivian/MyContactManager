@@ -17,7 +17,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.example.hivian.my_contact_manager.views.SplashActivity"
+            android:name="com.example.hivian.my_contact_manager.views.activities.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,21 +25,21 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.hivian.my_contact_manager.views.MainActivity"
+            android:name="com.example.hivian.my_contact_manager.views.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.example.hivian.my_contact_manager.views.ContactCreationActivity"
+            android:name="com.example.hivian.my_contact_manager.views.activities.ContactCreationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.example.hivian.my_contact_manager.views.ContactInfoActivity"
+            android:name="com.example.hivian.my_contact_manager.views.activities.ContactInfoActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.example.hivian.my_contact_manager.views.ContactEditionActivity"
+            android:name="com.example.hivian.my_contact_manager.views.activities.ContactEditionActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.example.hivian.my_contact_manager.views.ContactSmsActivity"
+            android:name="com.example.hivian.my_contact_manager.views.activities.ContactSmsActivity"
             android:windowSoftInputMode="stateHidden" />
         <receiver android:name="com.example.hivian.my_contact_manager.receivers.SmsReceiver" android:enabled="true">
             <intent-filter android:priority="2147483647" >

@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager.views;
+package com.example.hivian.my_contact_manager.views.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -25,6 +25,7 @@ import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
+import com.example.hivian.my_contact_manager.views.fragments.ContactListFragment;
 
 
 public class ContactEditionActivity extends AppCompatActivity {
@@ -169,7 +170,7 @@ public class ContactEditionActivity extends AppCompatActivity {
             contactEdit.setAddress(address.getText().toString());
             db.updateContact(contactEdit);
 
-            MainActivity.getAdapter().notifyDataSetChanged();
+            ContactListFragment.getAdapter().notifyDataSetChanged();
 
             Utility.hideKeyboard(this);
             Intent intent = new Intent(this, MainActivity.class);

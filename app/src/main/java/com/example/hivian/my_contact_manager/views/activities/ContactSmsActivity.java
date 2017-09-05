@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager.views;
+package com.example.hivian.my_contact_manager.views.activities;
 
 import android.app.Activity;
 import android.app.PendingIntent;

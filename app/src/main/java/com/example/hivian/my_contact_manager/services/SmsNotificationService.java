@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.hivian.my_contact_manager.models.Contact;
-import com.example.hivian.my_contact_manager.views.ContactSmsActivity;
+import com.example.hivian.my_contact_manager.views.activities.ContactSmsActivity;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
 import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
 import com.example.hivian.my_contact_manager.R;

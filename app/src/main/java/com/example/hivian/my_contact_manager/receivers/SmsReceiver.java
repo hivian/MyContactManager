@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 
 import com.example.hivian.my_contact_manager.adapters.CustomSmsAdapter;
-import com.example.hivian.my_contact_manager.views.ContactSmsActivity;
+import com.example.hivian.my_contact_manager.views.activities.ContactSmsActivity;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.Sms;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;

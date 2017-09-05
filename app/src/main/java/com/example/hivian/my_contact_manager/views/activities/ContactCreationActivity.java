@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager.views;
+package com.example.hivian.my_contact_manager.views.activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -24,6 +24,7 @@ import com.example.hivian.my_contact_manager.R;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
+import com.example.hivian.my_contact_manager.views.fragments.ContactListFragment;
 
 import static com.example.hivian.my_contact_manager.utilities.BitmapUtility.getBytes;
 
@@ -153,7 +154,7 @@ public class ContactCreationActivity extends AppCompatActivity {
                     phone.getText().toString(), email.getText().toString(), address.getText().toString()));
 
             Utility.hideKeyboard(this);
-            MainActivity.getAdapter().notifyDataSetChanged();
+            ContactListFragment.getAdapter().notifyDataSetChanged();
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
