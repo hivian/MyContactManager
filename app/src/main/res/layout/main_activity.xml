@@ -1,26 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/contactListFragment"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        class="com.example.hivian.my_contact_manager.views.fragments.ContactListFragment"
-        tools:layout="@layout/fragment_contact_list">
-    </fragment>
-
-    <fragment
-        android:id="@+id/contactInfoFragment"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        class="com.example.hivian.my_contact_manager.views.fragments.ContactInfoFragment"
-        tools:layout="@layout/fragment_contact_info">
-    </fragment>
-
+    <FrameLayout
+        android:id="@+id/fragment_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

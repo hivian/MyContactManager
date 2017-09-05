@@ -1,7 +1,7 @@
 package com.example.hivian.my_contact_manager.views.fragments;
 
 import android.Manifest;
-import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -28,7 +30,8 @@ import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.views.activities.ContactCreationActivity;
-import com.example.hivian.my_contact_manager.views.activities.ContactInfoActivity;
+
+import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +49,29 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
     }
     private DBHandler db;
 
+    private DataPassListener mCallback;
+
+    public interface DataPassListener{
+        void passData(Contact contact);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
 
         setHasOptionsMenu(true);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ActionBar ab = ((AppCompatActivity)getActivity()).getSupportActionBar();
+        if (ab != null) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                ab.setTitle(Html.fromHtml("<font color='white'>Contacts</font>" , Html.FROM_HTML_MODE_LEGACY));
+            } else {
+                ab.setTitle(Html.fromHtml("<font color='white'>Contacts</font>"));
+            }
+        }
+        Utility.changeStatusBarColor(getActivity());
 
         db = DBHandler.getInstance(getActivity());
         ListView listView;
@@ -76,19 +96,27 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
 
                 Contact contact = db.getContactByName(name);
 
-                Intent intent = new Intent(getActivity(), ContactInfoActivity.class);
-                intent.putExtra("contact", contact);
-                startActivity(intent);
+                mCallback.passData(contact);
             }
         });
         checkPermissions();
-        Utility.changeStatusBarColor(getActivity());
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
         return view;
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            mCallback = (DataPassListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement DataPassListener");
+        }
+    }
 
     private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -2,8 +2,6 @@ package com.example.hivian.my_contact_manager.views.fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +13,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
@@ -39,11 +38,12 @@ import com.example.hivian.my_contact_manager.models.db.DBHandler;
 import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.views.activities.ContactEditionActivity;
-import com.example.hivian.my_contact_manager.views.activities.ContactInfoActivity;
 import com.example.hivian.my_contact_manager.views.activities.ContactSmsActivity;
 import com.example.hivian.my_contact_manager.views.activities.MainActivity;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+
+import android.support.v4.app.Fragment;
 
 import java.util.List;
 
@@ -58,76 +58,64 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
     private FloatingActionMenu actionMenu;
     private ScrollView scrollView;
     private DBHandler db;
-    private DataPassListener mCallback;
-
-    public interface DataPassListener{
-        public void passData(String data);
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact_info, container, false);
 
+        setHasOptionsMenu(true);
+        ActionBar ab = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (ab != null) {
+            ab.setTitle("Options");
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+        Utility.changeStatusBarColor(getActivity());
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-
-        Utility.changeStatusBarColor(getActivity());
-
         db = DBHandler.getInstance(getActivity());
 
-        Contact contact = (Contact) getActivity().getIntent().getSerializableExtra("contact");
+        Contact receivedContact = (Contact) getArguments().getSerializable("contact");
 
-        if (contact != null) {
+        if (receivedContact != null) {
             ImageView imageView = (ImageView) view.findViewById(R.id.info_image);
             name = (TextView) view.findViewById(R.id.info_name);
             phone = (TextView) view.findViewById(R.id.info_phone);
             TextView email = (TextView) view.findViewById(R.id.info_email);
             TextView address = (TextView) view.findViewById(R.id.info_address);
 
-            if (contact.getImage() != null) {
-                Bitmap imageBm = BitmapUtility.getImage(contact.getImage());
+            if (receivedContact.getImage() != null) {
+                Bitmap imageBm = BitmapUtility.getImage(receivedContact.getImage());
                 imageView.setImageBitmap(imageBm);
             }
-            name.setText(contact.getName());
-            phone.setText(contact.getPhone());
-            if (contact.getEmail().equals("")) {
+            name.setText(receivedContact.getName());
+            phone.setText(receivedContact.getPhone());
+            if (receivedContact.getEmail().equals("")) {
                 email.setTypeface(null, Typeface.ITALIC);
                 email.setTextColor(Color.GRAY);
                 email.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f);
                 email.setText(R.string.placeholder_none);
             }
             else
-                email.setText(contact.getEmail());
-            if (contact.getAddress().equals("")) {
+                email.setText(receivedContact.getEmail());
+            if (receivedContact.getAddress().equals("")) {
                 address.setTypeface(null, Typeface.ITALIC);
                 address.setTextColor(Color.GRAY);
                 address.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18f);
                 address.setText(R.string.placeholder_none);
             }
             else
-                address.setText(contact.getAddress());
+                address.setText(receivedContact.getAddress());
         }
         initInfoMenu(view);
         scrollView = (ScrollView) view.findViewById(R.id.scrollview_contact_info);
         scrollView.setOnTouchListener(this);
 
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mCallback = (DataPassListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement DataCommunication");
-        }
     }
 
     @Override

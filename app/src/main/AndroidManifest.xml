@@ -33,9 +33,6 @@
             android:name="com.example.hivian.my_contact_manager.views.activities.ContactCreationActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.example.hivian.my_contact_manager.views.activities.ContactInfoActivity"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name="com.example.hivian.my_contact_manager.views.activities.ContactEditionActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
