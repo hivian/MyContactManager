@@ -1,9 +1,11 @@
 # MyContactManager
-Android studio App : phone book and messaging
+Android studio App : phone book and messaging<br/>
+Developped on Android Nougat device (API 24)
 
 - Contact managing: CRUD + add profile picture
-- SMS sender/receiver + chat history
+- SMS sender/receiver + notification service + chat history
 - Phone call
+- Dynamic fragments optimization
 
 <h4>Previews:</h4>
 
