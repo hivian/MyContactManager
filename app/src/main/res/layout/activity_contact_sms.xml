@@ -50,8 +50,8 @@
             android:layout_alignParentEnd="true"
             android:scaleType="fitXY"
             android:tint="@android:color/darker_gray"
-            android:src="@drawable/ic_send_black_75dp"
-            android:background="@drawable/ic_send_black_75dp"
+            android:src="@drawable/ic_send_black_24dp"
+            android:background="@drawable/ic_send_black_24dp"
             android:onClick="sendSms" />
 
     </RelativeLayout>

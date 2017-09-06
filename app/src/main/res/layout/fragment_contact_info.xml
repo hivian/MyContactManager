@@ -25,7 +25,7 @@
                     android:layout_height="275dp"
                     android:background="#9ED9D9"
                     android:id="@+id/info_image"
-                    android:src="@drawable/ic_person_black_75dp"
+                    android:src="@drawable/ic_person_black_24dp"
                     android:cropToPadding="false" />
 
                 <TextView
@@ -73,7 +73,7 @@
                     android:id="@+id/info_icon1"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
-                    android:src="@drawable/ic_call_black_75dp" />
+                    android:src="@drawable/ic_call_black_24dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                     android:id="@+id/info_icon2"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
-                    android:src="@drawable/ic_mail_black_75dp" />
+                    android:src="@drawable/ic_mail_black_24dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -132,7 +132,7 @@
                     android:id="@+id/info_icon3"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
-                    android:src="@drawable/ic_place_black_75dp" />
+                    android:src="@drawable/ic_place_black_24dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -159,7 +159,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/circle"
-                android:src="@drawable/ic_menu_black_75dp"
+                android:src="@drawable/ic_menu_black_24dp"
                 android:tint="@android:color/white" />
         </LinearLayout>
 

@@ -28,7 +28,6 @@ public class SmsNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-
         String contentTitle = (String) intent.getExtras().get("contentTitle");
         String contentMessage = (String) intent.getExtras().get("contentMessage");
 
@@ -44,7 +43,7 @@ public class SmsNotificationService extends IntentService {
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setOngoing(true);
+                .setOngoing(false);
 
         Intent smsIntent = new Intent(this, ContactSmsActivity.class);
         smsIntent.putExtra("name", contact.getName());
@@ -56,7 +55,6 @@ public class SmsNotificationService extends IntentService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, n.build());
-
     }
 
 }

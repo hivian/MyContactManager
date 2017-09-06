@@ -45,7 +45,7 @@ public class ContactEditionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_edition);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + getString(R.string.edit_contact) + "</font>"));
+            getSupportActionBar().setTitle(getString(R.string.edit_contact));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         Utility.changeStatusBarColor(this);

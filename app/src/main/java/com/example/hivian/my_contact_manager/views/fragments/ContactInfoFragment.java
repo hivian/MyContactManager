@@ -15,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,20 +29,18 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v4.app.Fragment;
 
 import com.example.hivian.my_contact_manager.R;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.Sms;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
 import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
-import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.views.activities.ContactEditionActivity;
 import com.example.hivian.my_contact_manager.views.activities.ContactSmsActivity;
 import com.example.hivian.my_contact_manager.views.activities.MainActivity;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
-
-import android.support.v4.app.Fragment;
 
 import java.util.List;
 
@@ -56,7 +53,6 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
     private TextView name;
     private TextView phone;
     public FloatingActionMenu actionMenu;
-    private ScrollView scrollView;
     private DBHandler db;
 
     @Nullable
@@ -71,13 +67,7 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
             ab.setTitle("Options");
             ab.setDisplayHomeAsUpEnabled(true);
         }
-        Utility.changeStatusBarColor(getActivity());
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         db = DBHandler.getInstance(getActivity());
 
         Contact receivedContact = (Contact) getArguments().getSerializable("contact");
@@ -112,8 +102,14 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
             else
                 address.setText(receivedContact.getAddress());
         }
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initInfoMenu(view);
-        scrollView = (ScrollView) view.findViewById(R.id.scrollview_contact_info);
+        ScrollView scrollView = (ScrollView) view.findViewById(R.id.scrollview_contact_info);
         scrollView.setOnTouchListener(this);
 
         super.onViewCreated(view, savedInstanceState);
@@ -141,6 +137,7 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
                 deleteContact();
                 break;
         }
+        actionMenu.close(true);
     }
 
     @Override
@@ -167,10 +164,10 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
         ImageView menuIcon3 = new ImageView(getActivity());
         ImageView menuIcon4 = new ImageView(getActivity());
 
-        menuIcon1.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_message_black_75dp, null));
-        menuIcon2.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_call_black_75dp, null));
-        menuIcon3.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_mode_edit_black_75dp, null));
-        menuIcon4.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_delete_black_75dp, null));
+        menuIcon1.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_message_black_24dp, null));
+        menuIcon2.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_call_black_24dp, null));
+        menuIcon3.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_mode_edit_black_24dp, null));
+        menuIcon4.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_delete_black_24dp, null));
         menuIcon1.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.circle_opacity, null));
         menuIcon2.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.circle_opacity, null));
         menuIcon3.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.circle_opacity, null));
@@ -188,8 +185,6 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
         itemBuilder.setLayoutParams(new FrameLayout.LayoutParams(160,160));
 
         ImageView menuInfo = (ImageView) view.findViewById(R.id.info_menu);
-        if (menuInfo == null)
-            Log.d("D", "ERROR");
         actionMenu = new FloatingActionMenu.Builder(getActivity())
                 .addSubActionView(itemBuilder.setContentView(menuIcon1).build())
                 .addSubActionView(itemBuilder.setContentView(menuIcon2).build())
@@ -253,7 +248,6 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
                             public void onClick(DialogInterface dialog, int id) {
 
                                 TextView textView = (TextView) getActivity().findViewById(R.id.info_name);
-                                Log.d("DEBUG", textView.getText().toString());
                                 Contact contact = db.getContactByName(textView.getText().toString());
                                 db.deleteContact(contact);
                                 List<Sms> allSms = db.getAllSmsFromContact(contact.getId());

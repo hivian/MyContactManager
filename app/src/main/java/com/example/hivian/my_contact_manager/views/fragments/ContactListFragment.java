@@ -20,15 +20,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.support.v4.app.Fragment;
 
 import com.example.hivian.my_contact_manager.R;
 import com.example.hivian.my_contact_manager.adapters.CustomAdapter;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
-import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.views.activities.ContactCreationActivity;
-
-import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +61,6 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
             ab.setTitle("Contacts");
             ab.setDisplayHomeAsUpEnabled(false);
         }
-        Utility.changeStatusBarColor(getActivity());
 
         db = DBHandler.getInstance(getActivity());
         ListView listView;
@@ -92,12 +89,17 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
             }
         });
         checkPermissions();
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(this);
 
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+
+        super.onViewCreated(view, savedInstanceState);
+    }
 
     @Override
     public void onAttach(Context context) {

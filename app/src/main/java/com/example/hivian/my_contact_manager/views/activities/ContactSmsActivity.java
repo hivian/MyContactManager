@@ -62,7 +62,7 @@ public class ContactSmsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact_sms);
         extras = getIntent().getExtras();
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(Html.fromHtml("<font color='white'>" + extras.getString("name") + "</font>"));
+            getSupportActionBar().setTitle(extras.getString("name"));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         Utility.changeStatusBarColor(this);
@@ -153,6 +153,7 @@ public class ContactSmsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Utility.hideKeyboard(this);
                 finish();
                 return true;
             default:

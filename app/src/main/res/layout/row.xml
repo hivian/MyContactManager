@@ -16,7 +16,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_margin="8dp"
-            android:src="@drawable/ic_person_black_75dp" />
+            android:src="@drawable/ic_person_black_24dp" />
 
         <LinearLayout
             android:orientation="vertical"

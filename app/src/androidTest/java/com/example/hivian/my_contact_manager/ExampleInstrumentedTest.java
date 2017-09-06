@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.hivian.ft_hangouts", appContext.getPackageName());
+        assertEquals("com.example.hivian.my_contact_manager", appContext.getPackageName());
     }
 }

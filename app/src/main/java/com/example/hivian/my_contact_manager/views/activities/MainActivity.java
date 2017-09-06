@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.hivian.my_contact_manager.R;
 import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.views.fragments.ContactInfoFragment;
 import com.example.hivian.my_contact_manager.views.fragments.ContactListFragment;
 
@@ -21,7 +22,6 @@ public class MainActivity extends AppCompatActivity implements ContactListFragme
         setContentView(R.layout.main_activity);
 
         if (findViewById(R.id.fragment_holder) != null) {
-
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements ContactListFragme
                     .add(R.id.fragment_holder, fragmentA)
                     .commit();
 
+            Utility.changeStatusBarColor(this);
         }
     }
 
