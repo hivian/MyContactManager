@@ -16,6 +16,7 @@
     <string name="placeholder_none">(None)</string>
     <string name="alert_no_name">Field name empty</string>
     <string name="alert_no_phone">Field phone empty</string>
+    <string name="alert_invalid_email">Field email is invalid</string>
     <string name="alert_duplicates">Name already registered</string>
     <string name="alert_background">Last suspension:</string>
     <string name="alert_delete_message">The contact will be deleted</string>

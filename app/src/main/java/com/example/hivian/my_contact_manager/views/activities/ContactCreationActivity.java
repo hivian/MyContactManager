@@ -11,22 +11,23 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
-import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hivian.my_contact_manager.R;
+import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
+import com.example.hivian.my_contact_manager.utilities.TextValidator;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
 import com.example.hivian.my_contact_manager.views.fragments.ContactListFragment;
-
-import static com.example.hivian.my_contact_manager.utilities.BitmapUtility.getBytes;
 
 
 public class ContactCreationActivity extends AppCompatActivity {
@@ -34,6 +35,9 @@ public class ContactCreationActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private static Boolean isImageLoaded = false;
     private ImageView imageView;
+    private EditText name;
+    private EditText email;
+    EditText phone;
     private DBHandler db;
 
     @Override
@@ -49,6 +53,30 @@ public class ContactCreationActivity extends AppCompatActivity {
         db = DBHandler.getInstance(this);
 
         imageView = (ImageView) findViewById(R.id.imageView);
+        name = (EditText) findViewById(R.id.name);
+        phone = (EditText) findViewById(R.id.phone);
+        email = (EditText) findViewById(R.id.email);
+        name.addTextChangedListener(new TextValidator(name) {
+            @Override public void validate(EditText editText, String text) {
+                if (text.trim().length() == 0) {
+                    editText.setError(getString(R.string.alert_no_name));
+                }
+            }
+        });
+        phone.addTextChangedListener(new TextValidator(phone) {
+            @Override public void validate(EditText editText, String text) {
+                if (text.trim().length() == 0) {
+                    editText.setError(getString(R.string.alert_no_phone));
+                }
+            }
+        });
+        email.addTextChangedListener(new TextValidator(email) {
+            @Override public void validate(EditText editText, String text) {
+                if (text.trim().length() != 0 && !Utility.isValidEmail(text)) {
+                    editText.setError(getString(R.string.alert_invalid_email));
+                }
+            }
+        });
     }
 
 
@@ -94,20 +122,22 @@ public class ContactCreationActivity extends AppCompatActivity {
 
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
-            cursor.moveToFirst();
+            if (cursor != null) {
+                cursor.moveToFirst();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            final String picturePath = cursor.getString(columnIndex);
-            cursor.close();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                final String picturePath = cursor.getString(columnIndex);
+                cursor.close();
 
-            imageView.post(new Runnable() {
-                @Override
-                public void run() {
-                    imageView.setImageBitmap(Utility.decodeSampledBitmapFromResource(picturePath, 100, 100));
-                    Toast.makeText(ContactCreationActivity.this, R.string.alert_image_load, Toast.LENGTH_SHORT).show();
-                }
-            });
-            isImageLoaded = true;
+                imageView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setImageBitmap(Utility.decodeSampledBitmapFromResource(picturePath, 100, 100));
+                        Toast.makeText(ContactCreationActivity.this, R.string.alert_image_load, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                isImageLoaded = true;
+            }
         }
     }
 
@@ -119,44 +149,40 @@ public class ContactCreationActivity extends AppCompatActivity {
             startActivityForResult(intent, RESULT_LOAD_IMAGE);
         } else {
             isImageLoaded = false;
-            Toast toast = Toast.makeText(this, R.string.alert_no_read_perm, Toast.LENGTH_LONG);
-            toast.show();
+            Toast.makeText(this, R.string.alert_no_read_perm, Toast.LENGTH_LONG).show();
         }
     }
 
     private void saveContact() {
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
-        Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
         byte[] imageDb;
 
         EditText name = (EditText) findViewById(R.id.name);
-        EditText phone = (EditText) findViewById(R.id.phone);
-        EditText email = (EditText) findViewById(R.id.email);
+
+
         EditText address = (EditText) findViewById(R.id.address);
 
         if (isImageLoaded) {
-            imageDb = getBytes(image);
+            Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+            imageDb = BitmapUtility.getBytes(image);
             isImageLoaded = false;
         } else {
             imageDb = null;
         }
-        if (name.getText().toString().trim().length() == 0) {
-            Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
-            toast.show();
-        } else if (phone.getText().toString().trim().length() == 0) {
-            Toast toast = Toast.makeText(this, R.string.alert_no_phone, Toast.LENGTH_LONG);
-            toast.show();
-        } else {
-            if (db.isDuplicate(db, name.getText().toString())) {
-                Toast toast = Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG);
-                toast.show();
-                return ;
-            }
+        if (db.isDuplicate(db, name.getText().toString())) {
+            //Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG).show();
+            name.setError(getString(R.string.alert_duplicates));
+            return ;
+        }
+
+        if (name.getError() != null && email.getError() == null) {
             db.addContact(new Contact(imageDb, name.getText().toString(),
                     phone.getText().toString(), email.getText().toString(), address.getText().toString()));
 
-            Utility.hideKeyboard(this);
             ContactListFragment.getAdapter().notifyDataSetChanged();
+
+            Utility.hideKeyboard(this);
+
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);

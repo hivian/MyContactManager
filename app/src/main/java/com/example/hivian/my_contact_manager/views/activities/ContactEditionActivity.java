@@ -144,7 +144,15 @@ public class ContactEditionActivity extends AppCompatActivity {
         phone = (TextView) findViewById(R.id.edit_phone);
         email = (TextView) findViewById(R.id.edit_email);
         address = (TextView) findViewById(R.id.edit_address);
+        byte[] imageDb;
 
+        if (isImageLoaded) {
+            Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+            imageDb = BitmapUtility.getBytes(image);
+            isImageLoaded = false;
+        } else {
+            imageDb = null;
+        }
         if (name.getText().toString().trim().length() == 0) {
             Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
             toast.show();
@@ -154,22 +162,23 @@ public class ContactEditionActivity extends AppCompatActivity {
         } else {
             Contact contactEdit = db.getContact(contact.getId());
 
-            if (isImageLoaded) {
-                Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-                contactEdit.setImage(BitmapUtility.getBytes(image));
-                isImageLoaded = false;
-            } else {
-                contactEdit.setImage(null);
+            if (!name.getText().toString().equals(contactEdit.getName())
+                    && db.isDuplicate(db, name.getText().toString())) {
+                Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG).show();
+                return ;
             }
-            contactEdit.setName(name.getText().toString());
-            contactEdit.setPhone(phone.getText().toString());
-            contactEdit.setEmail(email.getText().toString());
-            contactEdit.setAddress(address.getText().toString());
-            db.updateContact(contactEdit);
+            if (email.getText().toString().trim().length() != 0
+                    && !Utility.isValidEmail(email.getText())) {
+                Toast.makeText(this, R.string.alert_invalid_email, Toast.LENGTH_LONG).show();
+                return ;
+            }
+            db.updateContact(new Contact(imageDb, name.getText().toString(),
+                    phone.getText().toString(), email.getText().toString(), address.getText().toString()));
 
             ContactListFragment.getAdapter().notifyDataSetChanged();
 
             Utility.hideKeyboard(this);
+
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
