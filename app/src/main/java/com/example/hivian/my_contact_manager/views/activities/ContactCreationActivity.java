@@ -11,19 +11,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hivian.my_contact_manager.R;
 import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
-import com.example.hivian.my_contact_manager.utilities.TextValidator;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
@@ -37,7 +34,8 @@ public class ContactCreationActivity extends AppCompatActivity {
     private ImageView imageView;
     private EditText name;
     private EditText email;
-    EditText phone;
+    private EditText address;
+    private EditText phone;
     private DBHandler db;
 
     @Override
@@ -56,27 +54,7 @@ public class ContactCreationActivity extends AppCompatActivity {
         name = (EditText) findViewById(R.id.name);
         phone = (EditText) findViewById(R.id.phone);
         email = (EditText) findViewById(R.id.email);
-        name.addTextChangedListener(new TextValidator(name) {
-            @Override public void validate(EditText editText, String text) {
-                if (text.trim().length() == 0) {
-                    editText.setError(getString(R.string.alert_no_name));
-                }
-            }
-        });
-        phone.addTextChangedListener(new TextValidator(phone) {
-            @Override public void validate(EditText editText, String text) {
-                if (text.trim().length() == 0) {
-                    editText.setError(getString(R.string.alert_no_phone));
-                }
-            }
-        });
-        email.addTextChangedListener(new TextValidator(email) {
-            @Override public void validate(EditText editText, String text) {
-                if (text.trim().length() != 0 && !Utility.isValidEmail(text)) {
-                    editText.setError(getString(R.string.alert_invalid_email));
-                }
-            }
-        });
+        address = (EditText) findViewById(R.id.address);
     }
 
 
@@ -153,14 +131,10 @@ public class ContactCreationActivity extends AppCompatActivity {
         }
     }
 
+
+
     private void saveContact() {
-        ImageView imageView = (ImageView)findViewById(R.id.imageView);
         byte[] imageDb;
-
-        EditText name = (EditText) findViewById(R.id.name);
-
-
-        EditText address = (EditText) findViewById(R.id.address);
 
         if (isImageLoaded) {
             Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
@@ -169,15 +143,24 @@ public class ContactCreationActivity extends AppCompatActivity {
         } else {
             imageDb = null;
         }
+
         if (db.isDuplicate(db, name.getText().toString())) {
-            //Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG).show();
-            name.setError(getString(R.string.alert_duplicates));
+            Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG).show();
             return ;
         }
 
-        if (name.getError() != null && email.getError() == null) {
-            db.addContact(new Contact(imageDb, name.getText().toString(),
-                    phone.getText().toString(), email.getText().toString(), address.getText().toString()));
+        Boolean checkName = Utility.checkField(this, name, getString(R.string.alert_no_name));
+        Boolean checkPhone = Utility.checkField(this, phone, getString(R.string.alert_no_phone));
+        if (checkName && checkPhone) {
+            if (email.getText().toString().trim().length() != 0
+                    && !Utility.isValidEmail(email.getText())) {
+                Toast.makeText(this, R.string.alert_invalid_email, Toast.LENGTH_LONG).show();
+                return ;
+            }
+            db.addContact(new Contact(imageDb, name.getText().toString().trim(),
+                    phone.getText().toString().trim().replaceAll("\\s+",""),
+                    email.getText().toString().trim(),
+                    address.getText().toString().trim()));
 
             ContactListFragment.getAdapter().notifyDataSetChanged();
 

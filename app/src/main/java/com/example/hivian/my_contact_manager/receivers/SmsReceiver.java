@@ -57,7 +57,8 @@ public class SmsReceiver extends BroadcastReceiver {
                     phone = messages[0].getOriginatingAddress().replace("+33", "0");
                     contact = db.getContactByPhone(phone);
                     if (contact == null) {
-                        db.addContact(new Contact(null, phone, phone, "", ""));
+                        db.addContact(new Contact(null, phone.replaceAll("\\s+",""),
+                                phone.replaceAll("\\s+",""), "", ""));
                     }
                 }
 

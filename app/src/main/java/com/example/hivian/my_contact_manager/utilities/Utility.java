@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.hivian.my_contact_manager.R;
 
@@ -81,5 +83,14 @@ public class Utility {
 
     public static boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
+    public static Boolean checkField(Activity activity, EditText editText, String alert) {
+        if (editText.getText().toString().trim().length() == 0) {
+            Toast.makeText(activity, alert, Toast.LENGTH_LONG).show();
+            return (false);
+        } else {
+            return (true);
+        }
     }
 }

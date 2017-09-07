@@ -11,13 +11,12 @@ import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hivian.my_contact_manager.R;
@@ -33,10 +32,10 @@ public class ContactEditionActivity extends AppCompatActivity {
     private static final int RESULT_LOAD_IMAGE = 1;
     private static Boolean isImageLoaded = false;
     private ImageView imageView;
-    private TextView name;
-    private TextView phone;
-    private TextView email;
-    private TextView address;
+    private EditText name;
+    private EditText phone;
+    private EditText email;
+    private EditText address;
     private Contact contact;
     private DBHandler db;
 
@@ -56,10 +55,10 @@ public class ContactEditionActivity extends AppCompatActivity {
 
         if (contact != null) {
             imageView = (ImageView) findViewById(R.id.edit_image);
-            name = (TextView) findViewById(R.id.edit_name);
-            phone = (TextView) findViewById(R.id.edit_phone);
-            email = (TextView) findViewById(R.id.edit_email);
-            address = (TextView) findViewById(R.id.edit_address);
+            name = (EditText) findViewById(R.id.edit_name);
+            phone = (EditText) findViewById(R.id.edit_phone);
+            email = (EditText) findViewById(R.id.edit_email);
+            address = (EditText) findViewById(R.id.edit_address);
 
             if (contact.getImage() != null) {
                 Bitmap imageBm = BitmapUtility.getImage(contact.getImage());
@@ -139,11 +138,6 @@ public class ContactEditionActivity extends AppCompatActivity {
     }
 
     private void saveEditionContact() {
-        imageView = (ImageView) findViewById(R.id.edit_image);
-        name = (TextView) findViewById(R.id.edit_name);
-        phone = (TextView) findViewById(R.id.edit_phone);
-        email = (TextView) findViewById(R.id.edit_email);
-        address = (TextView) findViewById(R.id.edit_address);
         byte[] imageDb;
 
         if (isImageLoaded) {
@@ -153,27 +147,27 @@ public class ContactEditionActivity extends AppCompatActivity {
         } else {
             imageDb = null;
         }
-        if (name.getText().toString().trim().length() == 0) {
-            Toast toast = Toast.makeText(this, R.string.alert_no_name, Toast.LENGTH_LONG);
-            toast.show();
-        } else if (phone.getText().toString().trim().length() == 0) {
-              Toast toast = Toast.makeText(this, R.string.alert_no_phone, Toast.LENGTH_LONG);
-            toast.show();
-        } else {
-            Contact contactEdit = db.getContact(contact.getId());
 
-            if (!name.getText().toString().equals(contactEdit.getName())
-                    && db.isDuplicate(db, name.getText().toString())) {
-                Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG).show();
-                return ;
-            }
+        if (!name.getText().toString().trim().equals(contact.getName())
+                && db.isDuplicate(db, name.getText().toString())) {
+            Toast.makeText(this, R.string.alert_duplicates, Toast.LENGTH_LONG).show();
+            return ;
+        }
+
+        Boolean checkName = Utility.checkField(this, name, getString(R.string.alert_no_name));
+        Boolean checkPhone = Utility.checkField(this, phone, getString(R.string.alert_no_phone));
+        if (checkName && checkPhone) {
             if (email.getText().toString().trim().length() != 0
                     && !Utility.isValidEmail(email.getText())) {
                 Toast.makeText(this, R.string.alert_invalid_email, Toast.LENGTH_LONG).show();
                 return ;
             }
-            db.updateContact(new Contact(imageDb, name.getText().toString(),
-                    phone.getText().toString(), email.getText().toString(), address.getText().toString()));
+            contact.setImage(imageDb);
+            contact.setName(name.getText().toString().trim());
+            contact.setPhone(phone.getText().toString().trim().replaceAll("\\s+",""));
+            contact.setEmail(email.getText().toString().trim());
+            contact.setAddress(address.getText().toString().trim());
+            db.updateContact(contact);
 
             ContactListFragment.getAdapter().notifyDataSetChanged();
 
