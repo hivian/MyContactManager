@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.hivian.my_contact_manager.R;
-import com.example.hivian.my_contact_manager.adapters.CustomSmsAdapter;
+import com.example.hivian.my_contact_manager.recyclers.SmsAdapter;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.Sms;
@@ -40,7 +39,7 @@ public class ContactSmsActivity extends AppCompatActivity {
     private BroadcastReceiver deliveryBroadcastReceiver;
     private static final String SMS_SENT = "SMS_SENT";
     private static final String SMS_DELIVERED = "SMS_DELIVERED";
-    private static CustomSmsAdapter adapter;
+    private static SmsAdapter adapter;
     public static ListView listView;
     private static Bundle extras;
     private EditText smsBody;
@@ -48,11 +47,11 @@ public class ContactSmsActivity extends AppCompatActivity {
     private Contact contact;
     private DBHandler db;
 
-    public static CustomSmsAdapter getAdapter() {
+    public static SmsAdapter getAdapter() {
         return adapter;
     }
 
-    public static void setAdapter(CustomSmsAdapter _adapter) {
+    public static void setAdapter(SmsAdapter _adapter) {
        adapter = _adapter;
     }
 
@@ -122,7 +121,7 @@ public class ContactSmsActivity extends AppCompatActivity {
             elem.add(sms.getType().toString());
             allData.add(elem);
         }
-        adapter = new CustomSmsAdapter(this, allData);
+        adapter = new SmsAdapter(this, allData);
         listView.setAdapter(adapter);
 
         final EditText smsBody = (EditText) findViewById(R.id.sms_body);
@@ -206,7 +205,7 @@ public class ContactSmsActivity extends AppCompatActivity {
             sms_elem.add(sms_data.getType().toString());
             allData.add(sms_elem);
         }
-        adapter = new CustomSmsAdapter(this, allData);
+        adapter = new SmsAdapter(this, allData);
         listView.setAdapter(adapter);
 
         SmsManager smsManager = SmsManager.getDefault();

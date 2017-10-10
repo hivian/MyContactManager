@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager.adapters;
+package com.example.hivian.my_contact_manager.recyclers;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -21,13 +21,13 @@ import java.util.List;
  * Created by hivian on 1/31/17.
  */
 
-public class CustomSmsAdapter extends BaseAdapter {
+public class SmsAdapter extends BaseAdapter {
 
     private Context context;
     private List<List<String>> data;
     private static LayoutInflater inflater = null;
 
-    public CustomSmsAdapter(Context context, List<List<String>> data) {
+    public SmsAdapter(Context context, List<List<String>> data) {
         this.context = context;
         this.data = data;
         inflater = (LayoutInflater) context

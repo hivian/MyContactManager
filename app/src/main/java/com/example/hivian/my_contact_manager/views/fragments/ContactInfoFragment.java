@@ -254,7 +254,6 @@ public class ContactInfoFragment extends Fragment implements View.OnClickListene
                                 for (Sms sms : allSms) {
                                     db.deleteSms(sms);
                                 }
-                                ContactListFragment.getAdapter().notifyDataSetChanged();
 
                                 Intent intent = new Intent(getActivity(), MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

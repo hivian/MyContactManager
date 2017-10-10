@@ -1,9 +1,11 @@
 package com.example.hivian.my_contact_manager.views.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,20 +14,23 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.support.v4.app.Fragment;
+import android.widget.LinearLayout;
 
 import com.example.hivian.my_contact_manager.R;
-import com.example.hivian.my_contact_manager.adapters.CustomAdapter;
+import com.example.hivian.my_contact_manager.recyclers.ContactListRecycler;
+import com.example.hivian.my_contact_manager.recyclers.ContactData;
+import com.example.hivian.my_contact_manager.recyclers.RecyclerItemClickListener;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
+import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
 import com.example.hivian.my_contact_manager.views.activities.ContactCreationActivity;
 
 import java.util.ArrayList;
@@ -38,13 +43,12 @@ import java.util.List;
 public class ContactListFragment extends Fragment implements View.OnClickListener {
 
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
-    private static CustomAdapter adapter;
-    public static CustomAdapter getAdapter() {
-        return adapter;
-    }
+    public static final int RESULT_REQUEST_CODE = 111;
+    private List<ContactData> allData;
+    private RecyclerView recyclerView;
     private DBHandler db;
-
     private DataPassListener mCallback;
+    LinearLayout rowList;
 
     public interface DataPassListener{
         void passData(Contact contact);
@@ -63,31 +67,34 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
         }
 
         db = DBHandler.getInstance(getActivity());
-        ListView listView;
         List<Contact> contacts = db.getAllContacts();
-        ArrayList<List <String>> allData = new ArrayList<>();
+        allData = new ArrayList<>();
+        Bitmap imageBm = null;
 
         for (Contact cont : contacts) {
-            ArrayList<String> elem = new ArrayList<>();
-            elem.add(cont.getName());
-            elem.add(cont.getPhone());
-            allData.add(elem);
+            if (cont.getImage() != null) {
+                imageBm = BitmapUtility.getImage(cont.getImage());
+            } else {
+                imageBm = null;
+            }
+            allData.add(new ContactData(cont.getName(), cont.getPhone(), imageBm));
         }
 
-        listView = (ListView) view.findViewById(R.id.listView);
-        adapter = new CustomAdapter(getActivity(), allData);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textName = (TextView) view.findViewById(R.id.row_name);
-                String name = textName.getText().toString();
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(new ContactListRecycler(allData));
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        String name = allData.get(position).getName();
+                        Contact contact = db.getContactByName(name);
+                        mCallback.passData(contact);
+                        rowList = (LinearLayout) view.findViewById(R.id.row_list);
+                        rowList.setSelected(true);
+                    }
+                })
+        );
 
-                Contact contact = db.getContactByName(name);
-
-                mCallback.passData(contact);
-            }
-        });
         checkPermissions();
 
         return view;
@@ -140,6 +147,17 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            //allData =
+
+            // deal with the item yourself
+
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -163,6 +181,6 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(getActivity(), ContactCreationActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, RESULT_REQUEST_CODE);
     }
 }

@@ -113,14 +113,16 @@ public class ContactEditionActivity extends AppCompatActivity {
 
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);
-            cursor.moveToFirst();
+            if (cursor != null) {
+                cursor.moveToFirst();
 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
 
-            imageView.setImageBitmap(Utility.decodeSampledBitmapFromResource(picturePath, 100, 100));
-            isImageLoaded = true;
+                imageView.setImageBitmap(Utility.decodeSampledBitmapFromResource(picturePath, 100, 100));
+                isImageLoaded = true;
+            }
         }
     }
 
@@ -168,8 +170,6 @@ public class ContactEditionActivity extends AppCompatActivity {
             contact.setEmail(email.getText().toString().trim());
             contact.setAddress(address.getText().toString().trim());
             db.updateContact(contact);
-
-            ContactListFragment.getAdapter().notifyDataSetChanged();
 
             Utility.hideKeyboard(this);
 
