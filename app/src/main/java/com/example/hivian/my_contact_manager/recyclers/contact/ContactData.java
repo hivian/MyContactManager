@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager.recyclers;
+package com.example.hivian.my_contact_manager.recyclers.contact;
 
 import android.graphics.Bitmap;
 
@@ -8,38 +8,38 @@ import android.graphics.Bitmap;
 
 public class ContactData {
 
-    private String name;
-    private String phone;
-    private Bitmap image;
+    private String _name;
+    private String _phone;
+    private Bitmap _image;
 
     public ContactData(String name, String phone, Bitmap image) {
-        this.name = name;
-        this.phone = phone;
-        this.image = image;
+        this._name = name;
+        this._phone = phone;
+        this._image = image;
     }
 
     public String getName() {
-        return name;
+        return _name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this._name = name;
     }
 
     public String getPhone() {
-        return phone;
+        return _phone;
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        this._phone = phone;
     }
 
     public Bitmap getImage() {
-        return image;
+        return _image;
     }
 
     public void setImage(Bitmap image) {
-        this.image = image;
+        this._image = image;
     }
 
 }

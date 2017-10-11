@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/row_list"
+    android:id="@+id/row_contact_list"
     android:orientation="horizontal"
     android:paddingTop="10dp"
     android:paddingStart="10dp"
@@ -16,7 +16,7 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
-        android:id="@+id/row_image"
+        android:id="@+id/row_contact_image"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_margin="8dp"
@@ -30,7 +30,7 @@
         android:layout_marginStart="5dp" >
 
         <TextView
-            android:id="@+id/row_name"
+            android:id="@+id/row_contact_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/colorDark"
@@ -39,7 +39,7 @@
             android:layout_weight="0.5" />
 
         <TextView
-            android:id="@+id/row_phone"
+            android:id="@+id/row_contact_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"

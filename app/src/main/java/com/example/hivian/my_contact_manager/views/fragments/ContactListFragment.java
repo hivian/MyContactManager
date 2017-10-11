@@ -1,7 +1,6 @@
 package com.example.hivian.my_contact_manager.views.fragments;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -25,9 +24,9 @@ import android.support.v4.app.Fragment;
 import android.widget.LinearLayout;
 
 import com.example.hivian.my_contact_manager.R;
-import com.example.hivian.my_contact_manager.recyclers.ContactListRecycler;
-import com.example.hivian.my_contact_manager.recyclers.ContactData;
-import com.example.hivian.my_contact_manager.recyclers.RecyclerItemClickListener;
+import com.example.hivian.my_contact_manager.recyclers.contact.ContactListRecycler;
+import com.example.hivian.my_contact_manager.recyclers.contact.ContactData;
+import com.example.hivian.my_contact_manager.recyclers.contact.RecyclerItemClickListener;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
 import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
@@ -43,7 +42,6 @@ import java.util.List;
 public class ContactListFragment extends Fragment implements View.OnClickListener {
 
     public static final int PERMISSIONS_MULTIPLE_REQUEST = 123;
-    public static final int RESULT_REQUEST_CODE = 111;
     private List<ContactData> allData;
     private RecyclerView recyclerView;
     private DBHandler db;
@@ -147,17 +145,6 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            //allData =
-
-            // deal with the item yourself
-
-        }
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -181,6 +168,6 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         Intent intent = new Intent(getActivity(), ContactCreationActivity.class);
-        startActivityForResult(intent, RESULT_REQUEST_CODE);
+        startActivity(intent);
     }
 }

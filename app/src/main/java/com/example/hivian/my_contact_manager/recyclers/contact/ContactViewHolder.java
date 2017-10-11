@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager.recyclers;
+package com.example.hivian.my_contact_manager.recyclers.contact;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,15 +15,15 @@ import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
 
 class ContactViewHolder extends RecyclerView.ViewHolder {
 
-    private ImageView image;
     private TextView name;
     private TextView phone;
+    private ImageView image;
 
     ContactViewHolder(View itemView) {
         super(itemView);
-        image = (ImageView) itemView.findViewById(R.id.row_image);
-        name = (TextView) itemView.findViewById(R.id.row_name);
-        phone = (TextView) itemView.findViewById(R.id.row_phone);
+        name = (TextView) itemView.findViewById(R.id.row_contact_name);
+        phone = (TextView) itemView.findViewById(R.id.row_contact_phone);
+        image = (ImageView) itemView.findViewById(R.id.row_contact_image);
     }
 
     void bind(ContactData data){

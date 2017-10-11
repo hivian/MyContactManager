@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.hivian.my_contact_manager.R;
-import com.example.hivian.my_contact_manager.recyclers.SmsAdapter;
+import com.example.hivian.my_contact_manager.recyclers.sms.SmsAdapter;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.Sms;

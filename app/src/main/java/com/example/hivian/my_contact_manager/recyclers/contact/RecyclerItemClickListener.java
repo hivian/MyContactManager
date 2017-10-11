@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager.recyclers;
+package com.example.hivian.my_contact_manager.recyclers.contact;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

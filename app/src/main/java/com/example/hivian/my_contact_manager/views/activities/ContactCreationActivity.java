@@ -162,13 +162,10 @@ public class ContactCreationActivity extends AppCompatActivity {
                     email.getText().toString().trim(),
                     address.getText().toString().trim()));
 
-            //ContactListFragment.getAdapter().notifyDataSetChanged();
-
             Utility.hideKeyboard(this);
 
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            setResult(RESULT_OK);
             startActivity(intent);
         }
     }

@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager.recyclers;
+package com.example.hivian.my_contact_manager.recyclers.contact;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,7 +22,7 @@ public class ContactListRecycler extends RecyclerView.Adapter<ContactViewHolder>
 
     @Override
     public ContactViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_contact, parent, false);
         return new ContactViewHolder(view);
     }
 
@@ -30,11 +30,6 @@ public class ContactListRecycler extends RecyclerView.Adapter<ContactViewHolder>
     public void onBindViewHolder(ContactViewHolder holder, int position) {
         ContactData contactData = data.get(position);
         holder.bind(contactData);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     @Override

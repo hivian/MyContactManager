@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
-import com.example.hivian.my_contact_manager.recyclers.SmsAdapter;
+import com.example.hivian.my_contact_manager.recyclers.sms.SmsAdapter;
 import com.example.hivian.my_contact_manager.views.activities.ContactSmsActivity;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.Sms;

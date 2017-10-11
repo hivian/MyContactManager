@@ -1,4 +1,4 @@
-package com.example.hivian.my_contact_manager.recyclers;
+package com.example.hivian.my_contact_manager.recyclers.sms;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
@@ -54,10 +54,10 @@ public class SmsAdapter extends BaseAdapter {
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.row_sms,  null);
-        LinearLayout layout = (LinearLayout) vi.findViewById(R.id.smsHeader_container);
+        LinearLayout layout = (LinearLayout) vi.findViewById(R.id.sms_container);
         GradientDrawable gradientDrawable;
-        TextView text1 = (TextView) vi.findViewById(R.id.sms_header);
-        TextView text2 = (TextView) vi.findViewById(R.id.sms_content);
+        TextView text1 = (TextView) vi.findViewById(R.id.row_sms_header);
+        TextView text2 = (TextView) vi.findViewById(R.id.row_sms_content);
         LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TableRow.LayoutParams params2 = new TableRow.LayoutParams(
@@ -72,7 +72,6 @@ public class SmsAdapter extends BaseAdapter {
             gradientDrawable = (GradientDrawable)layout.getBackground();
             gradientDrawable.setColor(ContextCompat.getColor(context, R.color.colorOrange));
             layout.setBackground(gradientDrawable);
-            layout.setGravity(Gravity.END);
             text1.setLayoutParams(params2);
             text2.setLayoutParams(params2);
             text2.setTextColor(ContextCompat.getColor(context, R.color.colorDarkBlue));
