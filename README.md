@@ -4,8 +4,8 @@ Developped on Android Nougat device (API 24)
 
 - Contact managing: CRUD + add profile picture
 - SMS sender/receiver + notification service + chat history
-- Phone call
-- Dynamic fragments optimization
+- RecyclerView
+- Dynamic fragments
 
 <h4>Previews:</h4>
 
