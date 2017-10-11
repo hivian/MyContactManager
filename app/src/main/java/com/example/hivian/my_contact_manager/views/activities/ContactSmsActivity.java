@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.PorterDuff;
-import android.os.PowerManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,11 +19,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.hivian.my_contact_manager.R;
-import com.example.hivian.my_contact_manager.recyclers.sms.SmsAdapter;
+import com.example.hivian.my_contact_manager.receivers.SmsReceiver;
+import com.example.hivian.my_contact_manager.recyclers.sms.SmsData;
+import com.example.hivian.my_contact_manager.recyclers.sms.SmsListRecycler;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.Sms;
@@ -35,25 +38,15 @@ import java.util.Locale;
 
 public class ContactSmsActivity extends AppCompatActivity {
 
-    private BroadcastReceiver sendBroadcastReceiver;
-    private BroadcastReceiver deliveryBroadcastReceiver;
     private static final String SMS_SENT = "SMS_SENT";
     private static final String SMS_DELIVERED = "SMS_DELIVERED";
-    private static SmsAdapter adapter;
-    public static ListView listView;
+    public static final String SMS_RECEIVED = "SMS_RECEIVED";
     private static Bundle extras;
     private EditText smsBody;
-    private ArrayList< List<String> > allData;
+    public RecyclerView recyclerView;
+    private List<SmsData> allData;
     private Contact contact;
     private DBHandler db;
-
-    public static SmsAdapter getAdapter() {
-        return adapter;
-    }
-
-    public static void setAdapter(SmsAdapter _adapter) {
-       adapter = _adapter;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,62 +60,21 @@ public class ContactSmsActivity extends AppCompatActivity {
         Utility.changeStatusBarColor(this);
 
         smsBody = (EditText) findViewById(R.id.sms_body);
-
-        sendBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(context, R.string.alert_sms_sent_ok, Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(context, R.string.alert_sms_generic_failure, Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(context, R.string.alert_sms_no_service, Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(context, R.string.alert_sms_no_pdu, Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(context, R.string.alert_sms_radio_off, Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        };
-
-        deliveryBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), R.string.alert_sms_delivered_ok, Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(getBaseContext(), R.string.alert_sms_cancelled, Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        };
-
-
-        registerReceiver(deliveryBroadcastReceiver, new IntentFilter(SMS_DELIVERED));
-        registerReceiver(sendBroadcastReceiver , new IntentFilter(SMS_SENT));
-
         db = DBHandler.getInstance(this);
         contact = db.getContactByName(extras.getString("name"));
-        List<Sms> allSms = db.getAllSmsFromContact(contact.getId());
-        listView = (ListView) findViewById(R.id.listView_sms);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_sms);
         allData = new ArrayList<>();
+
+        List<Sms> allSms = db.getAllSmsFromContact(contact.getId());
         for (Sms sms : allSms) {
-            ArrayList<String> elem = new ArrayList<>();
-            elem.add(sms.getHeader());
-            elem.add(sms.getContent());
-            elem.add(sms.getType().toString());
-            allData.add(elem);
+            allData.add(new SmsData(sms.getHeader(), sms.getContent(), sms.getType()));
         }
-        adapter = new SmsAdapter(this, allData);
-        listView.setAdapter(adapter);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_sms);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new SmsListRecycler(allData));
 
         final EditText smsBody = (EditText) findViewById(R.id.sms_body);
         final ImageButton smsSender = (ImageButton) findViewById(R.id.sms_sender);
@@ -134,11 +86,13 @@ public class ContactSmsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() > 0) {
-                    smsSender.setColorFilter(
-                            getResources().getColor(R.color.colorDark), PorterDuff.Mode.SRC_ATOP);
+                    smsSender.setColorFilter(ContextCompat.getColor(getApplicationContext(),
+                            R.color.colorDark),
+                            PorterDuff.Mode.SRC_ATOP);
                 } else {
-                    smsSender.getDrawable().setColorFilter(
-                            getResources().getColor(android.R.color.darker_gray), PorterDuff.Mode.SRC_ATOP);
+                    smsSender.setColorFilter(ContextCompat.getColor(getApplicationContext(),
+                            android.R.color.darker_gray),
+                            PorterDuff.Mode.SRC_ATOP);
                 }
             }
 
@@ -165,17 +119,69 @@ public class ContactSmsActivity extends AppCompatActivity {
         super.onResume();
         registerReceiver(deliveryBroadcastReceiver, new IntentFilter(SMS_DELIVERED));
         registerReceiver(sendBroadcastReceiver , new IntentFilter(SMS_SENT));
+        registerReceiver(refreshReceiver, new IntentFilter(SMS_RECEIVED));
     }
 
     @Override
-    protected void onStop()
+    protected void onPause()
     {
-        super.onStop();
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if (pm.isScreenOn()) {
-            unregisterReceiver(sendBroadcastReceiver);
-            unregisterReceiver(deliveryBroadcastReceiver);
+        super.onPause();
+        unregisterReceiver(sendBroadcastReceiver);
+        unregisterReceiver(deliveryBroadcastReceiver);
+        unregisterReceiver(refreshReceiver);
+    }
+
+    private BroadcastReceiver sendBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (getResultCode()) {
+                case Activity.RESULT_OK:
+                    Toast.makeText(context, R.string.alert_sms_sent_ok, Toast.LENGTH_SHORT).show();
+                    break;
+                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                    Toast.makeText(context, R.string.alert_sms_generic_failure, Toast.LENGTH_SHORT).show();
+                    break;
+                case SmsManager.RESULT_ERROR_NO_SERVICE:
+                    Toast.makeText(context, R.string.alert_sms_no_service, Toast.LENGTH_SHORT).show();
+                    break;
+                case SmsManager.RESULT_ERROR_NULL_PDU:
+                    Toast.makeText(context, R.string.alert_sms_no_pdu, Toast.LENGTH_SHORT).show();
+                    break;
+                case SmsManager.RESULT_ERROR_RADIO_OFF:
+                    Toast.makeText(context, R.string.alert_sms_radio_off, Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
+    };
+
+    private BroadcastReceiver deliveryBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (getResultCode()) {
+                case Activity.RESULT_OK:
+                    Toast.makeText(getBaseContext(), R.string.alert_sms_delivered_ok, Toast.LENGTH_SHORT).show();
+                    break;
+                case Activity.RESULT_CANCELED:
+                    Toast.makeText(getBaseContext(), R.string.alert_sms_cancelled, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+    private BroadcastReceiver refreshReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context c, Intent i) {
+            String header = i.getStringExtra(SmsReceiver.SMS_HEADER);
+            String content = i.getStringExtra(SmsReceiver.SMS_CONTENT);
+            int type = i.getIntExtra(SmsReceiver.SMS_TYPE, Sms.RECEIVED);
+
+            refreshSmsData(new Sms(header, content, contact.getId(), type));
+        }
+    };
+
+    private void refreshSmsData(Sms sms) {
+        allData.add(new SmsData(sms.getHeader(), sms.getContent(), sms.getType()));
+        recyclerView.scrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
     }
 
     public void sendSms(View view) {
@@ -186,27 +192,13 @@ public class ContactSmsActivity extends AppCompatActivity {
         PendingIntent sentPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_SENT), 0);
         PendingIntent deliveredPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent(SMS_DELIVERED), 0);
 
-        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
                 DateFormat.MEDIUM, Locale.getDefault());
-        Sms sms = new Sms(df.format(new Date()), smsBody.getText().toString(),
+        Sms sms = new Sms(dateFormat.format(new Date()), smsBody.getText().toString(),
                 contact.getId(), Sms.SENT);
         db.addSms(sms);
-        List <String> elem = new ArrayList<>();
-        elem.add(sms.getHeader());
-        elem.add(sms.getContent());
-        elem.add(sms.getType().toString());
-        List<Sms> allSms = db.getAllSmsFromContact(contact.getId());
 
-        allData = new ArrayList<>();
-        for (Sms sms_data : allSms) {
-            ArrayList<String> sms_elem = new ArrayList<>();
-            sms_elem.add(sms_data.getHeader());
-            sms_elem.add(sms_data.getContent());
-            sms_elem.add(sms_data.getType().toString());
-            allData.add(sms_elem);
-        }
-        adapter = new SmsAdapter(this, allData);
-        listView.setAdapter(adapter);
+        refreshSmsData(sms);
 
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phone, null, smsBody.getText().toString(),

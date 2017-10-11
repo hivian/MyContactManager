@@ -24,7 +24,6 @@ import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
 import com.example.hivian.my_contact_manager.utilities.Utility;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
-import com.example.hivian.my_contact_manager.views.fragments.ContactListFragment;
 
 
 public class ContactCreationActivity extends AppCompatActivity {

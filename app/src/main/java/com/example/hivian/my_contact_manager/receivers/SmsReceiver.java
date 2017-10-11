@@ -5,13 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
-import com.example.hivian.my_contact_manager.recyclers.sms.SmsAdapter;
-import com.example.hivian.my_contact_manager.views.activities.ContactSmsActivity;
 import com.example.hivian.my_contact_manager.models.Contact;
 import com.example.hivian.my_contact_manager.models.Sms;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
+import com.example.hivian.my_contact_manager.recyclers.sms.SmsData;
 import com.example.hivian.my_contact_manager.services.SmsNotificationService;
+import com.example.hivian.my_contact_manager.views.activities.ContactSmsActivity;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -25,11 +26,14 @@ import java.util.Locale;
 
 public class SmsReceiver extends BroadcastReceiver {
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
-    private ArrayList<List<String>> allData;
-    List<Sms> allSms;
+    private static final String PDUS = "pdus";
+    public static final String SMS_HEADER = "sms_header";
+    public static final String SMS_CONTENT = "sms_content";
+    public static final String SMS_TYPE = "sms_type";
+    public static final String NOTIF_TITLE = "notification_title";
+    public static final String NOTIF_MESSAGE = "notification_message";
+
     Contact contact;
-    private String phone;
-    private String message;
     StringBuilder sb;
 
     @Override
@@ -39,7 +43,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
-                Object[] pdus = (Object[]) bundle.get("pdus");
+                Object[] pdus = (Object[]) bundle.get(PDUS);
                 if (pdus.length == 0) {
                     return;
                 }
@@ -50,8 +54,8 @@ public class SmsReceiver extends BroadcastReceiver {
                     sb.append(messages[i].getMessageBody());
                 }
 
-                message = sb.toString();
-                phone = messages[0].getOriginatingAddress();
+                String message = sb.toString();
+                String phone = messages[0].getOriginatingAddress();
                 contact = db.getContactByPhone(phone);
                 if (contact == null) {
                     phone = messages[0].getOriginatingAddress().replace("+33", "0");
@@ -65,26 +69,20 @@ public class SmsReceiver extends BroadcastReceiver {
                 DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
                         DateFormat.MEDIUM, Locale.getDefault());
                 contact = db.getContactByPhone(phone);
-                db.addSms(new Sms(df.format(new Date()), message, contact.getId(), Sms.RECEIVED));
+                Sms sms = new Sms(df.format(new Date()), message, contact.getId(), Sms.RECEIVED);
+                db.addSms(sms);
 
-                allData = new ArrayList<>();
-                allSms = db.getAllSmsFromContact(contact.getId());
-                for (Sms sms : allSms) {
-                    ArrayList<String> elem = new ArrayList<>();
-                    elem.add(sms.getHeader());
-                    elem.add(sms.getContent());
-                    elem.add(sms.getType().toString());
-                    allData.add(elem);
-                }
-                if (ContactSmsActivity.getAdapter() != null) {
-                    ContactSmsActivity.setAdapter(new SmsAdapter(context, allData));
-                    ContactSmsActivity.listView.setAdapter(ContactSmsActivity.getAdapter());
-                }
+                Intent intentService = new Intent(context, SmsNotificationService.class);
+                intentService.putExtra(NOTIF_TITLE, contact.getName());
+                intentService.putExtra(NOTIF_MESSAGE, message);
+                context.startService(intentService);
 
-                Intent i = new Intent(context, SmsNotificationService.class);
-                i.putExtra("contentTitle", contact.getName());
-                i.putExtra("contentMessage", message);
-                context.startService(i);
+                Intent intentBroadcast = new Intent(ContactSmsActivity.SMS_RECEIVED);
+                intentBroadcast.putExtra(SMS_HEADER, sms.getHeader());
+                intentBroadcast.putExtra(SMS_CONTENT, sms.getContent());
+                intentBroadcast.putExtra(SMS_TYPE, sms.getType());
+                context.sendBroadcast(intentBroadcast);
+
             }
         }
     }

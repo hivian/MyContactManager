@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.hivian.my_contact_manager.models.Contact;
+import com.example.hivian.my_contact_manager.receivers.SmsReceiver;
 import com.example.hivian.my_contact_manager.views.activities.ContactSmsActivity;
 import com.example.hivian.my_contact_manager.models.db.DBHandler;
 import com.example.hivian.my_contact_manager.utilities.BitmapUtility;
@@ -19,17 +20,18 @@ import com.example.hivian.my_contact_manager.R;
  */
 
 public class SmsNotificationService extends IntentService {
+    private final static String SERVICE_NAME = "smsService";
     private DBHandler db;
 
     public SmsNotificationService() {
-        super("smsService");
+        super(SERVICE_NAME);
         db = DBHandler.getInstance(this);
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        String contentTitle = (String) intent.getExtras().get("contentTitle");
-        String contentMessage = (String) intent.getExtras().get("contentMessage");
+        String contentTitle = (String) intent.getExtras().get(SmsReceiver.NOTIF_TITLE);
+        String contentMessage = (String) intent.getExtras().get(SmsReceiver.NOTIF_MESSAGE);
 
         Contact contact = db.getContactByName(contentTitle);
 
@@ -48,6 +50,7 @@ public class SmsNotificationService extends IntentService {
         Intent smsIntent = new Intent(this, ContactSmsActivity.class);
         smsIntent.putExtra("name", contact.getName());
         smsIntent.putExtra("phone", contact.getPhone());
+
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 smsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         n.setContentIntent(contentIntent);

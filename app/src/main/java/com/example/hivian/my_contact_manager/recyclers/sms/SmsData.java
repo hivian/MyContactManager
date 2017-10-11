@@ -10,7 +10,7 @@ public class SmsData {
     private String _content;
     private Integer _type;
 
-    SmsData(String header, String content, Integer type) {
+    public SmsData(String header, String content, Integer type) {
         this._header = header;
         this._content = content;
         this._type = type;

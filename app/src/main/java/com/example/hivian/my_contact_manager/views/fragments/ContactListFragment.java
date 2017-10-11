@@ -67,7 +67,7 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
         db = DBHandler.getInstance(getActivity());
         List<Contact> contacts = db.getAllContacts();
         allData = new ArrayList<>();
-        Bitmap imageBm = null;
+        Bitmap imageBm;
 
         for (Contact cont : contacts) {
             if (cont.getImage() != null) {
@@ -78,7 +78,7 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
             allData.add(new ContactData(cont.getName(), cont.getPhone(), imageBm));
         }
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_contact);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new ContactListRecycler(allData));
         recyclerView.addOnItemTouchListener(
@@ -87,7 +87,7 @@ public class ContactListFragment extends Fragment implements View.OnClickListene
                         String name = allData.get(position).getName();
                         Contact contact = db.getContactByName(name);
                         mCallback.passData(contact);
-                        rowList = (LinearLayout) view.findViewById(R.id.row_list);
+                        rowList = (LinearLayout) view.findViewById(R.id.row_contact_list);
                         rowList.setSelected(true);
                     }
                 })

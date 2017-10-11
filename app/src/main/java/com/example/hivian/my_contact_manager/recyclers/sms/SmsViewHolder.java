@@ -27,7 +27,7 @@ public class SmsViewHolder extends RecyclerView.ViewHolder {
     private LinearLayout.LayoutParams container_params;
     private TableRow.LayoutParams text_params;
 
-    public SmsViewHolder(Context context, View itemView) {
+    SmsViewHolder(Context context, View itemView) {
         super(itemView);
         this.context = context;
         header = (TextView) itemView.findViewById(R.id.row_sms_header);
@@ -42,8 +42,6 @@ public class SmsViewHolder extends RecyclerView.ViewHolder {
     }
 
     void bind(SmsData data) {
-        content.setText(data.getContent());
-
         content.setText(data.getContent());
         if (data.getType().equals(Sms.SENT)) {
             setSmsLayout(R.color.colorOrange, R.color.colorDarkBlue, Gravity.END);
